@@ -1,7 +1,8 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Darkdight000999</title>
   <style>
     body {
@@ -12,109 +13,119 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-    }.rgb-ring {
-  position: relative;
-  border-radius: 50%;
-  padding: 20px; /* मोटाई और बढ़ाई */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-.rgb-ring::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  border-radius: 50%;
-  padding: 20px; /* मोटाई और बढ़ाई */
-  background: conic-gradient(red, orange, yellow, lime, cyan, blue, violet, red);
-  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 20px), black 0);
-  mask: radial-gradient(farthest-side, transparent calc(100% - 20px), black 0);
-  animation: spin 4s linear infinite;
-  z-index: 0;
-}
-.rgb-ring img {
-  border-radius: 50%;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  z-index: 1;
-}
+    }
 
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
+    .rgb-ring {
+      position: relative;
+      border-radius: 50%;
+      padding: 3px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .rgb-ring::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: 50%;
+      padding: 3px;
+      background: conic-gradient(red, orange, yellow, lime, cyan, blue, violet, red);
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), black 0);
+      mask: radial-gradient(farthest-side, transparent calc(100% - 3px), black 0);
+      animation: spin 4s linear infinite;
+      z-index: 0;
+    }
+    .rgb-ring img {
+      border-radius: 50%;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      z-index: 1;
+    }
 
-.header {
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 1000;
-}
-.header h1 { font-size: 20px; font-weight: bold; }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
 
-.logo { width: 50px; height: 50px; }
+    .header {
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+    .header h1 { font-size: 20px; font-weight: bold; }
 
-.sidebar {
-  position: fixed;
-  top: 60px;
-  left: -240px; /* hidden by default */
-  height: calc(100% - 60px);
-  width: 240px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(15px);
-  transition: left 0.3s;
-  overflow: hidden;
-  z-index: 1200;
-}
-.sidebar.open { left: 0; }
-.sidebar ul { padding: 0; margin: 0; list-style: none; }
-.sidebar li { padding: 15px; display: flex; align-items: center; cursor: pointer; }
-.sidebar li i { margin-right: 15px; }
-.sidebar li:hover { background: rgba(255,255,255,0.15); color: #00ffe0; }
+    .logo { width: 50px; height: 50px; }
 
-.menu-toggle {
-  font-size: 24px;
-  cursor: pointer;
-  margin-right: 15px;
-}
+    .sidebar {
+      position: fixed;
+      top: 60px;
+      left: -240px;
+      height: calc(100% - 60px);
+      width: 240px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      transition: left 0.3s;
+      overflow: hidden;
+      z-index: 1200;
+    }
+    .sidebar.open { left: 0; }
+    .sidebar ul { padding: 0; margin: 0; list-style: none; }
+    .sidebar li { padding: 15px; display: flex; align-items: center; cursor: pointer; }
+    .sidebar li i { margin-right: 15px; }
+    .sidebar li:hover { background: rgba(255,255,255,0.15); color: #00ffe0; }
 
-.close-btn {
-  text-align: right;
-  padding: 10px;
-  cursor: pointer;
-  font-size: 20px;
-}
+    .menu-toggle {
+      font-size: 24px;
+      cursor: pointer;
+      margin-right: 15px;
+    }
 
-.content {
-  margin-top: 60px;
-  margin-left: 0;
-  padding: 20px;
-  flex: 1;
-  transition: margin-left 0.3s;
-}
-.sidebar.open ~ .content { margin-left: 240px; }
+    .close-btn {
+      text-align: right;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 20px;
+    }
 
-.login-page { display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh; }
-.login-logo { width:120px;height:120px; }
-.login-box { background:rgba(255,255,255,0.1);padding:30px;border-radius:12px;backdrop-filter:blur(12px);width:320px; }
-.login-box input,.login-box button { width:100%;padding:12px;margin:10px 0;border:none;border-radius:6px; }
-.login-box button { background:#6c63ff;color:#fff;font-weight:bold;cursor:pointer; }
+    .content {
+      margin-top: 60px;
+      margin-left: 0;
+      padding: 20px;
+      flex: 1;
+      transition: margin-left 0.3s;
+    }
+    .sidebar.open ~ .content { margin-left: 240px; }
 
-iframe.youtube-frame { width: 100%; height: calc(100vh - 80px); border: none; border-radius: 12px; }
+    .login-page { display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh; }
+    .login-logo { width:120px;height:120px; }
+    .login-box { background:rgba(255,255,255,0.1);padding:30px;border-radius:12px;backdrop-filter:blur(12px);width:320px; }
+    .login-box input,.login-box button { width:100%;padding:12px;margin:10px 0;border:none;border-radius:6px; }
+    .login-box button { background:#6c63ff;color:#fff;font-weight:bold;cursor:pointer; }
 
-.footer { background:rgba(255,255,255,0.1);padding:10px 20px;display:flex;justify-content:space-between;align-items:center; }
-.profile { display:flex;align-items:center;gap:10px; }
-.profile .rgb-ring { width:40px;height:40px; }
-.logout-btn { background:crimson;color:#fff;padding:6px 12px;border:none;border-radius:6px;cursor:pointer; }
+    iframe.youtube-frame { width: 100%; height: calc(100vh - 80px); border: none; border-radius: 12px; }
 
+    .footer { background:rgba(255,255,255,0.1);padding:10px 20px;display:flex;justify-content:space-between;align-items:center; }
+    .profile { display:flex;align-items:center;gap:10px; }
+    .profile .rgb-ring { width:40px;height:40px; }
+    .logout-btn { background:crimson;color:#fff;padding:6px 12px;border:none;border-radius:6px;cursor:pointer; }
+
+    .profile-card {
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      margin: 20px;
+      display: none;
+    }
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -127,38 +138,73 @@ iframe.youtube-frame { width: 100%; height: calc(100vh - 80px); border: none; bo
       <input type="password" id="password" placeholder="Password">
       <button onclick="login()">Login</button>
     </div>
-  </div>  <div class="header" id="header" style="display:none;">
+  </div>
+
+  <div class="header" id="header" style="display:none;">
     <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
     <div class="logo rgb-ring"><img src="Screenshot_20250821_142735.jpg"></div>
     <h1>Darkdight000999</h1>
     <div class="logo rgb-ring"><img src="Screenshot_20250821_142735.jpg"></div>
-  </div>  <div class="sidebar" id="sidebar">
+  </div>
+
+  <div class="sidebar" id="sidebar">
     <div class="close-btn" onclick="closeSidebar()">❌</div>
     <ul>
       <li onclick="showSection('home')"><i class="fas fa-home"></i><span>Home</span></li>
       <li onclick="showSection('youtube')"><i class="fab fa-youtube"></i><span>Youtube Videos</span></li>
-      <li><i class="fas fa-file-pdf"></i><span>PDF & Notes</span></li>
-      <li><i class="fas fa-terminal"></i><span>Hacking Commands</span></li>
-      <li><i class="fas fa-user-secret"></i><span>Hacking</span></li>
-      <li><i class="fas fa-video"></i><span>Live Class</span></li>
-      <li><i class="fas fa-headset"></i><span>Contact & Support</span></li>
+      <li onclick="showSection('pdf')"><i class="fas fa-file-pdf"></i><span>PDF & Notes</span></li>
+      <li onclick="showSection('commands')"><i class="fas fa-terminal"></i><span>Hacking Commands</span></li>
+      <li onclick="showSection('hacking')"><i class="fas fa-user-secret"></i><span>Hacking</span></li>
+      <li onclick="showSection('live')"><i class="fas fa-video"></i><span>Live Class</span></li>
+      <li onclick="showSection('contact')"><i class="fas fa-headset"></i><span>Contact & Support</span></li>
     </ul>
-  </div>  <div class="content" id="content" style="display:none;">
+  </div>
+
+  <div class="content" id="content" style="display:none;">
     <div id="homeSection">
       <h2>Welcome!</h2>
       <p>This is the home dashboard.</p>
     </div>
     <div id="youtubeSection" style="display:none;">
       <h2>Youtube Channel</h2>
-      <iframe class="youtube-frame" src="https://www.youtube.com/embed?listType=user_uploads&list=mr_br_hacker_33"></iframe>
+      <iframe class="youtube-frame" src="https://www.youtube.com/embed?listType=user_uploads&list=mr_br_hacker_33" allowfullscreen></iframe>
     </div>
-  </div>  <div class="footer" id="footer" style="display:none;">
+    <div id="pdfSection" style="display:none;">
+      <h2>PDF & Notes</h2>
+      <p>All PDF and Notes will be listed here.</p>
+    </div>
+    <div id="commandsSection" style="display:none;">
+      <h2>Hacking Commands</h2>
+      <p>Useful commands will be shown here.</p>
+    </div>
+    <div id="hackingSection" style="display:none;">
+      <h2>Hacking</h2>
+      <p>Hacking related content here.</p>
+    </div>
+    <div id="liveSection" style="display:none;">
+      <h2>Live Class</h2>
+      <p>Live classes will be available here.</p>
+    </div>
+    <div id="contactSection" style="display:none;">
+      <h2>Contact & Support</h2>
+      <p>Support information here.</p>
+    </div>
+    <div id="profileCard" class="profile-card">
+      <h2>User Profile</h2>
+      <p><strong>Email:</strong> <span id="profileEmail"></span></p>
+      <p><strong>Role:</strong> <span id="profileRole"></span></p>
+    </div>
+  </div>
+
+  <div class="footer" id="footer" style="display:none;">
     <div class="profile">
       <div class="rgb-ring"><img src="Screenshot_20250821_142735.jpg"></div>
       <span id="userEmail"></span>
     </div>
     <button class="logout-btn" onclick="logout()">Logout</button>
-  </div><script>
+  </div>
+
+<script>
   const adminAccounts = [
     { email: "admin01", password: "Admin@123" },
     { email: "darkhacker", password: "Rks_123456789@" }
@@ -168,6 +214,20 @@ iframe.youtube-frame { width: 100%; height: calc(100vh - 80px); border: none; bo
   ];
 
   let isAdmin = false;
+
+  window.onload = function() {
+    const savedUser = localStorage.getItem("loggedUser");
+    if (savedUser) {
+      const userData = JSON.parse(savedUser);
+      isAdmin = userData.isAdmin;
+      document.getElementById("loginPage").style.display="none";
+      document.getElementById("header").style.display="flex";
+      document.getElementById("sidebar").style.display="block";
+      document.getElementById("content").style.display="block";
+      document.getElementById("footer").style.display="flex";
+      document.getElementById("userEmail").innerText=userData.email;
+    }
+  }
 
   function login(){
     const email=document.getElementById("email").value;
@@ -181,21 +241,31 @@ iframe.youtube-frame { width: 100%; height: calc(100vh - 80px); border: none; bo
       document.getElementById("content").style.display="block";
       document.getElementById("footer").style.display="flex";
       document.getElementById("userEmail").innerText=email;
+      localStorage.setItem("loggedUser", JSON.stringify({ email, isAdmin }));
     } else alert("Invalid login");
   }
 
   function logout(){
+    const savedUser = JSON.parse(localStorage.getItem("loggedUser"));
+    if(savedUser){
+      document.getElementById("profileCard").style.display="block";
+      document.getElementById("profileEmail").innerText = savedUser.email;
+      document.getElementById("profileRole").innerText = savedUser.isAdmin ? "Admin" : "Student";
+    }
     isAdmin=false;
+    localStorage.removeItem("loggedUser");
     document.getElementById("loginPage").style.display="flex";
     document.getElementById("header").style.display="none";
     document.getElementById("sidebar").style.display="none";
-    document.getElementById("content").style.display="none";
+    document.getElementById("content").style.display="block";
     document.getElementById("footer").style.display="none";
   }
 
   function showSection(section){
-    document.getElementById("homeSection").style.display = section==='home' ? 'block' : 'none';
-    document.getElementById("youtubeSection").style.display = section==='youtube' ? 'block' : 'none';
+    const sections=["home","youtube","pdf","commands","hacking","live","contact"];
+    sections.forEach(s=>{
+      document.getElementById(s+"Section").style.display=(section===s)?'block':'none';
+    });
   }
 
   function toggleSidebar(){
@@ -205,5 +275,6 @@ iframe.youtube-frame { width: 100%; height: calc(100vh - 80px); border: none; bo
   function closeSidebar(){
     document.getElementById("sidebar").classList.remove("open");
   }
-</script></body>
+</script>
+</body>
 </html>
