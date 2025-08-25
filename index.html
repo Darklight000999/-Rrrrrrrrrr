@@ -19,12 +19,27 @@
     /* Header */
     .header {
       height: 60px; display: flex; align-items: center; justify-content: space-between;
-      padding: 0 20px; background: rgba(255, 255, 255, 0.1);
+      padding: 0 15px; background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(12px); box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
-    .header img { width: 40px; height: 40px; border-radius: 50%; animation: spin 5s linear infinite; }
-    @keyframes spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
-    .theme-toggle, .menu-toggle { cursor: pointer; font-size: 22px; }
+    .header h1 {
+      flex-grow: 1; text-align: center; font-size: 22px; letter-spacing: 2px;
+      background: linear-gradient(90deg, #ff0080, #00ffe0, #ff8c00);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      animation: rgbText 4s linear infinite;
+    }
+    @keyframes rgbText { 
+      0%{background-position:0% 50%} 
+      100%{background-position:100% 50%} 
+    }
+    .header img {
+      width: 40px; height: 40px; border-radius: 50%;
+      animation: glow 3s infinite alternate;
+    }
+    @keyframes glow {
+      from { filter: drop-shadow(0 0 5px cyan); }
+      to { filter: drop-shadow(0 0 20px magenta); }
+    }
 
     /* Sidebar */
     .sidebar {
@@ -100,9 +115,7 @@
   <!-- Header -->
   <div class="header" id="header" style="display:none;">
     <img src="Screenshot_20250821_142735.jpg">
-    <i class="menu-toggle fas fa-bars" id="menuToggle"></i>
     <h1>Darkdight000999</h1>
-    <i class="theme-toggle fas fa-moon" id="themeToggle"></i>
     <img src="Screenshot_20250821_142735.jpg">
   </div>
 
@@ -135,20 +148,25 @@
   </div>
 
   <script>
-    const emailEl=document.getElementById("email");
-    const passwordEl=document.getElementById("password");
-    const menuList=document.getElementById("menuList");
-
-    const adminAccounts = [{ email: "admin@gmail.com", password: "Admin@123" }];
-    const studentAccounts = [{ email: "student@gmail.com", password: "Student@123" }];
+    const adminAccounts = [
+      { email: "admin@gmail.com", password: "Admin@123" }
+    ];
+    const studentAccounts = [
+      { email: "student@gmail.com", password: "Student@123" }
+    ];
 
     let isAdmin = false, currentUser = null;
     const storageKeys = { videos: "videos", pdfs: "pdfs", notes: "notes", images: "images" };
+
+    const emailEl = document.getElementById("email");
+    const passwordEl = document.getElementById("password");
+    const menuList = document.getElementById("menuList");
 
     function login() {
       const email = emailEl.value, password = passwordEl.value;
       isAdmin = adminAccounts.some(acc => acc.email===email && acc.password===password);
       let isStudent = studentAccounts.some(acc => acc.email===email && acc.password===password);
+
       if (isAdmin || isStudent) {
         currentUser = email;
         document.getElementById("loginPage").style.display="none";
@@ -157,6 +175,7 @@
         document.getElementById("content").style.display="block";
         document.getElementById("footer").style.display="flex";
         document.getElementById("profileEmail").innerText = email;
+
         if (isAdmin) {
           let uploadLi=document.createElement("li");
           uploadLi.innerHTML='<i class="fas fa-upload"></i> Upload Manager';
@@ -178,17 +197,53 @@
         <div class="card"><input type="text" id="videoUrl" placeholder="Video Embed URL"><button onclick="upload('videos')">Upload Video</button></div>
         <div class="card"><input type="text" id="pdfUrl" placeholder="PDF Embed URL"><button onclick="upload('pdfs')">Upload PDF</button></div>
         <div class="card"><input type="text" id="noteText" placeholder="Write Note"><button onclick="upload('notes')">Upload Note</button></div>
-      `;
-      document.getElementById("content").innerHTML = html;
+        <div class="card"><input type="text" id="imageUrl" placeholder="Image URL"><button onclick="upload('images')">Upload Image</button></div>`;
+      document.getElementById("content").innerHTML=html;
+    }
+
+    function upload(type){
+      let value="";
+      if(type==="videos") value=document.getElementById("videoUrl").value;
+      if(type==="pdfs") value=document.getElementById("pdfUrl").value;
+      if(type==="notes") value=document.getElementById("noteText").value;
+      if(type==="images") value=document.getElementById("imageUrl").value;
+
+      if(value){
+        let items=JSON.parse(localStorage.getItem(storageKeys[type])||"[]");
+        items.push(value);
+        localStorage.setItem(storageKeys[type], JSON.stringify(items));
+        alert(type+" uploaded!");
+      }
     }
 
     function loadContent(){
-      // TODO: load from localStorage if needed
+      for (let key in storageKeys){
+        let items=JSON.parse(localStorage.getItem(storageKeys[key])||"[]");
+        let container=document.getElementById(key.slice(0,-1)+"List");
+        container.innerHTML="";
+        items.forEach(val=>{
+          let card=document.createElement("div");
+          card.className="card";
+          if(key==="videos") card.innerHTML=`<iframe src="${val}" frameborder="0" allowfullscreen></iframe>`;
+          if(key==="pdfs") card.innerHTML=`<iframe src="${val}" frameborder="0"></iframe>`;
+          if(key==="notes") card.innerHTML=`<p>${val}</p>`;
+          if(key==="images") card.innerHTML=`<img src="${val}">`;
+          container.appendChild(card);
+        });
+      }
     }
 
     function logout(){
+      currentUser=null;
+      isAdmin=false;
       location.reload();
     }
+
+    // Block Copy / Download / Screenshot
+    document.addEventListener('contextmenu', e=>e.preventDefault());
+    document.addEventListener('keydown', e=>{
+      if(e.ctrlKey && (e.key==='s' || e.key==='u' || e.key==='c' || e.key==='x' || e.key==='p')) e.preventDefault();
+    });
   </script>
 </body>
 </html>
