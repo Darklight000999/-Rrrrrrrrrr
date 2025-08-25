@@ -1,187 +1,200 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Darkdight000999</title>
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to right, #0f0f1a, #1c1c2b);
-      color: white;
-      overflow-x: hidden;
-    }
-    header {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1e1e2f, #23234f);
+      color: #fff;
+      min-height: 100vh;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 15px;
-      background: black;
-    }
-    .logo {
-      height: 40px;
-    }
-    .title {
-      font-size: 22px;
-      font-weight: bold;
-      background: linear-gradient(90deg, cyan, violet, lime, yellow);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    #menuToggle {
-      font-size: 28px;
-      cursor: pointer;
-      color: lime;
-      margin-left: 10px;
-    }
-    /* Sidebar */
-    #sidebar {
-      position: fixed;
-      left: -260px;
-      top: 0;
-      width: 250px;
-      height: 100%;
-      background: #111;
-      padding-top: 60px;
-      transition: left 0.3s ease;
-      z-index: 999;
-    }
-    #sidebar.active {
-      left: 0;
-    }
-    #sidebar a {
-      display: block;
-      padding: 15px;
-      color: white;
-      text-decoration: none;
-      font-size: 16px;
-    }
-    #sidebar a:hover {
-      background: #333;
-    }
-    #content {
-      padding: 20px;
-      margin-top: 20px;
-    }
-    .hidden {
-      display: none;
-    }
-    /* Upload Section */
-    #uploadSection {
-      padding: 20px;
-      background: #1c1c2b;
-      border-radius: 8px;
-      margin-top: 20px;
-    }
-    input, textarea, button {
-      display: block;
-      margin: 10px 0;
-      padding: 10px;
-      width: 100%;
-      border: none;
-      border-radius: 5px;
-    }
-    button {
-      background: limegreen;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button:hover {
-      background: green;
-    }
+      flex-direction: column;
+    }/* ==== RGB RING EFFECT ==== */
+.rgb-ring {
+  position: relative;
+  border-radius: 50%;
+  padding: 4px;
+  background: conic-gradient(
+    red, orange, yellow, lime, cyan, blue, violet, red
+  );
+  animation: spin 4s linear infinite;
+}
+.rgb-ring img {
+  display: block;
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Header */
+.header {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+.header h1 { font-size: 20px; font-weight: bold; }
+
+.logo {
+  width: 50px;
+  height: 50px;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  height: calc(100% - 60px);
+  width: 70px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  transition: width 0.3s;
+  overflow: hidden;
+}
+.sidebar.expanded { width: 240px; }
+.sidebar ul { padding: 0; margin: 0; list-style: none; }
+.sidebar li { padding: 15px; display: flex; align-items: center; cursor: pointer; }
+.sidebar li i { margin-right: 15px; }
+.sidebar li:hover { background: rgba(255,255,255,0.15); color: #00ffe0; }
+
+/* Content */
+.content {
+  margin-top: 60px;
+  margin-left: 70px;
+  padding: 20px;
+  flex: 1;
+  transition: margin-left 0.3s;
+}
+.sidebar.expanded ~ .content { margin-left: 240px; }
+
+/* Login */
+.login-page { display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh; }
+.login-logo { width:120px;height:120px; }
+.login-box { background:rgba(255,255,255,0.1);padding:30px;border-radius:12px;backdrop-filter:blur(12px);width:320px; }
+.login-box input,.login-box button { width:100%;padding:12px;margin:10px 0;border:none;border-radius:6px; }
+.login-box button { background:#6c63ff;color:#fff;font-weight:bold;cursor:pointer; }
+
+/* Upload */
+.upload-card { background:rgba(255,255,255,0.1);padding:15px;border-radius:12px;margin:10px 0; }
+.btn-delete { background:crimson;color:#fff;border:none;padding:6px 10px;border-radius:6px;cursor:pointer; }
+
+/* Footer */
+.footer { background:rgba(255,255,255,0.1);padding:10px 20px;display:flex;justify-content:space-between;align-items:center; }
+.profile { display:flex;align-items:center;gap:10px; }
+.profile .rgb-ring { width:40px;height:40px; }
+.logout-btn { background:crimson;color:#fff;padding:6px 12px;border:none;border-radius:6px;cursor:pointer; }
+
   </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-  <header>
-    <img src="logo.png" class="logo" alt="Logo">
-    <div class="title">Darkdight000999</div>
-    <img src="logo.png" class="logo" alt="Logo">
-    <span id="menuToggle">☰</span>
-  </header>
-
-  <!-- Sidebar -->
-  <div id="sidebar">
-    <a href="#" onclick="loadPage('home')">🏠 Home</a>
-    <a href="#" onclick="loadPage('videos')">🎬 Youtube Videos</a>
-    <a href="#" onclick="loadPage('notes')">📘 PDF & Notes</a>
-    <a href="#" onclick="loadPage('commands')">💻 Hacking Commands</a>
-    <a href="#" onclick="loadPage('live')">📡 Live Class</a>
-    <a href="#" onclick="loadPage('support')">🎧 Contact & Support</a>
-    <a href="#" id="logoutBtn" class="hidden">🚪 Logout</a>
-  </div>
-
-  <!-- Main Content -->
-  <div id="content">
-    <h2>Welcome!</h2>
-    <p>Select a menu item.</p>
-
-    <!-- Upload Section (Admin only) -->
-    <div id="uploadSection" class="hidden">
-      <h3>Upload Manager</h3>
-      <input type="text" id="fileTitle" placeholder="Title">
-      <textarea id="fileDesc" placeholder="Description"></textarea>
-      <input type="file" id="fileInput">
-      <button onclick="uploadFile()">Upload</button>
-      <h3>All Uploads</h3>
-      <div id="allUploads"></div>
+  <!-- Login -->
+  <div class="login-page" id="loginPage">
+    <div class="login-logo rgb-ring"><img src="Screenshot_20250821_142735.jpg"></div>
+    <div class="login-box">
+      <h2>Darkdight000999 Login</h2>
+      <input type="email" id="email" placeholder="Email">
+      <input type="password" id="password" placeholder="Password">
+      <button onclick="login()">Login</button>
     </div>
-  </div>
+  </div>  <!-- Header -->  <div class="header" id="header" style="display:none;">
+    <div class="logo rgb-ring"><img src="Screenshot_20250821_142735.jpg"></div>
+    <h1>Darkdight000999</h1>
+    <div class="logo rgb-ring"><img src="Screenshot_20250821_142735.jpg"></div>
+  </div>  <!-- Sidebar -->  <div class="sidebar" id="sidebar" style="display:none;">
+    <ul>
+      <li><i class="fas fa-home"></i><span>Home</span></li>
+      <li><i class="fab fa-youtube"></i><span>Youtube Videos</span></li>
+      <li><i class="fas fa-file-pdf"></i><span>PDF & Notes</span></li>
+      <li><i class="fas fa-terminal"></i><span>Hacking Commands</span></li>
+      <li><i class="fas fa-user-secret"></i><span>Hacking</span></li>
+      <li><i class="fas fa-video"></i><span>Live Class</span></li>
+      <li><i class="fas fa-headset"></i><span>Support</span></li>
+    </ul>
+  </div>  <!-- Content -->  <div class="content" id="content" style="display:none;">
+    <h2>Welcome!</h2>
+    <div id="uploadSection" style="display:none;">
+      <h3>Upload Manager</h3>
+      <select id="uploadType">
+        <option value="note">📝 Notes/Links</option>
+        <option value="image">📷 Photo</option>
+        <option value="video">🎥 Video</option>
+        <option value="pdf">📄 PDF</option>
+      </select>
+      <div id="uploadInputs"></div>
+      <button onclick="addUpload()">Upload</button>
+    </div><h3>All Uploads</h3>
+<div id="uploadsContainer"></div>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "YOUR-API-KEY",
-      authDomain: "YOUR-PROJECT.firebaseapp.com",
-      projectId: "YOUR-PROJECT-ID",
-      storageBucket: "YOUR-PROJECT.appspot.com",
-      messagingSenderId: "YOUR-SENDER-ID",
-      appId: "YOUR-APP-ID"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+  </div>  <!-- Footer -->  <div class="footer" id="footer" style="display:none;">
+    <div class="profile">
+      <div class="rgb-ring"><img src="Screenshot_20250821_142735.jpg"></div>
+      <span id="userEmail"></span>
+    </div>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div><script>
+  const adminAccounts = [
+    { email: "admin@gmail.com", password: "Admin@123" },
+    { email: "darklightrkshackers@gmail.com", password: "Rks_123456789@" }
+  ];
+  const studentAccounts = [
+    { email: "student@gmail.com", password: "Student@123" }
+  ];
 
-    // Sidebar Toggle
-    document.getElementById("menuToggle").onclick = () => {
-      document.getElementById("sidebar").classList.toggle("active");
-    };
+  let isAdmin = false;
+  let uploads = JSON.parse(localStorage.getItem("uploads")) || [];
 
-    // Load Pages
-    function loadPage(page) {
-      document.getElementById("content").innerHTML = "<h2>" + page + "</h2>";
-    }
-
-    // Auth State
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        document.getElementById("logoutBtn").classList.remove("hidden");
-        if (user.email === "admin@gmail.com") {
-          document.getElementById("uploadSection").classList.remove("hidden");
-        }
-      } else {
-        document.getElementById("logoutBtn").classList.add("hidden");
-        document.getElementById("uploadSection").classList.add("hidden");
+  function renderUploads() {
+    const container = document.getElementById("uploadsContainer");
+    container.innerHTML = "";
+    uploads.forEach((item, index) => {
+      const card = document.createElement("div");
+      card.className = "upload-card";
+      card.innerHTML = `<h3>${item.type.toUpperCase()} - ${item.title}</h3>`;
+      if(item.type==="note"){ card.innerHTML += `<p>${item.content}</p>`; }
+      else { card.innerHTML += `<p>File: ${item.fileName}</p>`; }
+      if(isAdmin){
+        const delBtn=document.createElement("button");
+        delBtn.textContent="Delete";
+        delBtn.className="btn-delete";
+        delBtn.onclick=()=>{ uploads.splice(index,1); localStorage.setItem("uploads",JSON.stringify(uploads)); renderUploads(); };
+        card.appendChild(delBtn);
       }
+      container.appendChild(card);
     });
+  }
 
-    // Logout
-    document.getElementById("logoutBtn").onclick = () => {
-      auth.signOut();
-    };
+  function updateUploadInputs(){
+    const type=document.getElementById("uploadType").value;
+    const area=document.getElementById("uploadInputs");
+    area.innerHTML="";
+    if(type==="note"){
+      area.innerHTML='<input type="text" id="uploadTitle" placeholder="Title"><textarea id="uploadContent" placeholder="Write notes or paste links..."></textarea>';} else {
+  area.innerHTML='<input type="text" id="uploadTitle" placeholder="Title"><input type="file" id="uploadFile">';
+}
 
-    // Dummy Upload Function
-    function uploadFile() {
-      const title = document.getElementById("fileTitle").value;
-      const desc = document.getElementById("fileDesc").value;
-      const allUploads = document.getElementById("allUploads");
-      const div = document.createElement("div");
-      div.innerHTML = `<h4>${title}</h4><p>${desc}</p>`;
-      allUploads.appendChild(div);
-    }
-  </script>
+} document.getElementById("uploadType").addEventListener("change", updateUploadInputs); updateUploadInputs();
+
+function addUpload(){ const type=document.getElementById("uploadType").value; const title=document.getElementById("uploadTitle").value; if(type==="note"){ const content=document.getElementById("uploadContent").value; if(title && content){ uploads.push({type,title,content}); } } else { const file=document.getElementById("uploadFile").files[0]; if(title && file){ uploads.push({type,title,fileName:file.name}); } } localStorage.setItem("uploads",JSON.stringify(uploads)); renderUploads(); }
+
+function login(){ const email=document.getElementById("email").value; const password=document.getElementById("password").value; isAdmin=adminAccounts.some(acc=>acc.email===email && acc.password===password); let isStudent=studentAccounts.some(acc=>acc.email===email && acc.password===password); if(isAdmin||isStudent){ document.getElementById("loginPage").style.display="none"; document.getElementById("header").style.display="flex"; document.getElementById("sidebar").style.display="block"; document.getElementById("content").style.display="block"; document.getElementById("footer").style.display="flex"; document.getElementById("userEmail").innerText=email; if(isAdmin){ document.getElementById("uploadSection").style.display="block"; } renderUploads(); } else alert("Invalid login"); }
+
+function logout(){ isAdmin=false; document.getElementById("loginPage").style.display="flex"; document.getElementById("header").style.display="none"; document.getElementById("sidebar").style.display="none"; document.getElementById("content").style.display="none"; document.getElementById("footer").style.display="none"; } </script>
+
 </body>
 </html>
