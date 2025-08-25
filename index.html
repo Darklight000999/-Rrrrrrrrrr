@@ -18,7 +18,7 @@
     .rgb-ring {
       position: relative;
       border-radius: 50%;
-      padding: 8px; /* मोटाई बढ़ाई */
+      padding: 12px; /* मोटाई बढ़ाई */
       background: conic-gradient(
         red, orange, yellow, lime, cyan, blue, violet, red
       );
@@ -31,10 +31,30 @@
       border-radius: 50%;
       width: 100%;
       height: 100%;
+      display: block;
     }
     @keyframes spin {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
+    }
+    /* रिंग घूमेगी लेकिन इमेज स्थिर रहेगी */
+    .rgb-ring::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: 50%;
+      padding: 12px;
+      background: conic-gradient(
+        red, orange, yellow, lime, cyan, blue, violet, red
+      );
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 12px), black 0);
+      mask: radial-gradient(farthest-side, transparent calc(100% - 12px), black 0);
+      animation: spin 4s linear infinite;
+      z-index: 0;
+    }
+    .rgb-ring img {
+      position: relative;
+      z-index: 1;
     }
 
     .header {
@@ -138,7 +158,7 @@
     </div>
     <div id="youtubeSection" style="display:none;">
       <h2>Youtube Channel</h2>
-      <iframe class="youtube-frame" src="https://www.youtube.com/embed/videoseries?list=UU9u9j8u9j8u9j8u9j8u9j8u9"></iframe>
+      <iframe class="youtube-frame" src="https://www.youtube.com/embed?listType=user_uploads&list=mr_br_hacker_33"></iframe>
     </div>
   </div>
 
