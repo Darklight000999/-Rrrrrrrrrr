@@ -17,44 +17,35 @@
 
     .rgb-ring {
       position: relative;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
-      padding: 12px; /* मोटाई बढ़ाई */
-      background: conic-gradient(
-        red, orange, yellow, lime, cyan, blue, violet, red
-      );
-      animation: spin 4s linear infinite;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
+    }
+    .rgb-ring::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: 50%;
+      padding: 12px; /* मोटाई */
+      background: conic-gradient(red, orange, yellow, lime, cyan, blue, violet, red);
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 12px), black 0);
+      mask: radial-gradient(farthest-side, transparent calc(100% - 12px), black 0);
+      animation: spin 4s linear infinite;
     }
     .rgb-ring img {
       border-radius: 50%;
       width: 100%;
       height: 100%;
       display: block;
+      position: relative;
+      z-index: 1;
     }
     @keyframes spin {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
-    }
-    /* रिंग घूमेगी लेकिन इमेज स्थिर रहेगी */
-    .rgb-ring::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      border-radius: 50%;
-      padding: 12px;
-      background: conic-gradient(
-        red, orange, yellow, lime, cyan, blue, violet, red
-      );
-      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 12px), black 0);
-      mask: radial-gradient(farthest-side, transparent calc(100% - 12px), black 0);
-      animation: spin 4s linear infinite;
-      z-index: 0;
-    }
-    .rgb-ring img {
-      position: relative;
-      z-index: 1;
     }
 
     .header {
@@ -107,7 +98,7 @@
     .sidebar.expanded ~ .content { margin-left: 240px; }
 
     .login-page { display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh; }
-    .login-logo { width:120px;height:120px; }
+    .login-logo .rgb-ring { width:120px;height:120px; }
     .login-box { background:rgba(255,255,255,0.1);padding:30px;border-radius:12px;backdrop-filter:blur(12px);width:320px; }
     .login-box input,.login-box button { width:100%;padding:12px;margin:10px 0;border:none;border-radius:6px; }
     .login-box button { background:#6c63ff;color:#fff;font-weight:bold;cursor:pointer; }
@@ -123,7 +114,7 @@
 </head>
 <body>
   <div class="login-page" id="loginPage">
-    <div class="login-logo rgb-ring"><img src="Screenshot_20250821_142735.jpg"></div>
+    <div class="rgb-ring"><img src="Screenshot_20250821_142735.jpg"></div>
     <div class="login-box">
       <h2>Darkdight000999 Login</h2>
       <input type="text" id="email" placeholder="User ID">
