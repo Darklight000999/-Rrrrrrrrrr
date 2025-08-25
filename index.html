@@ -18,7 +18,7 @@
     .rgb-ring {
       position: relative;
       border-radius: 50%;
-      padding: 4px;
+      padding: 8px; /* मोटाई बढ़ाई */
       background: conic-gradient(
         red, orange, yellow, lime, cyan, blue, violet, red
       );
@@ -71,6 +71,12 @@
     .sidebar li i { margin-right: 15px; }
     .sidebar li:hover { background: rgba(255,255,255,0.15); color: #00ffe0; }
 
+    .menu-toggle {
+      font-size: 24px;
+      cursor: pointer;
+      margin-right: 15px;
+    }
+
     .content {
       margin-top: 60px;
       margin-left: 70px;
@@ -100,13 +106,14 @@
     <div class="login-logo rgb-ring"><img src="Screenshot_20250821_142735.jpg"></div>
     <div class="login-box">
       <h2>Darkdight000999 Login</h2>
-      <input type="email" id="email" placeholder="Email">
+      <input type="text" id="email" placeholder="User ID">
       <input type="password" id="password" placeholder="Password">
       <button onclick="login()">Login</button>
     </div>
   </div>
 
   <div class="header" id="header" style="display:none;">
+    <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
     <div class="logo rgb-ring"><img src="Screenshot_20250821_142735.jpg"></div>
     <h1>Darkdight000999</h1>
     <div class="logo rgb-ring"><img src="Screenshot_20250821_142735.jpg"></div>
@@ -131,7 +138,7 @@
     </div>
     <div id="youtubeSection" style="display:none;">
       <h2>Youtube Channel</h2>
-      <iframe class="youtube-frame" src="https://www.youtube.com/embed?listType=user_uploads&list=mr_br_hacker_33"></iframe>
+      <iframe class="youtube-frame" src="https://www.youtube.com/embed/videoseries?list=UU9u9j8u9j8u9j8u9j8u9j8u9"></iframe>
     </div>
   </div>
 
@@ -145,11 +152,11 @@
 
 <script>
   const adminAccounts = [
-    { email: "admin@gmail.com", password: "Admin@123" },
-    { email: "darklightrkshackers@gmail.com", password: "Rks_123456789@" }
+    { email: "admin01", password: "Admin@123" },
+    { email: "darkhacker", password: "Rks_123456789@" }
   ];
   const studentAccounts = [
-    { email: "student@gmail.com", password: "Student@123" }
+    { email: "student01", password: "Student@123" }
   ];
 
   let isAdmin = false;
@@ -181,6 +188,11 @@
   function showSection(section){
     document.getElementById("homeSection").style.display = section==='home' ? 'block' : 'none';
     document.getElementById("youtubeSection").style.display = section==='youtube' ? 'block' : 'none';
+  }
+
+  function toggleSidebar(){
+    document.getElementById("sidebar").classList.toggle("expanded");
+    document.getElementById("content").classList.toggle("expanded");
   }
 </script>
 </body>
