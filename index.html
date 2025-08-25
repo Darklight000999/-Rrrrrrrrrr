@@ -2,208 +2,185 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Darkdight000999</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #0f0f1a, #1b1b2f);
+      background: linear-gradient(to right, #0f0f1a, #1c1c2b);
       color: white;
       overflow-x: hidden;
-      user-select: none;
     }
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 20px;
-      background: #111;
-      position: fixed;
-      top: 0; width: 100%; z-index: 1000;
+      padding: 10px 15px;
+      background: black;
     }
-    header img {
-      width: 50px; height: 50px; border-radius: 50%;
+    .logo {
+      height: 40px;
     }
-    header h1 {
+    .title {
       font-size: 22px;
-      background: linear-gradient(to right, violet, cyan, lime);
+      font-weight: bold;
+      background: linear-gradient(90deg, cyan, violet, lime, yellow);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      animation: rgbtext 3s infinite linear;
-    }
-    @keyframes rgbtext {
-      from {filter: hue-rotate(0deg);} to {filter: hue-rotate(360deg);}
     }
     #menuToggle {
-      font-size: 26px; cursor: pointer;
+      font-size: 28px;
+      cursor: pointer;
+      color: lime;
+      margin-left: 10px;
     }
     /* Sidebar */
     #sidebar {
-      position: fixed; top: 0; left: -260px;
-      width: 250px; height: 100%;
-      background: #222;
-      transition: left 0.3s;
+      position: fixed;
+      left: -260px;
+      top: 0;
+      width: 250px;
+      height: 100%;
+      background: #111;
       padding-top: 60px;
+      transition: left 0.3s ease;
       z-index: 999;
     }
-    #sidebar.active { left: 0; }
+    #sidebar.active {
+      left: 0;
+    }
     #sidebar a {
-      display: block; padding: 12px 20px;
-      color: white; text-decoration: none;
+      display: block;
+      padding: 15px;
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
     }
-    #sidebar a:hover { background: #333; }
-    main { margin-top: 80px; padding: 20px; }
-    .card {
-      background: #1c1c2e; padding: 15px; border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-      margin-bottom: 20px;
+    #sidebar a:hover {
+      background: #333;
     }
-    .card h3 { margin: 0 0 10px 0; }
-    .logout { background: crimson; border: none; color: white; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
-    /* Prevent right click / drag */
-    img, video, iframe { pointer-events: none; }
+    #content {
+      padding: 20px;
+      margin-top: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+    /* Upload Section */
+    #uploadSection {
+      padding: 20px;
+      background: #1c1c2b;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    input, textarea, button {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 5px;
+    }
+    button {
+      background: limegreen;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background: green;
+    }
   </style>
 </head>
-<body oncontextmenu="return false;" onkeydown="return disableKeys(event)">
+<body>
   <header>
-    <img src="Screenshot_20250821_142735.jpg" alt="Logo">
-    <h1>Darkdight000999</h1>
-    <img src="Screenshot_20250821_142735.jpg" alt="Logo">
+    <img src="logo.png" class="logo" alt="Logo">
+    <div class="title">Darkdight000999</div>
+    <img src="logo.png" class="logo" alt="Logo">
     <span id="menuToggle">☰</span>
   </header>
 
+  <!-- Sidebar -->
   <div id="sidebar">
-    <a href="#" onclick="showPage('home')">🏠 Home</a>
-    <a href="#" onclick="showPage('videos')">📺 Youtube Videos</a>
-    <a href="#" onclick="showPage('pdfs')">📑 PDF & Notes</a>
-    <a href="#" onclick="showPage('notes')">📝 Text Notes</a>
-    <a href="#" onclick="showPage('contact')">📞 Contact & Support</a>
-    <div id="adminSection" style="display:none;">
-      <a href="#" onclick="showPage('upload')">⬆️ Upload Manager</a>
-    </div>
-    <div style="position:absolute;bottom:20px;width:100%;text-align:center;">
-      <span id="userEmail"></span><br>
-      <button class="logout" onclick="logout()">Logout</button>
+    <a href="#" onclick="loadPage('home')">🏠 Home</a>
+    <a href="#" onclick="loadPage('videos')">🎬 Youtube Videos</a>
+    <a href="#" onclick="loadPage('notes')">📘 PDF & Notes</a>
+    <a href="#" onclick="loadPage('commands')">💻 Hacking Commands</a>
+    <a href="#" onclick="loadPage('live')">📡 Live Class</a>
+    <a href="#" onclick="loadPage('support')">🎧 Contact & Support</a>
+    <a href="#" id="logoutBtn" class="hidden">🚪 Logout</a>
+  </div>
+
+  <!-- Main Content -->
+  <div id="content">
+    <h2>Welcome!</h2>
+    <p>Select a menu item.</p>
+
+    <!-- Upload Section (Admin only) -->
+    <div id="uploadSection" class="hidden">
+      <h3>Upload Manager</h3>
+      <input type="text" id="fileTitle" placeholder="Title">
+      <textarea id="fileDesc" placeholder="Description"></textarea>
+      <input type="file" id="fileInput">
+      <button onclick="uploadFile()">Upload</button>
+      <h3>All Uploads</h3>
+      <div id="allUploads"></div>
     </div>
   </div>
 
-  <main>
-    <div id="home" class="page">
-      <h2>Welcome!</h2>
-      <div id="contentArea"></div>
-    </div>
-
-    <div id="upload" class="page" style="display:none;">
-      <h2>Upload Manager (Admin Only)</h2>
-      <input type="text" id="title" placeholder="Title"><br><br>
-      <select id="type">
-        <option value="video">Video (YouTube Link)</option>
-        <option value="pdf">PDF</option>
-        <option value="note">Text Note</option>
-      </select><br><br>
-      <input type="file" id="fileInput"><br><br>
-      <textarea id="noteInput" placeholder="Write note here..."></textarea><br><br>
-      <button onclick="uploadContent()">Upload</button>
-    </div>
-  </main>
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-storage.js"></script>
-
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
   <script>
-    // TODO: Replace with your Firebase config
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT.firebaseapp.com",
-      projectId: "YOUR_PROJECT",
-      storageBucket: "YOUR_PROJECT.appspot.com",
-      messagingSenderId: "XXXX",
-      appId: "XXXX"
+      apiKey: "YOUR-API-KEY",
+      authDomain: "YOUR-PROJECT.firebaseapp.com",
+      projectId: "YOUR-PROJECT-ID",
+      storageBucket: "YOUR-PROJECT.appspot.com",
+      messagingSenderId: "YOUR-SENDER-ID",
+      appId: "YOUR-APP-ID"
     };
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
-    const db = firebase.firestore();
-    const storage = firebase.storage();
 
-    // UI Handling
+    // Sidebar Toggle
     document.getElementById("menuToggle").onclick = () => {
       document.getElementById("sidebar").classList.toggle("active");
     };
-    function showPage(id) {
-      document.querySelectorAll(".page").forEach(p => p.style.display="none");
-      document.getElementById(id).style.display="block";
+
+    // Load Pages
+    function loadPage(page) {
+      document.getElementById("content").innerHTML = "<h2>" + page + "</h2>";
     }
 
-    // Auth
+    // Auth State
     auth.onAuthStateChanged(user => {
-      if(user){
-        document.getElementById("userEmail").innerText = user.email;
-        loadContent();
-        if(user.email==="admin@gmail.com"){
-          document.getElementById("adminSection").style.display="block";
+      if (user) {
+        document.getElementById("logoutBtn").classList.remove("hidden");
+        if (user.email === "admin@gmail.com") {
+          document.getElementById("uploadSection").classList.remove("hidden");
         }
       } else {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        auth.signInWithPopup(provider);
+        document.getElementById("logoutBtn").classList.add("hidden");
+        document.getElementById("uploadSection").classList.add("hidden");
       }
     });
-    function logout(){ auth.signOut(); }
 
-    // Upload Content
-    async function uploadContent(){
-      const title=document.getElementById("title").value;
-      const type=document.getElementById("type").value;
-      let url="";
-      if(type==="video"){
-        url=document.getElementById("fileInput").value || prompt("Paste YouTube Link");
-      } else if(type==="pdf"){
-        const file=document.getElementById("fileInput").files[0];
-        const ref=storage.ref("uploads/"+file.name);
-        await ref.put(file);
-        url=await ref.getDownloadURL();
-      } else if(type==="note"){
-        url=document.getElementById("noteInput").value;
-      }
-      await db.collection("content").add({title,type,url,by:auth.currentUser.email,timestamp:Date.now()});
-      alert("Uploaded!");
-      loadContent();
-    }
+    // Logout
+    document.getElementById("logoutBtn").onclick = () => {
+      auth.signOut();
+    };
 
-    // Load Content
-    async function loadContent(){
-      const snapshot=await db.collection("content").orderBy("timestamp","desc").get();
-      const area=document.getElementById("contentArea");
-      area.innerHTML="";
-      snapshot.forEach(doc=>{
-        const d=doc.data();
-        let card=document.createElement("div"); card.className="card";
-        card.innerHTML=`<h3>${d.title}</h3>`;
-        if(d.type==="video"){
-          card.innerHTML+=`<iframe src="${d.url.replace("watch?v=","embed/")}" width="100%" height="250"></iframe>`;
-        } else if(d.type==="pdf"){
-          card.innerHTML+=`<iframe src="${d.url}#toolbar=0" width="100%" height="400"></iframe>`;
-        } else if(d.type==="note"){
-          card.innerHTML+=`<p>${d.url}</p>`;
-        }
-        if(auth.currentUser && auth.currentUser.email==="admin@gmail.com"){
-          let btn=document.createElement("button");
-          btn.innerText="Delete";
-          btn.onclick=()=>{db.collection("content").doc(doc.id).delete().then(loadContent)};
-          card.appendChild(btn);
-        }
-        area.appendChild(card);
-      });
-    }
-
-    // Disable screenshot keys
-    function disableKeys(e){
-      if(e.keyCode==123 || (e.ctrlKey && e.shiftKey && (e.keyCode==73||e.keyCode==74)) || (e.ctrlKey && e.keyCode==85)){
-        return false;
-      }
+    // Dummy Upload Function
+    function uploadFile() {
+      const title = document.getElementById("fileTitle").value;
+      const desc = document.getElementById("fileDesc").value;
+      const allUploads = document.getElementById("allUploads");
+      const div = document.createElement("div");
+      div.innerHTML = `<h4>${title}</h4><p>${desc}</p>`;
+      allUploads.appendChild(div);
     }
   </script>
 </body>
