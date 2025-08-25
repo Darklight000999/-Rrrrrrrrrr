@@ -5,118 +5,90 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Darkdight000999</title>
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      margin: 0;
       font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(135deg, #1e1e2f, #23234f);
       color: #fff;
       overflow-x: hidden;
       transition: background 0.5s ease;
+      user-select: none;
     }
-    body.light {
-      background: linear-gradient(135deg, #f7f7f7, #e0e0ff);
-      color: #222;
-    }
+    body.light { background: linear-gradient(135deg, #f7f7f7, #e0e0ff); color: #222; }
 
     /* Header */
     .header {
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(12px);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      height: 60px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px); box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
-    .header h1 { margin: 0; font-size: 20px; font-weight: bold; }
-    .logo { width:40px;height:40px;border-radius:50%;object-fit:cover; }
-
+    .header img { width: 40px; height: 40px; border-radius: 50%; animation: spin 5s linear infinite; }
+    @keyframes spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
     .theme-toggle, .menu-toggle { cursor: pointer; font-size: 22px; }
 
     /* Sidebar */
     .sidebar {
       position: fixed; top: 60px; left: 0; height: 100%; width: 70px;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(15px);
-      transition: width 0.4s ease;
+      background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px);
+      overflow-x: hidden; transition: width 0.4s ease;
       box-shadow: 4px 0 15px rgba(0,0,0,0.3);
-      overflow-x: hidden;
     }
     .sidebar.expanded { width: 240px; }
-    .sidebar ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar ul { list-style: none; padding: 0; }
     .sidebar li {
-      display: flex; align-items: center;
-      padding: 15px; cursor: pointer;
-      opacity: 0; transform: translateX(-20px);
+      display: flex; align-items: center; padding: 15px; cursor: pointer;
+      transition: 0.3s; opacity: 0;
     }
-    .sidebar.expanded li { animation: slideIn 0.5s forwards; }
-    .sidebar.expanded li:nth-child(1){animation-delay:0.1s;}
-    .sidebar.expanded li:nth-child(2){animation-delay:0.2s;}
-    .sidebar.expanded li:nth-child(3){animation-delay:0.3s;}
-    .sidebar.expanded li:nth-child(4){animation-delay:0.4s;}
-    .sidebar.expanded li:nth-child(5){animation-delay:0.5s;}
-    .sidebar.expanded li:nth-child(6){animation-delay:0.6s;}
-    .sidebar.expanded li:nth-child(7){animation-delay:0.7s;}
-    .sidebar.expanded li:nth-child(8){animation-delay:0.8s;}
-    @keyframes slideIn {
-      0% { opacity: 0; transform: translateX(-20px) scale(0.95);}
-      60%{ opacity:1; transform: translateX(5px) scale(1.05);}
-      100%{opacity:1; transform: translateX(0) scale(1);}
-    }
-    .sidebar li:hover {
-      background: rgba(255, 255, 255, 0.15);
-      color: #00ffe0; box-shadow: inset 3px 0 0 #00ffe0;
-    }
-    .sidebar li i { margin-right:15px; font-size:20px; }
+    .sidebar.expanded li { opacity: 1; transform: translateX(0); }
+    .sidebar li:hover { background: rgba(255,255,255,0.2); color: #00ffe0; }
+    .sidebar li i { margin-right: 10px; }
 
     /* Content */
-    .content { margin-left:70px; padding:20px; transition:margin-left 0.4s; }
-    .sidebar.expanded ~ .content { margin-left:240px; }
+    .content {
+      margin-left: 70px; padding: 20px; transition: margin-left 0.4s;
+    }
+    .sidebar.expanded ~ .content { margin-left: 240px; }
+    .section { margin-bottom: 30px; }
+    .section h2 { margin-bottom: 10px; border-bottom: 2px solid #555; padding-bottom: 5px; }
+    .card {
+      background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;
+      margin: 10px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    iframe, video, img { width: 100%; border-radius: 10px; }
 
     /* Login Page */
-    .login-page { display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; }
-    .logo-big { width:120px; height:120px; border-radius:50%; margin-bottom:20px;
-                animation: pulse 2s infinite; object-fit:cover; }
-    @keyframes pulse {
-      0%{ transform:scale(1);}
-      50%{ transform:scale(1.1);}
-      100%{ transform:scale(1);}
-    }
+    .login-page { display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; }
+    .login-logo { width: 120px; height: 120px; border-radius: 50%; margin-bottom: 20px;
+      animation: pulse 2s infinite alternate; }
+    @keyframes pulse { from {transform: scale(1);} to {transform: scale(1.2);} }
     .login-box {
-      background: rgba(255,255,255,0.1);
-      padding:30px; border-radius:12px;
-      box-shadow:0 8px 30px rgba(0,0,0,0.3);
-      backdrop-filter: blur(12px);
-      width:320px;
+      background: rgba(255,255,255,0.1); padding: 30px; border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3); backdrop-filter: blur(12px);
+      width: 320px;
     }
-    .login-box h2 { text-align:center; margin-bottom:20px; }
-    .login-box input { width:100%; padding:12px; margin:10px 0; border:none; border-radius:6px; }
-    .login-box button {
-      width:100%; padding:12px; margin-top:10px;
-      border:none; border-radius:6px;
-      background:#6c63ff; color:#fff; font-weight:bold; cursor:pointer;
+    .login-box input, .login-box button {
+      width: 100%; padding: 12px; margin: 8px 0; border: none; border-radius: 6px; outline: none;
     }
+    .login-box button { background: #6c63ff; color: #fff; font-weight: bold; cursor: pointer; }
+    .login-box button:hover { background: #4e46e5; }
 
-    /* Uploads Gallery */
-    .gallery { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; margin-top:20px; }
-    .card { background:rgba(255,255,255,0.1); padding:15px; border-radius:12px;
-            box-shadow:0 4px 15px rgba(0,0,0,0.3); }
-    .card h3{ margin-top:0; }
-    iframe, video, img { width:100%; border-radius:8px; }
-    textarea { width:100%; height:100px; border:none; border-radius:8px; padding:10px; }
-    .saveNoteBtn {
-      margin-top:8px; background:#00b894; color:white; border:none;
-      padding:8px 12px; border-radius:6px; cursor:pointer;
+    /* Footer Profile */
+    .footer {
+      position: fixed; bottom: 0; left: 0; width: 100%;
+      background: rgba(255,255,255,0.1); backdrop-filter: blur(12px);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 20px;
     }
+    .profile { display: flex; align-items: center; }
+    .profile img { width: 35px; height: 35px; border-radius: 50%; margin-right: 10px; }
+    .logout { background: #ff4444; border: none; padding: 8px 15px; border-radius: 8px; color: #fff; cursor: pointer; }
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body oncontextmenu="return false;">
-
-  <!-- Login Page -->
+<body>
+  <!-- Login -->
   <div class="login-page" id="loginPage">
-    <img src="Screenshot_20250821_142735.jpg" class="logo-big" alt="Logo">
+    <img src="Screenshot_20250821_142735.jpg" class="login-logo">
     <div class="login-box">
       <h2>Darkdight000999 Login</h2>
       <input type="email" id="email" placeholder="Email">
@@ -127,157 +99,84 @@
 
   <!-- Header -->
   <div class="header" id="header" style="display:none;">
-    <div style="display:flex;align-items:center;gap:10px;">
-      <i class="menu-toggle fas fa-bars" id="menuToggle"></i>
-      <img src="Screenshot_20250821_142735.jpg" class="logo" alt="Logo">
-    </div>
+    <img src="Screenshot_20250821_142735.jpg">
+    <i class="menu-toggle fas fa-bars" id="menuToggle"></i>
     <h1>Darkdight000999</h1>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <i class="theme-toggle fas fa-moon" id="themeToggle"></i>
-      <img src="Screenshot_20250821_142735.jpg" class="logo" alt="Logo">
-    </div>
+    <i class="theme-toggle fas fa-moon" id="themeToggle"></i>
+    <img src="Screenshot_20250821_142735.jpg">
   </div>
 
   <!-- Sidebar -->
   <div class="sidebar" id="sidebar" style="display:none;">
     <ul id="menuList">
-      <li><i class="fas fa-home"></i><span>Home</span></li>
-      <li><i class="fab fa-youtube"></i><span>Youtube Videos</span></li>
-      <li><i class="fas fa-file-pdf"></i><span>PDF & Notes</span></li>
-      <li><i class="fas fa-terminal"></i><span>Hacking Commands</span></li>
-      <li><i class="fas fa-user-secret"></i><span>Hacking</span></li>
-      <li><i class="fas fa-video"></i><span>Live Class</span></li>
-      <li><i class="fas fa-headset"></i><span>Contact & Support</span></li>
+      <li onclick="showSection('home')"><i class="fas fa-home"></i> Home</li>
+      <li onclick="showSection('videos')"><i class="fas fa-video"></i> Videos</li>
+      <li onclick="showSection('pdfs')"><i class="fas fa-file-pdf"></i> PDFs</li>
+      <li onclick="showSection('notes')"><i class="fas fa-book"></i> Notes</li>
+      <li onclick="showSection('images')"><i class="fas fa-image"></i> Images</li>
     </ul>
   </div>
 
   <!-- Content -->
   <div class="content" id="content" style="display:none;">
-    <h2>Welcome!</h2>
-    <p>Select a menu item to start.</p>
-    <div id="uploadManager" style="display:none; margin-top:20px;">
-      <h2>Upload Manager (Admin Only)</h2>
-      <input type="file" id="fileUpload" multiple><br><br>
-      <textarea id="noteInput" placeholder="Write a note..."></textarea>
-      <button class="saveNoteBtn" onclick="saveNote()">Save Note</button>
-    </div>
-    <h2>Uploads & Notes</h2>
-    <div class="gallery" id="gallery"></div>
+    <div id="home" class="section"><h2>Welcome</h2><p>Select a menu item.</p></div>
+    <div id="videos" class="section" style="display:none;"><h2>Videos</h2><div id="videoList"></div></div>
+    <div id="pdfs" class="section" style="display:none;"><h2>PDFs</h2><div id="pdfList"></div></div>
+    <div id="notes" class="section" style="display:none;"><h2>Notes</h2><div id="noteList"></div></div>
+    <div id="images" class="section" style="display:none;"><h2>Images</h2><div id="imageList"></div></div>
   </div>
 
-<script>
-  const adminAccounts = [
-    { email: "admin@gmail.com", password: "Admin@123" },
-    { email: "darklightrkshackers@gmail.com", password: "Rks_123456789@" }
-  ];
-  const studentAccounts = [
-    { email: "student@gmail.com", password: "Student@123" },
-    { email: "abcdefgh123456@gamil.com", password: "Rks 2345@" }
-  ];
+  <!-- Footer -->
+  <div class="footer" id="footer" style="display:none;">
+    <div class="profile">
+      <img src="Screenshot_20250821_142735.jpg"><span id="profileEmail"></span>
+    </div>
+    <button class="logout" onclick="logout()">Logout</button>
+  </div>
 
-  let isAdmin = false;
+  <script>
+    const adminAccounts = [
+      { email: "admin@gmail.com", password: "Admin@123" }
+    ];
+    const studentAccounts = [
+      { email: "student@gmail.com", password: "Student@123" }
+    ];
 
-  function login(){
-    const email=document.getElementById("email").value;
-    const password=document.getElementById("password").value;
+    let isAdmin = false, currentUser = null;
 
-    isAdmin = adminAccounts.some(acc=>acc.email===email && acc.password===password);
-    let isStudent = studentAccounts.some(acc=>acc.email===email && acc.password===password);
+    // Storage Keys
+    const storageKeys = { videos: "videos", pdfs: "pdfs", notes: "notes", images: "images" };
 
-    if(isAdmin || isStudent){
-      document.getElementById("loginPage").style.display="none";
-      document.getElementById("header").style.display="flex";
-      document.getElementById("sidebar").style.display="block";
-      document.getElementById("content").style.display="block";
-      if(isAdmin){ document.getElementById("uploadManager").style.display="block"; }
-      loadGallery();
-    } else { alert("Invalid login"); }
-  }
-
-  // File Upload
-  document.getElementById("fileUpload").addEventListener("change", function(){
-    if(!isAdmin) return;
-    [...this.files].forEach(file=>{
-      const reader=new FileReader();
-      reader.onload=function(e){
-        let item={ name:file.name, type:file.type, data:e.target.result };
-        saveToStorage(item);
-      };
-      reader.readAsDataURL(file);
-    });
-  });
-
-  function saveNote(){
-    if(!isAdmin) return;
-    let text=document.getElementById("noteInput").value.trim();
-    if(text!==""){
-      let item={ name:"Note", type:"note", data:text };
-      saveToStorage(item);
-      document.getElementById("noteInput").value="";
-    }
-  }
-
-  function saveToStorage(item){
-    let uploads=JSON.parse(localStorage.getItem("uploads")||"[]");
-    uploads.push(item);
-    localStorage.setItem("uploads", JSON.stringify(uploads));
-    loadGallery();
-  }
-
-  function loadGallery(){
-    let uploads=JSON.parse(localStorage.getItem("uploads")||"[]");
-    const gallery=document.getElementById("gallery");
-    gallery.innerHTML="";
-    uploads.forEach(item=>{
-      let card=document.createElement("div");
-      card.className="card";
-      if(item.type.includes("pdf")){
-        card.innerHTML=`<h3>${item.name}</h3>
-          <iframe src="${item.data}" height="300"></iframe>`;
-      }
-      else if(item.type.includes("image")){
-        card.innerHTML=`<h3>${item.name}</h3>
-          <img src="${item.data}" oncontextmenu="return false;">`;
-      }
-      else if(item.type.includes("video")){
-        card.innerHTML=`<h3>${item.name}</h3>
-          <video controls controlsList="nodownload" oncontextmenu="return false;">
-            <source src="${item.data}" type="${item.type}">
-          </video>`;
-      }
-      else if(item.type==="note"){
-        if(isAdmin){
-          card.innerHTML=`<h3>Note</h3>
-            <textarea oninput="updateNote(this)">${item.data}</textarea>`;
-        } else {
-          card.innerHTML=`<h3>Note</h3><p>${item.data}</p>`;
+    function login() {
+      const email = emailEl.value, password = passwordEl.value;
+      isAdmin = adminAccounts.some(acc => acc.email===email && acc.password===password);
+      let isStudent = studentAccounts.some(acc => acc.email===email && acc.password===password);
+      if (isAdmin || isStudent) {
+        currentUser = email;
+        document.getElementById("loginPage").style.display="none";
+        document.getElementById("header").style.display="flex";
+        document.getElementById("sidebar").style.display="block";
+        document.getElementById("content").style.display="block";
+        document.getElementById("footer").style.display="flex";
+        document.getElementById("profileEmail").innerText = email;
+        if (isAdmin) {
+          let uploadLi=document.createElement("li");
+          uploadLi.innerHTML='<i class="fas fa-upload"></i> Upload Manager';
+          uploadLi.onclick=()=>showUploadManager();
+          menuList.appendChild(uploadLi);
         }
-      }
-      gallery.appendChild(card);
-    });
-  }
-
-  function updateNote(el){
-    let uploads=JSON.parse(localStorage.getItem("uploads")||"[]");
-    let idx=[...document.querySelectorAll(".card textarea")].indexOf(el);
-    uploads.filter(u=>u.type==="note")[idx].data=el.value;
-    localStorage.setItem("uploads", JSON.stringify(uploads));
-  }
-
-  // Sidebar toggle
-  const sidebar=document.getElementById("sidebar");
-  document.getElementById("menuToggle").addEventListener("click",()=>{ sidebar.classList.toggle("expanded"); });
-
-  // Theme toggle
-  const themeToggle=document.getElementById("themeToggle");
-  themeToggle.addEventListener("click",()=>{
-    document.body.classList.toggle("light");
-    if(document.body.classList.contains("light")){
-      themeToggle.classList.replace("fa-moon","fa-sun");
-    } else {
-      themeToggle.classList.replace("fa-sun","fa-moon");
+        loadContent();
+      } else alert("Invalid login");
     }
-  });
-</script>
-</body>
-</html>
+
+    function showSection(id){
+      document.querySelectorAll(".section").forEach(sec=>sec.style.display="none");
+      document.getElementById(id).style.display="block";
+    }
+
+    function showUploadManager(){
+      let html = `
+        <h2>Upload Manager</h2>
+        <div class="card"><input type="text" id="videoUrl" placeholder="Video Embed URL"><button onclick="upload('videos')">Upload Video</button></div>
+        <div class="card"><input type="text" id="pdfUrl" placeholder="PDF Embed URL"><button onclick="upload('pdfs')">Upload PDF</button></div>
+        <div class="card"><input type="text" id="noteText" placeholder="Write Note"><button onclick="upload('notes')">Upload Note</button></div>
