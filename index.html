@@ -2,254 +2,184 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Darkdight000999</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Darkdight000999 Dashboard</title>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #1e1e2f, #23234f);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    .rgb-ring { position: relative; border-radius: 50%; padding: 2px; display: inline-flex; align-items: center; justify-content: center; }
-    .rgb-ring::before {
-      content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-      border-radius: 50%; padding: 2px;
-      background: conic-gradient(red, orange, yellow, lime, cyan, blue, violet, red);
-      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), black 0);
-      mask: radial-gradient(farthest-side, transparent calc(100% - 2px), black 0);
-      animation: spin 4s linear infinite; z-index: 0;
-    }
-    .rgb-ring img { border-radius: 50%; width: 100%; height: 100%; position: relative; z-index: 1; }
-    @keyframes spin { from { transform: rotate(0deg);} to { transform: rotate(360deg);} }
-    .header { height: 60px; display: flex; align-items: center; justify-content: space-between;
-      padding: 0 20px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px);
-      position: fixed; top: 0; width: 100%; z-index: 1000; }
-    .header h1 { font-size: 20px; font-weight: bold; }
-    .logo { width: 50px; height: 50px; }
-    .sidebar { position: fixed; top: 60px; left: -240px; height: calc(100% - 60px); width: 240px;
-      background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); transition: left 0.3s; overflow: hidden; z-index: 1200; }
-    .sidebar.open { left: 0; }
-    .sidebar ul { padding: 0; margin: 0; list-style: none; }
-    .sidebar li { padding: 15px; display: flex; align-items: center; cursor: pointer; }
-    .sidebar li i { margin-right: 15px; }
-    .sidebar li:hover { background: rgba(255,255,255,0.15); color: #00ffe0; }
-    .menu-toggle { font-size: 24px; cursor: pointer; margin-right: 15px; }
-    .close-btn { text-align: right; padding: 10px; cursor: pointer; font-size: 20px; }
-    .content { margin-top: 60px; margin-left: 0; padding: 20px; flex: 1; transition: margin-left 0.3s; }
-    .sidebar.open ~ .content { margin-left: 240px; }
-    .login-page { display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh; }
-    .login-logo { width:120px;height:120px; }
-    .login-box { background:rgba(255,255,255,0.1);padding:30px;border-radius:12px;backdrop-filter:blur(12px);width:320px; }
-    .login-box input,.login-box button { width:100%;padding:12px;margin:10px 0;border:none;border-radius:6px; }
-    .login-box button { background:#6c63ff;color:#fff;font-weight:bold;cursor:pointer; }
-    iframe.youtube-frame { width: 100%; height: calc(100vh - 80px); border: none; border-radius: 12px; }
-    .footer { background:rgba(255,255,255,0.1);padding:10px 20px;display:flex;justify-content:space-between;align-items:center; }
-    .profile { display:flex;align-items:center;gap:10px; }
-    .profile .rgb-ring { width:40px;height:40px; }
-    .logout-btn { background:crimson;color:#fff;padding:6px 12px;border:none;border-radius:6px;cursor:pointer; }
-    .profile-card { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px; backdrop-filter: blur(10px); margin: 20px; display: none; }
-    #uploadSection input, #uploadSection button { margin:10px 0; padding:10px; width:100%; border-radius:6px; border:none; }
-    #uploadSection button { background:#00c3ff; color:#fff; cursor:pointer; }
+    body { margin:0; font-family:sans-serif; background:#1e1e2f; color:#fff; }
+    .header { height:60px; display:flex; justify-content:space-between; align-items:center;
+      padding:0 20px; background:rgba(255,255,255,0.1); backdrop-filter:blur(10px);}
+    .sidebar { position:fixed; top:60px; left:-240px; width:240px; height:calc(100% - 60px);
+      background:rgba(255,255,255,0.1); transition:.3s; overflow:auto; }
+    .sidebar.open { left:0; }
+    .sidebar ul { list-style:none; padding:0; margin:0; }
+    .sidebar li { padding:15px; cursor:pointer; }
+    .sidebar li:hover { background:rgba(255,255,255,0.2); }
+    .content { margin-left:0; padding:20px; transition:.3s; }
+    .sidebar.open ~ .content { margin-left:240px; }
+    .login-page { display:flex; justify-content:center; align-items:center; height:100vh; }
+    .login-box { background:rgba(255,255,255,0.1); padding:20px; border-radius:10px; }
+    input,button { width:100%; padding:10px; margin:5px 0; border:none; border-radius:5px; }
+    button { background:#6c63ff; color:#fff; cursor:pointer; }
+    .chat-box { border:1px solid #444; height:300px; overflow-y:auto; padding:10px; background:#2a2a40; }
+    .chat-input { display:flex; margin-top:10px; }
+    .chat-input input { flex:1; }
+    .student-list li { display:flex; justify-content:space-between; }
+    .blocked { color:red; }
   </style>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-  <!-- Login Page -->
-  <div class="login-page" id="loginPage">
-    <div class="login-logo rgb-ring"><img src="Screenshot_20250821_142735.jpg"></div>
-    <div class="login-box">
-      <h2>Darkdight000999 Login</h2>
-      <input type="email" id="email" placeholder="Email">
-      <input type="password" id="password" placeholder="Password">
-      <button onclick="login()">Login</button>
-    </div>
-  </div>
 
-  <!-- Header -->
-  <div class="header" id="header" style="display:none;">
-    <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
-    <div class="logo rgb-ring"><img src="Screenshot_20250821_142735.jpg"></div>
+<!-- Login -->
+<div class="login-page" id="loginPage">
+  <div class="login-box">
+    <h2>Login</h2>
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </div>
+</div>
+
+<!-- Dashboard -->
+<div id="dashboard" style="display:none;">
+  <div class="header">
+    <span onclick="toggleSidebar()">☰ Menu</span>
     <h1>Darkdight000999</h1>
-    <div class="logo rgb-ring"><img src="Screenshot_20250821_142735.jpg"></div>
+    <button onclick="logout()">Logout</button>
   </div>
 
-  <!-- Sidebar -->
   <div class="sidebar" id="sidebar">
-    <div class="close-btn" onclick="closeSidebar()">❌</div>
-    <ul id="menuList">
-      <li onclick="showSection('home')"><i class="fas fa-home"></i><span>Home</span></li>
-      <li onclick="showSection('youtube')"><i class="fab fa-youtube"></i><span>Youtube Videos</span></li>
-      <li onclick="showSection('pdf')"><i class="fas fa-file-pdf"></i><span>PDF & Notes</span></li>
-      <li onclick="showSection('commands')"><i class="fas fa-terminal"></i><span>Hacking Commands</span></li>
-      <li onclick="showSection('hacking')"><i class="fas fa-user-secret"></i><span>Hacking</span></li>
-      <li onclick="showSection('live')"><i class="fas fa-video"></i><span>Live Class</span></li>
-      <li onclick="showSection('contact')"><i class="fas fa-headset"></i><span>Contact & Support</span></li>
-      <!-- Admin Only -->
-      <li id="uploadMenu" style="display:none;" onclick="showSection('upload')"><i class="fas fa-upload"></i><span>Upload</span></li>
+    <ul>
+      <li onclick="showSection('home')">Home</li>
+      <li onclick="showSection('chat')">Chat</li>
+      <li onclick="showSection('students')">Student List</li>
+      <li id="uploadMenu" style="display:none;" onclick="showSection('upload')">Upload (Admin)</li>
     </ul>
   </div>
 
-  <!-- Content -->
-  <div class="content" id="content" style="display:none;">
-    <div id="homeSection"><h2>Welcome!</h2><p>This is the home dashboard.</p></div>
-    <div id="youtubeSection" style="display:none;"><h2>Youtube Playlist</h2>
-      <iframe class="youtube-frame" src="https://www.youtube.com/embed/videoseries?list=PL9reQPbLfmEXG7m6txArrDbusSm1blBlk" allowfullscreen></iframe>
-    </div>
-    <div id="pdfSection" style="display:none;"><h2>PDF & Notes</h2><p>All PDF and Notes will be listed here.</p></div>
-    <div id="commandsSection" style="display:none;"><h2>Hacking Commands</h2><p>Useful commands will be shown here.</p></div>
-    <div id="hackingSection" style="display:none;"><h2>Hacking</h2><p>Hacking related content here.</p></div>
-    <div id="liveSection" style="display:none;"><h2>Live Class</h2><p>Live classes will be available here.</p></div>
-    <div id="contactSection" style="display:none;"><h2>Contact & Support</h2><p>Support information here.</p></div>
+  <div class="content" id="content">
+    <div id="homeSection"><h2>Welcome Dashboard</h2></div>
 
-    <!-- Upload Section (Admin only) -->
+    <!-- Chat -->
+    <div id="chatSection" style="display:none;">
+      <h2>Chat</h2>
+      <div class="chat-box" id="chatBox"></div>
+      <div class="chat-input">
+        <input type="text" id="chatMessage" placeholder="Type a message...">
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+    <!-- Student Management (Admin) -->
+    <div id="studentsSection" style="display:none;">
+      <h2>Students</h2>
+      <ul id="studentList" class="student-list"></ul>
+    </div>
+
+    <!-- Upload (Admin Only) -->
     <div id="uploadSection" style="display:none;">
-      <h2>Upload Content</h2>
-      <form id="uploadForm">
-        <label>Video Link (YouTube embed link):</label>
-        <input type="text" id="videoLink" placeholder="https://www.youtube.com/embed/..."><br>
-        
-        <label>Upload PDF:</label>
-        <input type="file" id="pdfFile" accept="application/pdf"><br>
-        
-        <label>Upload Image:</label>
-        <input type="file" id="imageFile" accept="image/*"><br>
-        
-        <button type="button" onclick="uploadContent()">Upload</button>
-      </form>
+      <h2>Upload Content (Admin Only)</h2>
+      <input type="file" id="fileUpload">
+      <button onclick="uploadFile()">Upload</button>
       <div id="uploadStatus"></div>
     </div>
-
-    <!-- Profile -->
-    <div id="profileCard" class="profile-card">
-      <h2>User Profile</h2>
-      <p><strong>Email:</strong> <span id="profileEmail"></span></p>
-      <p><strong>Role:</strong> <span id="profileRole"></span></p>
-    </div>
   </div>
-
-  <!-- Footer -->
-  <div class="footer" id="footer" style="display:none;">
-    <div class="profile">
-      <div class="rgb-ring"><img src="Screenshot_20250821_142735.jpg"></div>
-      <span id="userEmail"></span>
-    </div>
-    <button class="logout-btn" onclick="logout()">Logout</button>
-  </div>
-
-
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js"></script>
+</div>
 
 <script>
-  // 🔹 Firebase Config (अपने Firebase प्रोजेक्ट से बदलें)
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
-  };
+  // Users
+  const users = [
+    { email:"admin01@gmail.com", password:"admin123", role:"Admin", blocked:false },
+    { email:"student1@gmail.com", password:"pass1", role:"Student", blocked:false },
+    { email:"student2@gmail.com", password:"pass2", role:"Student", blocked:false },
+    { email:"student3@gmail.com", password:"pass3", role:"Student", blocked:false },
+    { email:"student4@gmail.com", password:"pass4", role:"Student", blocked:false },
+    { email:"student5@gmail.com", password:"pass5", role:"Student", blocked:false },
+    { email:"student6@gmail.com", password:"pass6", role:"Student", blocked:false },
+    { email:"student7@gmail.com", password:"pass7", role:"Student", blocked:false },
+    { email:"student8@gmail.com", password:"pass8", role:"Student", blocked:false },
+    { email:"student9@gmail.com", password:"pass9", role:"Student", blocked:false },
+    { email:"student10@gmail.com", password:"pass10", role:"Student", blocked:false }
+  ];
 
-  // Init Firebase
-  const app = firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const storage = firebase.storage();
+  let currentUser=null;
+  let messages=[];
 
-  // Login
   function login(){
     const email=document.getElementById("email").value;
     const password=document.getElementById("password").value;
+    const user=users.find(u=>u.email===email && u.password===password);
 
-    auth.signInWithEmailAndPassword(email, password)
-      .then((userCredential)=>{
-        const user=userCredential.user;
-        showDashboard(user);
-      })
-      .catch((error)=>{ alert("Login Failed: "+error.message); });
-  }
-
-  function showDashboard(user){
-    document.getElementById("loginPage").style.display="none";
-    document.getElementById("header").style.display="flex";
-    document.getElementById("sidebar").style.display="block";
-    document.getElementById("content").style.display="block";
-    document.getElementById("footer").style.display="flex";
-    document.getElementById("userEmail").innerText=user.email;
-    document.getElementById("profileEmail").innerText=user.email;
-
-    if(user.email==="admin01@gmail.com" || user.email==="darkhacker@gmail.com"){
-      document.getElementById("profileRole").innerText="Admin";
-      document.getElementById("uploadMenu").style.display="block";
+    if(user){
+      if(user.blocked){ alert("❌ You are blocked by Admin"); return; }
+      currentUser=user;
+      document.getElementById("loginPage").style.display="none";
+      document.getElementById("dashboard").style.display="block";
+      if(user.role==="Admin"){ document.getElementById("uploadMenu").style.display="block"; }
+      loadStudents();
+      loadChat();
     } else {
-      document.getElementById("profileRole").innerText="Student";
-      document.getElementById("uploadMenu").style.display="none";
+      alert("Invalid Email or Password");
     }
   }
 
-  // Logout
   function logout(){
-    auth.signOut().then(()=>{
-      document.getElementById("loginPage").style.display="flex";
-      document.getElementById("header").style.display="none";
-      document.getElementById("sidebar").style.display="none";
-      document.getElementById("content").style.display="none";
-      document.getElementById("footer").style.display="none";
+    currentUser=null;
+    document.getElementById("loginPage").style.display="flex";
+    document.getElementById("dashboard").style.display="none";
+  }
+
+  function toggleSidebar(){ document.getElementById("sidebar").classList.toggle("open"); }
+
+  function showSection(sec){
+    ["home","chat","students","upload"].forEach(s=>{
+      document.getElementById(s+"Section").style.display=(sec===s)?"block":"none";
     });
   }
 
-  // Upload Function
-  function uploadContent(){
-    const videoLink = document.getElementById("videoLink").value;
-    const pdfFile = document.getElementById("pdfFile").files[0];
-    const imageFile = document.getElementById("imageFile").files[0];
-    const status=document.getElementById("uploadStatus");
-    status.innerHTML="Uploading...";
-
-    if(videoLink){
-      status.innerHTML="✅ Video Link Saved: " + videoLink;
-    }
-    if(pdfFile){
-      const pdfRef = storage.ref('pdfs/' + pdfFile.name);
-      pdfRef.put(pdfFile).then(()=>{
-        status.innerHTML+="<br>✅ PDF Uploaded: "+pdfFile.name;
-      });
-    }
-    if(imageFile){
-      const imgRef = storage.ref('images/' + imageFile.name);
-      imgRef.put(imageFile).then(()=>{
-        status.innerHTML+="<br>✅ Image Uploaded: "+imageFile.name;
-      });
-    }
-  }
-
-  // Auto-login check
-  auth.onAuthStateChanged((user)=>{
-    if(user){ showDashboard(user); }
-    else {
-      document.getElementById("loginPage").style.display="flex";
-      document.getElementById("header").style.display="none";
-      document.getElementById("sidebar").style.display="none";
-      document.getElementById("content").style.display="none";
-      document.getElementById("footer").style.display="none";
-    }
-  });
-
-  // Sidebar Control
-  function showSection(section){
-    const sections=["home","youtube","pdf","commands","hacking","live","contact","upload"];
-    sections.forEach(s=>{
-      document.getElementById(s+"Section")?.style.display=(section===s)?'block':'none';
+  // Student Management
+  function loadStudents(){
+    const list=document.getElementById("studentList");
+    list.innerHTML="";
+    users.filter(u=>u.role==="Student").forEach(st=>{
+      const li=document.createElement("li");
+      li.innerHTML=`${st.email} ${st.blocked?'<span class="blocked">(Blocked)</span>':''} 
+      ${currentUser.role==="Admin" ? `<button onclick="toggleBlock('${st.email}')">${st.blocked?"Unblock":"Block"}</button>`:""}`;
+      list.appendChild(li);
     });
   }
-  function toggleSidebar(){ document.getElementById("sidebar").classList.add("open"); }
-  function closeSidebar(){ document.getElementById("sidebar").classList.remove("open"); }
+
+  function toggleBlock(email){
+    const student=users.find(u=>u.email===email);
+    student.blocked=!student.blocked;
+    loadStudents();
+  }
+
+  // Upload (Demo)
+  function uploadFile(){
+    const file=document.getElementById("fileUpload").files[0];
+    if(file){ document.getElementById("uploadStatus").innerText="✅ Uploaded: "+file.name; }
+    else{ alert("Select file first"); }
+  }
+
+  // Chat
+  function sendMessage(){
+    const msg=document.getElementById("chatMessage").value;
+    if(msg.trim()==="") return;
+    messages.push({ user:currentUser.email, text:msg });
+    document.getElementById("chatMessage").value="";
+    loadChat();
+  }
+
+  function loadChat(){
+    const box=document.getElementById("chatBox");
+    box.innerHTML="";
+    messages.forEach(m=>{
+      const p=document.createElement("p");
+      p.innerHTML=`<b>${m.user}:</b> ${m.text}`;
+      box.appendChild(p);
+    });
+    box.scrollTop=box.scrollHeight;
+  }
 </script>
 </body>
 </html>
