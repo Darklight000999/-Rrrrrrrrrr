@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Darkdight000999</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1e1e2f, #23234f);
+      color: #fff;
+      overflow: hidden;
+      transition: background 0.5s ease;
+    }
+    body.light {
+      background: linear-gradient(135deg, #f7f7f7, #e0e0ff);
+      color: #222;
+    }
+
+    .header {
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .theme-toggle, .menu-toggle {
+      cursor: pointer;
+      font-size: 22px;
+      transition: transform 0.3s;
+    }
+    .theme-toggle:hover, .menu-toggle:hover { transform: rotate(20deg); }
+
+    .sidebar {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      height: 100%;
+      width: 70px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      overflow-x: hidden;
+      transition: width 0.4s ease;
+      box-shadow: 4px 0 15px rgba(0,0,0,0.3);
+    }
+
+    .sidebar.expanded {
+      width: 240px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar li {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+
+    /* Animate menu items one by one */
+    .sidebar.expanded li {
+      animation: slideIn 0.5s forwards;
+    }
+    .sidebar.expanded li:nth-child(1) { animation-delay: 0.1s; }
+    .sidebar.expanded li:nth-child(2) { animation-delay: 0.2s; }
+    .sidebar.expanded li:nth-child(3) { animation-delay: 0.3s; }
+    .sidebar.expanded li:nth-child(4) { animation-delay: 0.4s; }
+    .sidebar.expanded li:nth-child(5) { animation-delay: 0.5s; }
+    .sidebar.expanded li:nth-child(6) { animation-delay: 0.6s; }
+    .sidebar.expanded li:nth-child(7) { animation-delay: 0.7s; }
+    .sidebar.expanded li:nth-child(8) { animation-delay: 0.8s; }
+
+    @keyframes slideIn {
+      0% { opacity: 0; transform: translateX(-20px) scale(0.95); }
+      60% { opacity: 1; transform: translateX(5px) scale(1.05); }
+      100% { opacity: 1; transform: translateX(0) scale(1); }
+    }
+
+    .sidebar li:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #00ffe0;
+      box-shadow: inset 3px 0 0 #00ffe0;
+    }
+
+    .sidebar li i {
+      margin-right: 15px;
+      font-size: 20px;
+      transition: transform 0.3s;
+    }
+
+    .sidebar li:hover i { transform: scale(1.2); }
+
+    .content {
+      margin-left: 70px;
+      padding: 20px;
+      transition: margin-left 0.4s;
+    }
+    .sidebar.expanded ~ .content {
+      margin-left: 240px;
+    }
+
+    .login-page {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-box {
+      background: rgba(255,255,255,0.1);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      backdrop-filter: blur(12px);
+      width: 320px;
+    }
+
+    .login-box h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 6px;
+      background: #6c63ff;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .login-box button:hover { background: #4e46e5; }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <!-- Login Page -->
+  <div class="login-page" id="loginPage">
+    <div class="login-box">
+      <h2>Darkdight000999 Login</h2>
+      <input type="email" id="email" placeholder="Email">
+      <input type="password" id="password" placeholder="Password">
+      <button onclick="login()">Login</button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header" id="header" style="display:none;">
+    <i class="menu-toggle fas fa-bars" id="menuToggle"></i>
+    <h1>Darkdight000999</h1>
+    <i class="theme-toggle fas fa-moon" id="themeToggle"></i>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar" style="display:none;">
+    <ul id="menuList">
+      <li><i class="fas fa-home"></i><span class="text">Home</span></li>
+      <li><i class="fab fa-youtube"></i><span class="text">Youtube Videos</span></li>
+      <li><i class="fas fa-file-pdf"></i><span class="text">PDF & Notes</span></li>
+      <li><i class="fas fa-terminal"></i><span class="text">Hacking Commands</span></li>
+      <li><i class="fas fa-user-secret"></i><span class="text">Hacking</span></li>
+      <li><i class="fas fa-video"></i><span class="text">Live Class</span></li>
+      <li><i class="fas fa-headset"></i><span class="text">Contact & Support</span></li>
+    </ul>
+  </div>
+
+  <!-- Content -->
+  <div class="content" id="content" style="display:none;">
+    <h2>Welcome!</h2>
+    <p>Select a menu item to start.</p>
+  </div>
+
+  <script>
+    const adminAccounts = [
+      { email: "darklightrkshackers@gmail.com", password: "Rks_123456789@" },
+      { email: "abcdefgh123456@gamil.com", password: "Rks 2345@" }
+    ];
+    const studentAccounts = [
+      { email: "abcdefgh123456@gamil.com", password: "Rks 2345@" }
+    ];
+
+    let isAdmin = false;
+
+    function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      isAdmin = adminAccounts.some(acc => acc.email === email && acc.password === password);
+      let isStudent = studentAccounts.some(acc => acc.email === email && acc.password === password);
+
+      if (isAdmin || isStudent) {
+        document.getElementById("loginPage").style.display = "none";
+        document.getElementById("header").style.display = "flex";
+        document.getElementById("sidebar").style.display = "block";
+        document.getElementById("content").style.display = "block";
+        if (isAdmin) {
+          let uploadLi = document.createElement("li");
+          uploadLi.innerHTML = '<i class="fas fa-upload"></i><span class="text">Upload Manager</span>';
+          document.getElementById("menuList").appendChild(uploadLi);
+        }
+      } else {
+        alert("Invalid login");
+      }
+    }
+
+    // Sidebar toggle
+    const sidebar = document.getElementById("sidebar");
+    const menuToggle = document.getElementById("menuToggle");
+
+    menuToggle.addEventListener("click", () => {
+      sidebar.classList.toggle("expanded");
+    });
+
+    // Theme toggle
+    const themeToggle = document.getElementById("themeToggle");
+    themeToggle.addEventListener("click", () => {
+      document.body.classList.toggle("light");
+      if (document.body.classList.contains("light")) {
+        themeToggle.classList.replace("fa-moon", "fa-sun");
+      } else {
+        themeToggle.classList.replace("fa-sun", "fa-moon");
+      }
+    });
+  </script>
+</body>
+</html>
