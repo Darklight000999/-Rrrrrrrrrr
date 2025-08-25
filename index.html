@@ -5,17 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Darkdight000999</title>
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-    }
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Darkdight000999</title>
-  <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -146,16 +135,14 @@
   </div>
 
   <script>
-    const adminAccounts = [
-      { email: "admin@gmail.com", password: "Admin@123" }
-    ];
-    const studentAccounts = [
-      { email: "student@gmail.com", password: "Student@123" }
-    ];
+    const emailEl=document.getElementById("email");
+    const passwordEl=document.getElementById("password");
+    const menuList=document.getElementById("menuList");
+
+    const adminAccounts = [{ email: "admin@gmail.com", password: "Admin@123" }];
+    const studentAccounts = [{ email: "student@gmail.com", password: "Student@123" }];
 
     let isAdmin = false, currentUser = null;
-
-    // Storage Keys
     const storageKeys = { videos: "videos", pdfs: "pdfs", notes: "notes", images: "images" };
 
     function login() {
@@ -191,3 +178,17 @@
         <div class="card"><input type="text" id="videoUrl" placeholder="Video Embed URL"><button onclick="upload('videos')">Upload Video</button></div>
         <div class="card"><input type="text" id="pdfUrl" placeholder="PDF Embed URL"><button onclick="upload('pdfs')">Upload PDF</button></div>
         <div class="card"><input type="text" id="noteText" placeholder="Write Note"><button onclick="upload('notes')">Upload Note</button></div>
+      `;
+      document.getElementById("content").innerHTML = html;
+    }
+
+    function loadContent(){
+      // TODO: load from localStorage if needed
+    }
+
+    function logout(){
+      location.reload();
+    }
+  </script>
+</body>
+</html>
