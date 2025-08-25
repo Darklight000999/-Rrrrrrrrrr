@@ -18,6 +18,7 @@
       color: #222;
     }
 
+    /* Header */
     .header {
       height: 60px;
       display: flex;
@@ -28,13 +29,11 @@
       backdrop-filter: blur(12px);
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
-
     .header h1 {
       margin: 0;
       font-size: 20px;
       font-weight: bold;
     }
-
     .header img {
       width: 40px;
       height: 40px;
@@ -43,13 +42,7 @@
       border: 2px solid #fff;
     }
 
-    .theme-toggle, .menu-toggle {
-      cursor: pointer;
-      font-size: 22px;
-      transition: transform 0.3s;
-    }
-    .theme-toggle:hover, .menu-toggle:hover { transform: rotate(20deg); }
-
+    /* Sidebar */
     .sidebar {
       position: fixed;
       top: 60px;
@@ -62,17 +55,8 @@
       transition: width 0.4s ease;
       box-shadow: 4px 0 15px rgba(0,0,0,0.3);
     }
-
-    .sidebar.expanded {
-      width: 240px;
-    }
-
-    .sidebar ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
+    .sidebar.expanded { width: 240px; }
+    .sidebar ul { list-style: none; padding: 0; margin: 0; }
     .sidebar li {
       display: flex;
       align-items: center;
@@ -81,10 +65,7 @@
       opacity: 0;
       transform: translateX(-20px);
     }
-
-    .sidebar.expanded li {
-      animation: slideIn 0.5s forwards;
-    }
+    .sidebar.expanded li { animation: slideIn 0.5s forwards; }
     .sidebar.expanded li:nth-child(1) { animation-delay: 0.1s; }
     .sidebar.expanded li:nth-child(2) { animation-delay: 0.2s; }
     .sidebar.expanded li:nth-child(3) { animation-delay: 0.3s; }
@@ -99,35 +80,59 @@
       60% { opacity: 1; transform: translateX(5px) scale(1.05); }
       100% { opacity: 1; transform: translateX(0) scale(1); }
     }
-
     .sidebar li:hover {
       background: rgba(255, 255, 255, 0.15);
       color: #00ffe0;
       box-shadow: inset 3px 0 0 #00ffe0;
     }
-
     .sidebar li i {
       margin-right: 15px;
       font-size: 20px;
       transition: transform 0.3s;
     }
-
     .sidebar li:hover i { transform: scale(1.2); }
 
+    /* Content */
     .content {
       margin-left: 70px;
       padding: 20px;
       transition: margin-left 0.4s;
     }
-    .sidebar.expanded ~ .content {
-      margin-left: 240px;
-    }
+    .sidebar.expanded ~ .content { margin-left: 240px; }
 
+    /* Login Page */
     .login-page {
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      flex-direction: column;
+    }
+
+    /* Login Logo */
+    .login-logo {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .login-logo img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #fff;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+      animation: bounceGlow 3s infinite;
+    }
+    @keyframes bounceGlow {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+      }
+      50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 35px rgba(0, 255, 255, 1);
+      }
     }
 
     .login-box {
@@ -138,12 +143,7 @@
       backdrop-filter: blur(12px);
       width: 320px;
     }
-
-    .login-box h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
+    .login-box h2 { text-align: center; margin-bottom: 20px; }
     .login-box input {
       width: 100%;
       padding: 12px;
@@ -152,7 +152,6 @@
       border-radius: 6px;
       outline: none;
     }
-
     .login-box button {
       width: 100%;
       padding: 12px;
@@ -167,6 +166,7 @@
     }
     .login-box button:hover { background: #4e46e5; }
 
+    /* Upload Section */
     .upload-section {
       display: none;
       margin-top: 20px;
@@ -194,6 +194,10 @@
 <body>
   <!-- Login Page -->
   <div class="login-page" id="loginPage">
+    <!-- बड़ा लोगो -->
+    <div class="login-logo">
+      <img src="Screenshot_20250821_142735.jpg" alt="Login Logo">
+    </div>
     <div class="login-box">
       <h2>Darkdight000999 Login</h2>
       <input type="email" id="email" placeholder="Email">
@@ -270,25 +274,6 @@
         alert("Invalid login");
       }
     }
-
-    // Sidebar toggle
-    const sidebar = document.getElementById("sidebar");
-    const menuToggle = document.getElementById("menuToggle");
-
-    menuToggle?.addEventListener("click", () => {
-      sidebar.classList.toggle("expanded");
-    });
-
-    // Theme toggle
-    const themeToggle = document.getElementById("themeToggle");
-    themeToggle?.addEventListener("click", () => {
-      document.body.classList.toggle("light");
-      if (document.body.classList.contains("light")) {
-        themeToggle.classList.replace("fa-moon", "fa-sun");
-      } else {
-        themeToggle.classList.replace("fa-sun", "fa-moon");
-      }
-    });
   </script>
 </body>
 </html>
