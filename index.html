@@ -2,248 +2,209 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Darkdight000999</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #1e1e2f, #23234f);
-      color: #fff;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f0f1a, #1b1b2f);
+      color: white;
       overflow-x: hidden;
-      transition: background 0.5s ease;
       user-select: none;
     }
-    body.light { background: linear-gradient(135deg, #f7f7f7, #e0e0ff); color: #222; }
-
-    /* Header */
-    .header {
-      height: 60px; display: flex; align-items: center; justify-content: space-between;
-      padding: 0 15px; background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(12px); box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-    .header h1 {
-      flex-grow: 1; text-align: center; font-size: 22px; letter-spacing: 2px;
-      background: linear-gradient(90deg, #ff0080, #00ffe0, #ff8c00);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      animation: rgbText 4s linear infinite;
-    }
-    @keyframes rgbText { 
-      0%{background-position:0% 50%} 
-      100%{background-position:100% 50%} 
-    }
-    .header img {
-      width: 40px; height: 40px; border-radius: 50%;
-      animation: glow 3s infinite alternate;
-    }
-    @keyframes glow {
-      from { filter: drop-shadow(0 0 5px cyan); }
-      to { filter: drop-shadow(0 0 20px magenta); }
-    }
-
-    /* Sidebar */
-    .sidebar {
-      position: fixed; top: 60px; left: 0; height: 100%; width: 70px;
-      background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px);
-      overflow-x: hidden; transition: width 0.4s ease;
-      box-shadow: 4px 0 15px rgba(0,0,0,0.3);
-    }
-    .sidebar.expanded { width: 240px; }
-    .sidebar ul { list-style: none; padding: 0; }
-    .sidebar li {
-      display: flex; align-items: center; padding: 15px; cursor: pointer;
-      transition: 0.3s; opacity: 0;
-    }
-    .sidebar.expanded li { opacity: 1; transform: translateX(0); }
-    .sidebar li:hover { background: rgba(255,255,255,0.2); color: #00ffe0; }
-    .sidebar li i { margin-right: 10px; }
-
-    /* Content */
-    .content {
-      margin-left: 70px; padding: 20px; transition: margin-left 0.4s;
-    }
-    .sidebar.expanded ~ .content { margin-left: 240px; }
-    .section { margin-bottom: 30px; }
-    .section h2 { margin-bottom: 10px; border-bottom: 2px solid #555; padding-bottom: 5px; }
-    .card {
-      background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;
-      margin: 10px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    }
-    iframe, video, img { width: 100%; border-radius: 10px; }
-
-    /* Login Page */
-    .login-page { display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; }
-    .login-logo { width: 120px; height: 120px; border-radius: 50%; margin-bottom: 20px;
-      animation: pulse 2s infinite alternate; }
-    @keyframes pulse { from {transform: scale(1);} to {transform: scale(1.2);} }
-    .login-box {
-      background: rgba(255,255,255,0.1); padding: 30px; border-radius: 12px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.3); backdrop-filter: blur(12px);
-      width: 320px;
-    }
-    .login-box input, .login-box button {
-      width: 100%; padding: 12px; margin: 8px 0; border: none; border-radius: 6px; outline: none;
-    }
-    .login-box button { background: #6c63ff; color: #fff; font-weight: bold; cursor: pointer; }
-    .login-box button:hover { background: #4e46e5; }
-
-    /* Footer Profile */
-    .footer {
-      position: fixed; bottom: 0; left: 0; width: 100%;
-      background: rgba(255,255,255,0.1); backdrop-filter: blur(12px);
-      display: flex; justify-content: space-between; align-items: center;
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       padding: 10px 20px;
+      background: #111;
+      position: fixed;
+      top: 0; width: 100%; z-index: 1000;
     }
-    .profile { display: flex; align-items: center; }
-    .profile img { width: 35px; height: 35px; border-radius: 50%; margin-right: 10px; }
-    .logout { background: #ff4444; border: none; padding: 8px 15px; border-radius: 8px; color: #fff; cursor: pointer; }
+    header img {
+      width: 50px; height: 50px; border-radius: 50%;
+    }
+    header h1 {
+      font-size: 22px;
+      background: linear-gradient(to right, violet, cyan, lime);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: rgbtext 3s infinite linear;
+    }
+    @keyframes rgbtext {
+      from {filter: hue-rotate(0deg);} to {filter: hue-rotate(360deg);}
+    }
+    #menuToggle {
+      font-size: 26px; cursor: pointer;
+    }
+    /* Sidebar */
+    #sidebar {
+      position: fixed; top: 0; left: -260px;
+      width: 250px; height: 100%;
+      background: #222;
+      transition: left 0.3s;
+      padding-top: 60px;
+      z-index: 999;
+    }
+    #sidebar.active { left: 0; }
+    #sidebar a {
+      display: block; padding: 12px 20px;
+      color: white; text-decoration: none;
+    }
+    #sidebar a:hover { background: #333; }
+    main { margin-top: 80px; padding: 20px; }
+    .card {
+      background: #1c1c2e; padding: 15px; border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      margin-bottom: 20px;
+    }
+    .card h3 { margin: 0 0 10px 0; }
+    .logout { background: crimson; border: none; color: white; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
+    /* Prevent right click / drag */
+    img, video, iframe { pointer-events: none; }
   </style>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
-  <!-- Login -->
-  <div class="login-page" id="loginPage">
-    <img src="Screenshot_20250821_142735.jpg" class="login-logo">
-    <div class="login-box">
-      <h2>Darkdight000999 Login</h2>
-      <input type="email" id="email" placeholder="Email">
-      <input type="password" id="password" placeholder="Password">
-      <button onclick="login()">Login</button>
-    </div>
-  </div>
-
-  <!-- Header -->
-  <div class="header" id="header" style="display:none;">
-    <img src="Screenshot_20250821_142735.jpg">
+<body oncontextmenu="return false;" onkeydown="return disableKeys(event)">
+  <header>
+    <img src="Screenshot_20250821_142735.jpg" alt="Logo">
     <h1>Darkdight000999</h1>
-    <img src="Screenshot_20250821_142735.jpg">
-  </div>
+    <img src="Screenshot_20250821_142735.jpg" alt="Logo">
+    <span id="menuToggle">☰</span>
+  </header>
 
-  <!-- Sidebar -->
-  <div class="sidebar" id="sidebar" style="display:none;">
-    <ul id="menuList">
-      <li onclick="showSection('home')"><i class="fas fa-home"></i> Home</li>
-      <li onclick="showSection('videos')"><i class="fas fa-video"></i> Videos</li>
-      <li onclick="showSection('pdfs')"><i class="fas fa-file-pdf"></i> PDFs</li>
-      <li onclick="showSection('notes')"><i class="fas fa-book"></i> Notes</li>
-      <li onclick="showSection('images')"><i class="fas fa-image"></i> Images</li>
-    </ul>
-  </div>
-
-  <!-- Content -->
-  <div class="content" id="content" style="display:none;">
-    <div id="home" class="section"><h2>Welcome</h2><p>Select a menu item.</p></div>
-    <div id="videos" class="section" style="display:none;"><h2>Videos</h2><div id="videoList"></div></div>
-    <div id="pdfs" class="section" style="display:none;"><h2>PDFs</h2><div id="pdfList"></div></div>
-    <div id="notes" class="section" style="display:none;"><h2>Notes</h2><div id="noteList"></div></div>
-    <div id="images" class="section" style="display:none;"><h2>Images</h2><div id="imageList"></div></div>
-  </div>
-
-  <!-- Footer -->
-  <div class="footer" id="footer" style="display:none;">
-    <div class="profile">
-      <img src="Screenshot_20250821_142735.jpg"><span id="profileEmail"></span>
+  <div id="sidebar">
+    <a href="#" onclick="showPage('home')">🏠 Home</a>
+    <a href="#" onclick="showPage('videos')">📺 Youtube Videos</a>
+    <a href="#" onclick="showPage('pdfs')">📑 PDF & Notes</a>
+    <a href="#" onclick="showPage('notes')">📝 Text Notes</a>
+    <a href="#" onclick="showPage('contact')">📞 Contact & Support</a>
+    <div id="adminSection" style="display:none;">
+      <a href="#" onclick="showPage('upload')">⬆️ Upload Manager</a>
     </div>
-    <button class="logout" onclick="logout()">Logout</button>
+    <div style="position:absolute;bottom:20px;width:100%;text-align:center;">
+      <span id="userEmail"></span><br>
+      <button class="logout" onclick="logout()">Logout</button>
+    </div>
   </div>
+
+  <main>
+    <div id="home" class="page">
+      <h2>Welcome!</h2>
+      <div id="contentArea"></div>
+    </div>
+
+    <div id="upload" class="page" style="display:none;">
+      <h2>Upload Manager (Admin Only)</h2>
+      <input type="text" id="title" placeholder="Title"><br><br>
+      <select id="type">
+        <option value="video">Video (YouTube Link)</option>
+        <option value="pdf">PDF</option>
+        <option value="note">Text Note</option>
+      </select><br><br>
+      <input type="file" id="fileInput"><br><br>
+      <textarea id="noteInput" placeholder="Write note here..."></textarea><br><br>
+      <button onclick="uploadContent()">Upload</button>
+    </div>
+  </main>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-storage.js"></script>
 
   <script>
-    const adminAccounts = [
-      { email: "admin@gmail.com", password: "Admin@123" }
-    ];
-    const studentAccounts = [
-      { email: "student@gmail.com", password: "Student@123" }
-    ];
+    // TODO: Replace with your Firebase config
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "XXXX",
+      appId: "XXXX"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    const storage = firebase.storage();
 
-    let isAdmin = false, currentUser = null;
-    const storageKeys = { videos: "videos", pdfs: "pdfs", notes: "notes", images: "images" };
-
-    const emailEl = document.getElementById("email");
-    const passwordEl = document.getElementById("password");
-    const menuList = document.getElementById("menuList");
-
-    function login() {
-      const email = emailEl.value, password = passwordEl.value;
-      isAdmin = adminAccounts.some(acc => acc.email===email && acc.password===password);
-      let isStudent = studentAccounts.some(acc => acc.email===email && acc.password===password);
-
-      if (isAdmin || isStudent) {
-        currentUser = email;
-        document.getElementById("loginPage").style.display="none";
-        document.getElementById("header").style.display="flex";
-        document.getElementById("sidebar").style.display="block";
-        document.getElementById("content").style.display="block";
-        document.getElementById("footer").style.display="flex";
-        document.getElementById("profileEmail").innerText = email;
-
-        if (isAdmin) {
-          let uploadLi=document.createElement("li");
-          uploadLi.innerHTML='<i class="fas fa-upload"></i> Upload Manager';
-          uploadLi.onclick=()=>showUploadManager();
-          menuList.appendChild(uploadLi);
-        }
-        loadContent();
-      } else alert("Invalid login");
-    }
-
-    function showSection(id){
-      document.querySelectorAll(".section").forEach(sec=>sec.style.display="none");
+    // UI Handling
+    document.getElementById("menuToggle").onclick = () => {
+      document.getElementById("sidebar").classList.toggle("active");
+    };
+    function showPage(id) {
+      document.querySelectorAll(".page").forEach(p => p.style.display="none");
       document.getElementById(id).style.display="block";
     }
 
-    function showUploadManager(){
-      let html = `
-        <h2>Upload Manager</h2>
-        <div class="card"><input type="text" id="videoUrl" placeholder="Video Embed URL"><button onclick="upload('videos')">Upload Video</button></div>
-        <div class="card"><input type="text" id="pdfUrl" placeholder="PDF Embed URL"><button onclick="upload('pdfs')">Upload PDF</button></div>
-        <div class="card"><input type="text" id="noteText" placeholder="Write Note"><button onclick="upload('notes')">Upload Note</button></div>
-        <div class="card"><input type="text" id="imageUrl" placeholder="Image URL"><button onclick="upload('images')">Upload Image</button></div>`;
-      document.getElementById("content").innerHTML=html;
-    }
-
-    function upload(type){
-      let value="";
-      if(type==="videos") value=document.getElementById("videoUrl").value;
-      if(type==="pdfs") value=document.getElementById("pdfUrl").value;
-      if(type==="notes") value=document.getElementById("noteText").value;
-      if(type==="images") value=document.getElementById("imageUrl").value;
-
-      if(value){
-        let items=JSON.parse(localStorage.getItem(storageKeys[type])||"[]");
-        items.push(value);
-        localStorage.setItem(storageKeys[type], JSON.stringify(items));
-        alert(type+" uploaded!");
+    // Auth
+    auth.onAuthStateChanged(user => {
+      if(user){
+        document.getElementById("userEmail").innerText = user.email;
+        loadContent();
+        if(user.email==="admin@gmail.com"){
+          document.getElementById("adminSection").style.display="block";
+        }
+      } else {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        auth.signInWithPopup(provider);
       }
-    }
-
-    function loadContent(){
-      for (let key in storageKeys){
-        let items=JSON.parse(localStorage.getItem(storageKeys[key])||"[]");
-        let container=document.getElementById(key.slice(0,-1)+"List");
-        container.innerHTML="";
-        items.forEach(val=>{
-          let card=document.createElement("div");
-          card.className="card";
-          if(key==="videos") card.innerHTML=`<iframe src="${val}" frameborder="0" allowfullscreen></iframe>`;
-          if(key==="pdfs") card.innerHTML=`<iframe src="${val}" frameborder="0"></iframe>`;
-          if(key==="notes") card.innerHTML=`<p>${val}</p>`;
-          if(key==="images") card.innerHTML=`<img src="${val}">`;
-          container.appendChild(card);
-        });
-      }
-    }
-
-    function logout(){
-      currentUser=null;
-      isAdmin=false;
-      location.reload();
-    }
-
-    // Block Copy / Download / Screenshot
-    document.addEventListener('contextmenu', e=>e.preventDefault());
-    document.addEventListener('keydown', e=>{
-      if(e.ctrlKey && (e.key==='s' || e.key==='u' || e.key==='c' || e.key==='x' || e.key==='p')) e.preventDefault();
     });
+    function logout(){ auth.signOut(); }
+
+    // Upload Content
+    async function uploadContent(){
+      const title=document.getElementById("title").value;
+      const type=document.getElementById("type").value;
+      let url="";
+      if(type==="video"){
+        url=document.getElementById("fileInput").value || prompt("Paste YouTube Link");
+      } else if(type==="pdf"){
+        const file=document.getElementById("fileInput").files[0];
+        const ref=storage.ref("uploads/"+file.name);
+        await ref.put(file);
+        url=await ref.getDownloadURL();
+      } else if(type==="note"){
+        url=document.getElementById("noteInput").value;
+      }
+      await db.collection("content").add({title,type,url,by:auth.currentUser.email,timestamp:Date.now()});
+      alert("Uploaded!");
+      loadContent();
+    }
+
+    // Load Content
+    async function loadContent(){
+      const snapshot=await db.collection("content").orderBy("timestamp","desc").get();
+      const area=document.getElementById("contentArea");
+      area.innerHTML="";
+      snapshot.forEach(doc=>{
+        const d=doc.data();
+        let card=document.createElement("div"); card.className="card";
+        card.innerHTML=`<h3>${d.title}</h3>`;
+        if(d.type==="video"){
+          card.innerHTML+=`<iframe src="${d.url.replace("watch?v=","embed/")}" width="100%" height="250"></iframe>`;
+        } else if(d.type==="pdf"){
+          card.innerHTML+=`<iframe src="${d.url}#toolbar=0" width="100%" height="400"></iframe>`;
+        } else if(d.type==="note"){
+          card.innerHTML+=`<p>${d.url}</p>`;
+        }
+        if(auth.currentUser && auth.currentUser.email==="admin@gmail.com"){
+          let btn=document.createElement("button");
+          btn.innerText="Delete";
+          btn.onclick=()=>{db.collection("content").doc(doc.id).delete().then(loadContent)};
+          card.appendChild(btn);
+        }
+        area.appendChild(card);
+      });
+    }
+
+    // Disable screenshot keys
+    function disableKeys(e){
+      if(e.keyCode==123 || (e.ctrlKey && e.shiftKey && (e.keyCode==73||e.keyCode==74)) || (e.ctrlKey && e.keyCode==85)){
+        return false;
+      }
+    }
   </script>
 </body>
 </html>
