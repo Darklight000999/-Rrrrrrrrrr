@@ -1,558 +1,315 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>darklight000999</title>
   <style>
-    *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;transition:.25s;}
-    :root{
-      --w-sidebar:260px;
-      --radius:14px;
-    }
-    body{height:100vh;overflow:hidden;}
-    /* Theme */
+    *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;transition:0.3s;}
+    body{display:flex;justify-content:center;align-items:center;height:100vh;}
+
+    /* THEME */
     body.light{background:#e0e0e0;color:#222;}
     body.dark{background:#111;color:#fff;}
-    /* Floating Theme Toggle */
-    .theme-toggle{
-      position:fixed;top:10px;right:10px;padding:8px 14px;border:none;border-radius:999px;
-      cursor:pointer;font-size:14px;z-index:1100;
-    }
 
-    /* ========== Login ========== */
-    #login-page{display:flex;align-items:center;justify-content:center;height:100vh;width:100%;}
-    .login-box{width:350px;max-width:92%;padding:28px;border-radius:18px;text-align:center}
-    body.light .login-box{background:#e0e0e0;box-shadow:8px 8px 16px #bebebe,-8px -8px 16px #ffffff;}
+    .theme-toggle{position:fixed;top:10px;right:10px;padding:8px 15px;border:none;
+      border-radius:20px;cursor:pointer;font-size:14px;z-index:999;}
+
+    /* LOGIN PAGE */
+    #login-page{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;width:100%;}
+    .login-box{width:350px;padding:30px;border-radius:15px;text-align:center;
+      box-shadow:8px 8px 16px #bebebe,-8px -8px 16px #ffffff;}
     body.dark .login-box{background:#1a1a1a;box-shadow:8px 8px 16px #000,-8px -8px 16px #222;}
-    .login-box img{width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:10px}
-    .login-box h3{margin:8px 0 18px;color:gray}
-    .login-box input{width:100%;padding:12px 16px;margin:8px 0;border:none;border-radius:999px;outline:none}
-    body.light .login-box input{background:#e0e0e0;color:#222;box-shadow:inset 4px 4px 8px #bebebe,inset -4px -4px 8px #ffffff;}
-    body.dark  .login-box input{background:#222;color:#fff;box-shadow:inset 4px 4px 8px #000,inset -4px -4px 8px #333;}
-    .login-box button{width:100%;padding:12px;margin-top:12px;border:none;border-radius:999px;font-weight:700;cursor:pointer}
-    body.light .login-box button{background:#e0e0e0;color:#222;box-shadow:4px 4px 8px #bebebe,-4px -4px 8px #ffffff;}
-    body.dark  .login-box button{background:#222;color:#fff;box-shadow:4px 4px 8px #000,-4px -4px 8px #333;}
-    .login-box a{font-size:13px;color:#ff5252;text-decoration:none}
+    body.light .login-box{background:#e0e0e0;}
+    .login-box img{width:100px;height:100px;border-radius:50%;margin-bottom:10px;}
+    .login-box h2{margin-bottom:5px;}
+    .login-box h3{margin-bottom:20px;font-size:16px;color:gray;}
+    .login-box input{width:100%;padding:12px;margin:10px 0;border:none;outline:none;border-radius:25px;}
+    body.light .login-box input{background:#e0e0e0;box-shadow:inset 4px 4px 8px #bebebe,inset -4px -4px 8px #ffffff;color:#222;}
+    body.dark .login-box input{background:#222;color:#fff;box-shadow:inset 4px 4px 8px #000,inset -4px -4px 8px #333;}
+    .login-box button{width:100%;padding:12px;margin:15px 0;border:none;cursor:pointer;border-radius:25px;font-weight:bold;}
+    body.light .login-box button{background:#e0e0e0;color:#333;box-shadow:4px 4px 8px #bebebe,-4px -4px 8px #ffffff;}
+    body.dark .login-box button{background:#222;color:#fff;box-shadow:4px 4px 8px #000,-4px -4px 8px #333;}
+    .login-box a{font-size:13px;color:red;text-decoration:none;}
+    .login-box a:hover{text-decoration:underline;}
 
-    /* ========== App Shell ========== */
-    #website{display:none;height:100vh;width:100%}
-    .container{display:flex;height:100%}
+    /* WEBSITE */
+    #website{display:none;height:100vh;width:100%;}
+    .container{display:flex;height:100%;}
 
-    /* Sidebar (off-canvas mobile) */
-    .sidebar{
-      position:fixed;top:0;left:calc(-1 * var(--w-sidebar));bottom:0;width:var(--w-sidebar);
-      padding:18px;display:flex;flex-direction:column;z-index:1000;
-      transition:left .28s ease;
-    }
-    .sidebar.active{left:0}
+    /* SIDEBAR */
+    .sidebar{width:260px;padding:20px;display:flex;flex-direction:column;justify-content:space-between;}
     body.light .sidebar{background:#f0f0f0;border-right:2px solid #ccc;}
-    body.dark  .sidebar{background:#1a1a1a;border-right:2px solid #222;}
-    .logo-box{width:140px;height:140px;margin:8px auto 14px}
-    .logo-box img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+    body.dark .sidebar{background:#1a1a1a;border-right:2px solid #222;}
 
-    .menu h3{margin:10px 4px;font-size:13px;opacity:.75}
-    .menu ul{list-style:none}
-    .menu li{
-      display:flex;align-items:center;gap:10px;justify-content:space-between;
-      padding:12px 12px;border-radius:12px;margin:6px 0;cursor:pointer;user-select:none
-    }
-    .menu li .left{display:flex;align-items:center;gap:10px}
-    .menu .badge{
-      min-width:24px;height:24px;padding:0 8px;border-radius:999px;
-      display:inline-flex;align-items:center;justify-content:center;font-size:12px;
-      opacity:.85
-    }
+    .logo-container{position:relative;width:140px;height:140px;margin:0 auto 20px;}
+    .rgb-ring{position:absolute;width:160px;height:160px;border-radius:50%;
+      background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);
+      animation:rotate 4s linear infinite;filter:blur(4px);z-index:0;}
+    .logo{position:relative;width:140px;height:140px;border-radius:50%;overflow:hidden;z-index:1;}
+    .logo img{width:100%;height:100%;object-fit:cover;}
+    @keyframes rotate{0%{transform:rotate(0);}100%{transform:rotate(360deg);}}
+
+    .menu h3{margin:10px 0;font-size:14px;}
+    .menu ul{list-style:none;}
+    .menu li{padding:10px;margin:5px 0;border-radius:8px;cursor:pointer;}
     body.light .menu li{background:#ddd;}
-    body.dark  .menu li{background:#222;}
-    body.light .menu .badge{background:#cfcfcf;color:#222;}
-    body.dark  .menu .badge{background:#333;color:#fff;}
+    body.dark .menu li{background:#222;}
+    .menu li:hover{opacity:0.8;}
 
-    /* Overlay for mobile when sidebar open */
-    .overlay{
-      position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(1px);
-      z-index:900;display:none;
-    }
-    .overlay.show{display:block}
+    /* LOGOUT FIX */
+    .logout-btn{margin-top:20px;padding:10px;border:none;border-radius:8px;cursor:pointer;font-weight:bold;}
+    body.light .logout-btn{background:#ddd;color:#222;}
+    body.dark .logout-btn{background:#222;color:#fff;}
 
-    /* Main */
-    .main{flex:1;display:flex;flex-direction:column;min-width:0}
-    /* Topbar */
-    .topbar{
-      display:flex;align-items:center;gap:10px;padding:8px 12px;
-    }
+    /* MAIN */
+    .main{flex:1;display:flex;flex-direction:column;}
+    .topbar{padding:15px;display:flex;justify-content:center;align-items:center;font-weight:bold;}
     body.light .topbar{background:#f0f0f0;border-bottom:2px solid #ccc;}
-    body.dark  .topbar{background:#1a1a1a;border-bottom:2px solid #222;}
-    .menu-btn{font-size:24px;line-height:1;background:none;border:none;cursor:pointer}
-    .brand{
-      display:flex;align-items:center;gap:10px;flex:1;justify-content:center;
-      text-transform:lowercase;font-weight:800;letter-spacing:.5px;font-size:18px
-    }
-    .brand img{width:32px;height:32px;border-radius:50%;object-fit:cover}
-    .topbar-right{
-      display:flex;align-items:center;gap:10px;white-space:nowrap
-    }
-    .welcome{opacity:.85;font-size:13px}
-    .logout{border:none;border-radius:999px;padding:8px 12px;cursor:pointer;font-weight:700}
-    body.light .logout{background:#e0e0e0;color:#222;box-shadow:2px 2px 4px #cfcfcf,-2px -2px 4px #fff;}
-    body.dark  .logout{background:#222;color:#fff;box-shadow:2px 2px 4px #000,-2px -2px 4px #333;}
+    body.dark .topbar{background:#1a1a1a;border-bottom:2px solid #222;}
+    .content{flex:1;display:flex;overflow:hidden;}
 
-    /* Content area */
-    .content{flex:1;display:flex;overflow:hidden}
-    .section{display:none;padding:16px;overflow:auto;width:100%}
-    .active{display:block}
-
-    /* Cards + grids for uploads */
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
-    .card{padding:14px;border-radius:var(--radius);box-shadow:0 2px 6px rgba(0,0,0,.18)}
+    /* SECTIONS */
+    .section{display:none;padding:20px;overflow-y:auto;}
+    .active{display:block;}
+    .card{padding:15px;margin:10px 0;border-radius:10px;box-shadow:0 2px 5px rgba(0,0,0,0.2);}
     body.light .card{background:#fff;}
-    body.dark  .card{background:#222;color:#fff;}
-    .muted{opacity:.7}
+    body.dark .card{background:#222;color:#fff;}
 
-    /* Chat */
-    .chat-wrap{max-width:960px;margin:0 auto;width:100%;display:flex;flex-direction:column;height:calc(100% - 10px)}
-    .chat-header{padding:10px;text-align:center;border-radius:12px;margin-bottom:6px}
-    body.light .chat-header{background:#eee;border:1px solid #ccc;}
-    body.dark  .chat-header{background:#1a1a1a;border:1px solid #333;}
-    .chat-messages{flex:1;overflow-y:auto;padding:10px;border-radius:12px;margin-bottom:8px}
-    body.light .chat-messages{background:#f9f9f9;border:1px solid #ddd;}
-    body.dark  .chat-messages{background:#0d0d0d;border:1px solid #222;}
-    .message{max-width:78%;padding:10px 12px;margin:6px 0;border-radius:12px;font-size:14px}
-    .student-msg{background:#666;color:#fff;align-self:flex-start}
-    .admin-msg{background:#0055ff;color:#fff;align-self:flex-end}
-    .timestamp{font-size:10px;opacity:.8;margin-top:3px}
-    .chat-input{display:flex;gap:8px}
-    .chat-input input{flex:1;padding:10px;border:none;border-radius:12px;outline:none}
-    .chat-input button{padding:10px 16px;border:none;border-radius:12px;cursor:pointer;font-weight:700}
+    /* CHAT */
+    .chat-section{flex:1;display:flex;flex-direction:column;}
+    body.light .chat-section{background:#f9f9f9;}
+    body.dark .chat-section{background:#0d0d0d;}
+    .chat-header{padding:10px;text-align:center;}
+    body.light .chat-header{background:#eee;border-bottom:1px solid #ccc;}
+    body.dark .chat-header{background:#1a1a1a;border-bottom:1px solid #333;}
+    .chat-messages{flex:1;overflow-y:auto;padding:10px;}
+    .message{max-width:70%;padding:10px;margin:5px 0;border-radius:10px;font-size:14px;}
+    .student-msg{background:#666;align-self:flex-start;}
+    .admin-msg{background:#0055ff;align-self:flex-end;color:#fff;}
+    .timestamp{font-size:10px;color:#aaa;margin-top:2px;}
+    .chat-input{display:flex;}
+    body.light .chat-input{border-top:1px solid #ccc;}
+    body.dark .chat-input{border-top:1px solid #333;}
+    .chat-input input{flex:1;padding:10px;border:none;outline:none;}
     body.light .chat-input input{background:#eee;color:#222;}
-    body.dark  .chat-input input{background:#1a1a1a;color:#fff;}
+    body.dark .chat-input input{background:#1a1a1a;color:#fff;}
+    .chat-input button{padding:10px 20px;border:none;cursor:pointer;}
     body.light .chat-input button{background:#ddd;color:#222;}
-    body.dark  .chat-input button{background:#0055ff;color:#fff;}
-
-    /* Desktop: sidebar docked by default */
-    @media(min-width:992px){
-      .sidebar{left:0}
-      .overlay{display:none!important}
-      .main{margin-left:var(--w-sidebar)}
-      .menu-btn{display:none}
-    }
-    /* Mobile tweaks */
-    @media(max-width:480px){
-      .brand{font-size:16px}
-      .welcome{display:none}
-      .brand img{width:28px;height:28px}
-    }
+    body.dark .chat-input button{background:#0055ff;color:#fff;}
   </style>
 </head>
 <body class="light">
-  <!-- Theme -->
+
   <button class="theme-toggle" onclick="toggleTheme()">🌑 Dark</button>
 
-  <!-- Login -->
+  <!-- LOGIN -->
   <div id="login-page">
     <div class="login-box">
       <img src="Screenshot_20250821_142735.jpg" alt="Logo">
       <h2>darklight000999</h2>
       <h3>LOGIN</h3>
-      <input id="username" placeholder="Username">
-      <input id="password" type="password" placeholder="Password">
+      <input type="text" id="username" placeholder="Username">
+      <input type="password" id="password" placeholder="Password">
       <button onclick="login()">Sign In</button>
-      <p style="margin-top:8px"><a href="#">Forgot Password? click here</a></p>
+      <p><a href="#">Forgot Password? click here</a></p>
     </div>
   </div>
 
-  <!-- App -->
+  <!-- WEBSITE -->
   <div id="website">
     <div class="container">
-      <!-- Sidebar -->
-      <aside class="sidebar" id="sidebar">
-        <div class="logo-box"><img src="Screenshot_20250821_142735.jpg" alt="Logo"></div>
-
-        <nav class="menu">
-          <ul id="menu-items">
-            <li data-target="home" onclick="onNav(this)">
-              <div class="left">🏠 <span>Home</span></div>
-              <span class="badge" id="count-home">0</span>
-            </li>
-            <li data-target="youtube" onclick="onNav(this)">
-              <div class="left">🎬 <span>YouTube Videos</span></div>
-              <span class="badge" id="count-youtube">0</span>
-            </li>
-            <li data-target="notes" onclick="onNav(this)">
-              <div class="left">📑 <span>PDF & Notes</span></div>
-              <span class="badge" id="count-notes">0</span>
-            </li>
-            <li data-target="commands" onclick="onNav(this)">
-              <div class="left">🧰 <span>Hacking Commands</span></div>
-              <span class="badge" id="count-commands">0</span>
-            </li>
-            <li data-target="hacking" onclick="onNav(this)">
-              <div class="left">🧪 <span>Hacking</span></div>
-              <span class="badge" id="count-hacking">0</span>
-            </li>
-            <li data-target="live" onclick="onNav(this)">
-              <div class="left">🎥 <span>Live Class</span></div>
-              <span class="badge" id="count-live">0</span>
-            </li>
-            <li data-target="support" onclick="onNav(this)">
-              <div class="left">🆘 <span>Contact & Support</span></div>
-              <span class="badge" id="count-support">0</span>
-            </li>
-            <li data-target="chat" onclick="onNav(this)">
-              <div class="left">💬 <span>Chat</span></div>
-              <span class="badge" id="count-chat">0</span>
-            </li>
-          </ul>
-
-          <h3>Admin Panel</h3>
-          <ul id="admin-items" style="display:none">
-            <li data-target="upload" onclick="onNav(this)">
-              <div class="left">📂 <span>Upload Manager</span></div>
-              <span class="badge" id="count-upload">0</span>
-            </li>
-            <li data-target="students" onclick="onNav(this)">
-              <div class="left">👥 <span>Manage Students</span></div>
-              <span class="badge" id="count-students">10</span>
-            </li>
-            <li data-target="announce" onclick="onNav(this)">
-              <div class="left">📢 <span>Announcements</span></div>
-              <span class="badge" id="count-announce">0</span>
-            </li>
-            <li data-target="analytics" onclick="onNav(this)">
-              <div class="left">📊 <span>Analytics</span></div>
-              <span class="badge" id="count-analytics">0</span>
-            </li>
-          </ul>
-        </nav>
-      </aside>
-
-      <!-- overlay for mobile -->
-      <div id="overlay" class="overlay" onclick="toggleSidebar(false)"></div>
-
-      <!-- Main -->
-      <main class="main" id="main">
-        <!-- Topbar -->
-        <div class="topbar">
-          <button class="menu-btn" onclick="toggleSidebar(true)">☰</button>
-
-          <div class="brand">
-            <img src="Screenshot_20250821_142735.jpg" alt="L">
-            <span>darklight000999</span>
-            <img src="Screenshot_20250821_142735.jpg" alt="R">
+      <!-- SIDEBAR -->
+      <div class="sidebar">
+        <div>
+          <div class="logo-container">
+            <div class="rgb-ring"></div>
+            <div class="logo"><img src="Screenshot_20250821_142735.jpg" alt="Logo"></div>
           </div>
-
-          <div class="topbar-right">
-            <span class="welcome" id="welcome">Welcome Guest</span>
-            <button class="logout" onclick="logout()">Logout</button>
+          <div class="menu">
+            <ul id="menu-items">
+              <li onclick="showSection('home')">Home</li>
+              <li onclick="showSection('youtube')">YouTube Videos</li>
+              <li onclick="showSection('notes')">PDF & Notes</li>
+              <li onclick="showSection('commands')">Hacking Commands</li>
+              <li onclick="showSection('hacking')">Hacking</li>
+              <li onclick="showSection('live')">Live Class</li>
+              <li onclick="showSection('support')">Contact & Support</li>
+            </ul>
+            <h3>Admin Panel</h3>
+            <ul id="admin-items" style="display:none;">
+              <li onclick="showSection('upload')">Upload Manager</li>
+              <li onclick="showSection('students')">Manage Students</li>
+              <li onclick="showSection('announce')">Announcements</li>
+              <li onclick="showSection('analytics')">Analytics</li>
+            </ul>
           </div>
         </div>
+        <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+      </div>
 
-        <!-- Content -->
+      <!-- MAIN -->
+      <div class="main">
+        <div class="topbar">darklight000999</div>
         <div class="content">
-          <section id="home" class="section active">
-            <h2>Welcome to darklight000999</h2>
-            <p class="muted" style="margin-top:6px">Use the menu to open sections. Uploads appear category-wise with counts.</p>
-          </section>
+          <div id="home" class="section active"><h2>Welcome to darklight000999</h2></div>
+          <div id="youtube" class="section"><h2>YouTube Videos</h2><div id="youtube-list"></div></div>
+          <div id="notes" class="section"><h2>PDF & Notes</h2><div id="notes-list"></div></div>
+          <div id="commands" class="section"><h2>Hacking Commands</h2><div id="commands-list"></div></div>
+          <div id="hacking" class="section"><h2>Hacking Section</h2></div>
+          <div id="live" class="section"><h2>Live Class</h2><div id="live-list"></div></div>
+          <div id="support" class="section"><h2>Contact & Support</h2><div id="support-list"></div></div>
 
-          <section id="youtube" class="section">
-            <h2>🎬 YouTube Videos</h2>
-            <div id="youtube-list" class="grid"></div>
-            <p id="youtube-empty" class="muted">No uploads yet.</p>
-          </section>
+          <div id="upload" class="section"><h2>Upload Manager (Admin Only)</h2>
+            <select id="upload-category">
+              <option value="youtube">YouTube</option>
+              <option value="notes">Notes</option>
+              <option value="commands">Commands</option>
+              <option value="live">Live</option>
+              <option value="support">Support</option>
+            </select>
+            <input type="text" id="upload-title" placeholder="Title">
+            <input type="file" id="upload-file">
+            <input type="text" id="upload-link" placeholder="Or paste link">
+            <button onclick="uploadContent()">Upload</button>
+          </div>
 
-          <section id="notes" class="section">
-            <h2>📑 PDF & Notes</h2>
-            <div id="notes-list" class="grid"></div>
-            <p id="notes-empty" class="muted">No uploads yet.</p>
-          </section>
+          <div id="students" class="section"><h2>Manage Students</h2><ul id="student-list"></ul></div>
+          <div id="announce" class="section"><h2>Announcements</h2></div>
+          <div id="analytics" class="section"><h2>Analytics</h2><p id="stats"></p></div>
 
-          <section id="commands" class="section">
-            <h2>🧰 Hacking Commands</h2>
-            <div id="commands-list" class="grid"></div>
-            <p id="commands-empty" class="muted">No uploads yet.</p>
-          </section>
-
-          <section id="hacking" class="section">
-            <h2>🧪 Hacking Section</h2>
-            <p class="muted">Content curated by admins will appear here.</p>
-          </section>
-
-          <section id="live" class="section">
-            <h2>🎥 Live Class</h2>
-            <div id="live-list" class="grid"></div>
-            <p id="live-empty" class="muted">No uploads yet.</p>
-          </section>
-
-          <section id="support" class="section">
-            <h2>🆘 Contact & Support</h2>
-            <div id="support-list" class="grid"></div>
-            <p id="support-empty" class="muted">No uploads yet.</p>
-          </section>
-
-          <section id="upload" class="section">
-            <h2>📂 Upload Manager (Admin Only)</h2>
-            <div id="upload-form">
-              <select id="upload-category">
-                <option value="youtube">YouTube</option>
-                <option value="notes">Notes</option>
-                <option value="commands">Commands</option>
-                <option value="live">Live</option>
-                <option value="support">Support</option>
-              </select>
-              <input id="upload-title" placeholder="Title">
-              <input id="upload-link" placeholder="Link or Embed URL">
-              <button onclick="uploadContent()">Upload</button>
+          <!-- CHAT -->
+          <div class="chat-section">
+            <div class="chat-header">Chat</div>
+            <div class="chat-messages" id="messages"></div>
+            <div class="chat-input">
+              <input type="text" id="msgBox" placeholder="Type a message...">
+              <button onclick="sendMessage()">Send</button>
             </div>
-          </section>
-
-          <section id="students" class="section">
-            <h2>👥 Manage Students</h2>
-            <ul id="student-list" style="margin-top:10px;line-height:1.9"></ul>
-          </section>
-
-          <section id="announce" class="section">
-            <h2>📢 Announcements</h2>
-            <p class="muted">No announcements yet.</p>
-          </section>
-
-          <section id="analytics" class="section">
-            <h2>📊 Analytics</h2>
-            <p id="stats" class="muted"></p>
-          </section>
-
-          <section id="chat" class="section">
-            <div class="chat-wrap">
-              <div class="chat-header">Chat</div>
-              <div id="messages" class="chat-messages"></div>
-              <div class="chat-input">
-                <input id="msgBox" placeholder="Type a message...">
-                <button onclick="sendMessage()">Send</button>
-              </div>
-            </div>
-          </section>
+          </div>
         </div>
-      </main>
+      </div>
     </div>
   </div>
 
-  <script>
-    /* ======= Data ======= */
-    const users=[
-      {username:"admin1",  password:"Adm!n@123"},
-      {username:"admin2",  password:"SecUr3#456"},
-      {username:"student1",password:"St#uD1"},
-      {username:"student2",password:"St#uD2"},
-      {username:"student3",password:"St#uD3"},
-      {username:"student4",password:"St#uD4"},
-      {username:"student5",password:"St#uD5"},
-      {username:"student6",password:"St#uD6"},
-      {username:"student7",password:"St#uD7"},
-      {username:"student8",password:"St#uD8"},
-      {username:"student9",password:"St#uD9"},
-      {username:"student10",password:"St#uD10"}
-    ];
-    let currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
-    let uploads     = JSON.parse(localStorage.getItem("uploads")) || {};   // {cat:[{title,link}]}
-    let messages    = JSON.parse(localStorage.getItem("messages")) || [];  // chat
+<script>
+const users=[
+  {username:"admin1",password:"Adm!n@123"},
+  {username:"admin2",password:"SecUr3#456"},
+  {username:"student1",password:"St#uD1"},
+  {username:"student2",password:"St#uD2"},
+  {username:"student3",password:"St#uD3"}
+];
+let currentUser=JSON.parse(localStorage.getItem("currentUser"))||null;
+let uploads=JSON.parse(localStorage.getItem("uploads"))||{};
+let messages=JSON.parse(localStorage.getItem("messages"))||[];
 
-    /* ======= Auth ======= */
-    function login(){
-      const uname=document.getElementById("username").value.trim();
-      const pass =document.getElementById("password").value;
-      const found=users.find(u=>u.username===uname && u.password===pass);
-      if(!found){alert("Invalid Login");return;}
-      currentUser=found;
-      localStorage.setItem("currentUser",JSON.stringify(currentUser));
-      document.getElementById("login-page").style.display="none";
-      document.getElementById("website").style.display="block";
-      initSite();
-    }
-    function logout(){
-      localStorage.removeItem("currentUser");
-      location.reload();
-    }
+function login(){
+  let uname=document.getElementById("username").value;
+  let pass=document.getElementById("password").value;
+  let found=users.find(u=>u.username===uname&&u.password===pass);
+  if(found){
+    currentUser=found;
+    localStorage.setItem("currentUser",JSON.stringify(currentUser));
+    document.getElementById("login-page").style.display="none";
+    document.getElementById("website").style.display="block";
+    initSite();
+  }else{alert("Invalid Login");}
+}
+function logout(){localStorage.removeItem("currentUser");location.reload();}
+function initSite(){
+  if(currentUser.username.startsWith("admin")){document.getElementById("admin-items").style.display="block";}
+  renderMessages();renderUploads();
+}
+function showSection(id){
+  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  if(id==="students"){loadStudents();}
+  if(id==="analytics"){loadAnalytics();}
+}
 
-    /* ======= UI Init ======= */
-    function initSite(){
-      document.getElementById("welcome").innerText="Welcome "+currentUser.username;
-      // Admin panel visibility
-      if(currentUser.username.startsWith("admin")){
-        document.getElementById("admin-items").style.display="block";
-        document.getElementById("upload-form").style.display="block";
-      }else{
-        document.getElementById("admin-items").style.display="none";
-        document.getElementById("upload-form").style.display="none";
-      }
-      renderUploads();
-      renderMessages();
-      loadStudents();
-      loadAnalytics();
-      updateBadges();
-    }
+/* CHAT */
+function renderMessages(){
+  let box=document.getElementById("messages");box.innerHTML="";
+  messages.forEach(m=>{
+    let div=document.createElement("div");
+    div.className="message "+(m.user.startsWith("admin")?"admin-msg":"student-msg");
+    let icon=m.user.startsWith("admin")?"🥷":"🧑‍💼";
+    div.innerHTML=`<b>[${m.user} ${icon}]</b>: ${m.text}<div class="timestamp">${m.time}</div>`;
+    box.appendChild(div);
+  });
+  box.scrollTop=box.scrollHeight;
+}
+function sendMessage(){
+  let text=document.getElementById("msgBox").value;
+  if(text.trim()==="")return;
+  let msg={user:currentUser.username,text:text,time:new Date().toLocaleTimeString()};
+  messages.push(msg);
+  localStorage.setItem("messages",JSON.stringify(messages));
+  document.getElementById("msgBox").value="";
+  renderMessages();
+}
 
-    /* ======= Navigation ======= */
-    function onNav(li){
-      const target=li.getAttribute("data-target");
-      showSection(target);
-      // auto close sidebar on mobile
-      toggleSidebar(false);
-    }
-    function showSection(id){
-      document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
-      document.getElementById(id).classList.add("active");
-      if(id==="students") loadStudents();
-      if(id==="analytics")loadAnalytics();
-      if(id==="upload" && !currentUser.username.startsWith("admin")){
-        alert("Admin only!"); showSection("home");
-      }
-    }
+/* STUDENTS */
+function loadStudents(){
+  let list=document.getElementById("student-list");list.innerHTML="";
+  users.filter(u=>!u.username.startsWith("admin")).forEach(s=>{
+    let li=document.createElement("li");li.innerText=s.username;list.appendChild(li);
+  });
+}
 
-    /* ======= Sidebar Toggle (mobile) ======= */
-    function toggleSidebar(force){
-      const sb=document.getElementById("sidebar");
-      const ov=document.getElementById("overlay");
-      const willOpen = (typeof force==="boolean") ? force : !sb.classList.contains("active");
-      if(willOpen){sb.classList.add("active");ov.classList.add("show");}
-      else{sb.classList.remove("active");ov.classList.remove("show");}
-    }
+/* ANALYTICS */
+function loadAnalytics(){
+  document.getElementById("stats").innerText="Total Students: "+users.filter(u=>!u.username.startsWith("admin")).length+
+    "\nMessages: "+messages.length+"\nUploads: "+Object.values(uploads).flat().length;
+}
 
-    /* ======= Chat ======= */
-    function renderMessages(){
-      const box=document.getElementById("messages");
-      if(!box) return;
-      box.innerHTML="";
-      messages.forEach(m=>{
-        const div=document.createElement("div");
-        const isAdmin = m.user.startsWith("admin");
-        div.className="message "+(isAdmin?"admin-msg":"student-msg");
-        const icon=isAdmin?"🥷":"🧑‍💼";
-        div.innerHTML = `<b>[${m.user} ${icon}]</b> ${m.text}<div class="timestamp">${m.time}</div>`;
-        box.appendChild(div);
+/* UPLOAD */
+function uploadContent(){
+  let cat=document.getElementById("upload-category").value;
+  let title=document.getElementById("upload-title").value;
+  let file=document.getElementById("upload-file").files[0];
+  let link=document.getElementById("upload-link").value;
+  let finalLink="";
+  if(file){finalLink=URL.createObjectURL(file);}else{finalLink=link;}
+  if(!uploads[cat])uploads[cat]=[];
+  uploads[cat].push({title,link:finalLink,type:file?file.type:"link"});
+  localStorage.setItem("uploads",JSON.stringify(uploads));
+  renderUploads();alert("Uploaded!");
+}
+function renderUploads(){
+  ["youtube","notes","commands","live","support"].forEach(cat=>{
+    let list=document.getElementById(cat+"-list");
+    if(list){list.innerHTML="";
+      (uploads[cat]||[]).forEach(u=>{
+        let div=document.createElement("div");div.className="card";
+        if(cat==="youtube"){div.innerHTML=`<h4>${u.title}</h4><iframe width="100%" height="200" src="${u.link}" frameborder="0"></iframe>`;}
+        else if(u.type && u.type.includes("image")){div.innerHTML=`<h4>${u.title}</h4><img src="${u.link}" width="100%">`;}
+        else if(u.type && u.type.includes("video")){div.innerHTML=`<h4>${u.title}</h4><video src="${u.link}" width="100%" controls></video>`;}
+        else if(u.type && u.type.includes("pdf")){div.innerHTML=`<h4>${u.title}</h4><embed src="${u.link}" width="100%" height="400px">`;}
+        else if(cat==="notes"){div.innerHTML=`<h4>${u.title}</h4><a href="${u.link}" target="_blank">📄 Download</a>`;}
+        else{div.innerHTML=`<h4>${u.title}</h4><a href="${u.link}" target="_blank">${u.link}</a>`;}
+        list.appendChild(div);
       });
-      box.scrollTop=box.scrollHeight;
-      // badge
-      document.getElementById("count-chat").innerText = messages.length;
     }
-    function sendMessage(){
-      const input=document.getElementById("msgBox");
-      const text = (input.value||"").trim();
-      if(!text) return;
-      const msg={user:currentUser.username,text,time:new Date().toLocaleTimeString()};
-      messages.push(msg);
-      localStorage.setItem("messages",JSON.stringify(messages));
-      input.value="";
-      renderMessages();
-      loadAnalytics();
-    }
+  });
+}
 
-    /* ======= Students ======= */
-    function loadStudents(){
-      const list=document.getElementById("student-list");
-      if(!list) return;
-      list.innerHTML="";
-      users.filter(u=>!u.username.startsWith("admin")).forEach(s=>{
-        const li=document.createElement("li");
-        li.textContent = `🧑‍💼 ${s.username}`;
-        list.appendChild(li);
-      });
-      document.getElementById("count-students").innerText="10";
-    }
-
-    /* ======= Analytics ======= */
-    function loadAnalytics(){
-      const totalUploads = Object.values(uploads).reduce((n,arr)=>n+(arr?arr.length:0),0);
-      const stats = `Total Students: 10
-Messages: ${messages.length}
-Uploads: ${totalUploads}`;
-      document.getElementById("stats").innerText=stats;
-      document.getElementById("count-analytics").innerText="•";
-    }
-
-    /* ======= Uploads ======= */
-    function uploadContent(){
-      if(!currentUser.username.startsWith("admin")) { alert("Admin only!"); return; }
-      const cat  = document.getElementById("upload-category").value;
-      const title= document.getElementById("upload-title").value.trim();
-      const link = document.getElementById("upload-link").value.trim();
-      if(!title || !link){alert("Title & Link required");return;}
-      if(!uploads[cat]) uploads[cat]=[];
-      uploads[cat].push({title,link});
-      localStorage.setItem("uploads",JSON.stringify(uploads));
-      document.getElementById("upload-title").value="";
-      document.getElementById("upload-link").value="";
-      renderUploads();
-      loadAnalytics();
-      updateBadges();
-      alert("Uploaded!");
-    }
-
-    function renderUploads(){
-      const cats=["youtube","notes","commands","live","support"];
-      cats.forEach(cat=>{
-        const list  = document.getElementById(cat+"-list");
-        const empty = document.getElementById(cat+"-empty");
-        if(!list) return;
-        list.innerHTML="";
-        const items = uploads[cat]||[];
-        if(items.length===0){ if(empty) empty.style.display="block"; }
-        else{ if(empty) empty.style.display="none"; }
-        items.forEach(u=>{
-          const card=document.createElement("div");
-          card.className="card";
-          if(cat==="youtube"){
-            // if link is a video or playlist, embed; otherwise show anchor
-            if(u.link.includes("youtube.com") || u.link.includes("youtu.be")){
-              card.innerHTML = `<h4 style="margin-bottom:8px">${u.title}</h4>
-                <iframe width="100%" height="180" src="${u.link}" frameborder="0" allowfullscreen></iframe>`;
-            }else{
-              card.innerHTML = `<h4>${u.title}</h4><a href="${u.link}" target="_blank">${u.link}</a>`;
-            }
-          }else if(cat==="notes"){
-            card.innerHTML = `<h4>${u.title}</h4><a href="${u.link}" target="_blank">📄 Download</a>`;
-          }else{
-            card.innerHTML = `<h4>${u.title}</h4><a href="${u.link}" target="_blank">${u.link}</a>`;
-          }
-          list.appendChild(card);
-        });
-      });
-      updateBadges();
-    }
-
-    /* ======= Menu badges ======= */
-    function updateBadges(){
-      const getCount = c => (uploads[c] ? uploads[c].length : 0);
-      document.getElementById("count-youtube").innerText  = getCount("youtube");
-      document.getElementById("count-notes").innerText    = getCount("notes");
-      document.getElementById("count-commands").innerText = getCount("commands");
-      document.getElementById("count-live").innerText     = getCount("live");
-      document.getElementById("count-support").innerText  = getCount("support");
-      document.getElementById("count-home").innerText     = 0;
-      document.getElementById("count-upload").innerText   =
-        Object.values(uploads).reduce((n,arr)=>n+(arr?arr.length:0),0);
-      // chat count set in renderMessages()
-      document.getElementById("count-hacking").innerText  = 0;
-    }
-
-    /* ======= Theme ======= */
-    function toggleTheme(){
-      const isLight=document.body.classList.contains("light");
-      document.body.classList.toggle("light",!isLight);
-      document.body.classList.toggle("dark", isLight);
-      document.querySelector(".theme-toggle").innerText = isLight ? "🌞 Light" : "🌑 Dark";
-      localStorage.setItem("theme", isLight ? "dark" : "light");
-    }
-    // restore theme
-    (function(){
-      const t=localStorage.getItem("theme");
-      if(t){document.body.className=t;document.querySelector(".theme-toggle").innerText=(t==="dark"?"🌞 Light":"🌑 Dark");}
-    })();
-
-    // Auto-login session restore
-    if(currentUser){
-      document.getElementById("login-page").style.display="none";
-      document.getElementById("website").style.display="block";
-      initSite();
-    }
-  </script>
+/* THEME */
+function toggleTheme(){
+  if(document.body.classList.contains("light")){
+    document.body.classList.remove("light");document.body.classList.add("dark");
+    document.querySelector(".theme-toggle").innerText="🌞 Light";localStorage.setItem("theme","dark");
+  }else{
+    document.body.classList.remove("dark");document.body.classList.add("light");
+    document.querySelector(".theme-toggle").innerText="🌑 Dark";localStorage.setItem("theme","light");
+  }
+}
+if(localStorage.getItem("theme")){
+  document.body.className=localStorage.getItem("theme");
+  document.querySelector(".theme-toggle").innerText=document.body.classList.contains("dark")?"🌞 Light":"🌑 Dark";
+}
+if(currentUser){document.getElementById("login-page").style.display="none";document.getElementById("website").style.display="block";initSite();}
+</script>
 </body>
 </html>
