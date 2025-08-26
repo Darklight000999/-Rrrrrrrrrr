@@ -1,644 +1,558 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>darklight000999 — Final</title>
+  <title>darklight000999</title>
   <style>
-    *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;transition:.3s}
-    body{display:flex;justify-content:center;align-items:center;min-height:100vh}
-
-    /* THEME */
-    body.light{background:#e0e0e0;color:#222}
-    body.dark{background:#0f0f10;color:#f5f5f5}
-
-    /* Theme Toggle */
+    *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;transition:.25s;}
+    :root{
+      --w-sidebar:260px;
+      --radius:14px;
+    }
+    body{height:100vh;overflow:hidden;}
+    /* Theme */
+    body.light{background:#e0e0e0;color:#222;}
+    body.dark{background:#111;color:#fff;}
+    /* Floating Theme Toggle */
     .theme-toggle{
-      position:fixed;top:10px;right:10px;padding:8px 14px;border:none;border-radius:20px;
-      cursor:pointer;font-size:14px;z-index:999;box-shadow:0 4px 10px rgba(0,0,0,.15)
+      position:fixed;top:10px;right:10px;padding:8px 14px;border:none;border-radius:999px;
+      cursor:pointer;font-size:14px;z-index:1100;
     }
 
-    /* Login */
-    #login-page{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;width:100%}
-    .login-box{
-      width:350px;padding:30px;border-radius:16px;text-align:center;
-      box-shadow:8px 8px 16px #bebebe,-8px -8px 16px #ffffff
-    }
-    body.dark .login-box{background:#1a1a1a;box-shadow:8px 8px 16px #000,-8px -8px 16px #222}
-    body.light .login-box{background:#e0e0e0}
-    .login-box img{width:100px;height:100px;border-radius:50%;margin-bottom:12px;object-fit:cover}
-    .login-box h2{margin-bottom:6px}
-    .login-box h3{margin-bottom:18px;font-size:16px;color:gray}
-    .login-box input{
-      width:100%;padding:12px;margin:10px 0;border:none;outline:none;border-radius:25px
-    }
-    body.light .login-box input{
-      background:#e0e0e0;color:#222;box-shadow:inset 4px 4px 8px #bebebe,inset -4px -4px 8px #ffffff
-    }
-    body.dark .login-box input{
-      background:#222;color:#fff;box-shadow:inset 4px 4px 8px #000,inset -4px -4px 8px #333
-    }
-    .login-box button{
-      width:100%;padding:12px;margin:15px 0;border:none;cursor:pointer;border-radius:25px;font-weight:700
-    }
-    body.light .login-box button{background:#e0e0e0;color:#333;box-shadow:4px 4px 8px #bebebe,-4px -4px 8px #ffffff}
-    body.dark .login-box button{background:#222;color:#fff;box-shadow:4px 4px 8px #000,-4px -4px 8px #333}
-    .login-box a{font-size:13px;color:#ff3b3b;text-decoration:none}
-    .login-box a:hover{text-decoration:underline}
+    /* ========== Login ========== */
+    #login-page{display:flex;align-items:center;justify-content:center;height:100vh;width:100%;}
+    .login-box{width:350px;max-width:92%;padding:28px;border-radius:18px;text-align:center}
+    body.light .login-box{background:#e0e0e0;box-shadow:8px 8px 16px #bebebe,-8px -8px 16px #ffffff;}
+    body.dark .login-box{background:#1a1a1a;box-shadow:8px 8px 16px #000,-8px -8px 16px #222;}
+    .login-box img{width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:10px}
+    .login-box h3{margin:8px 0 18px;color:gray}
+    .login-box input{width:100%;padding:12px 16px;margin:8px 0;border:none;border-radius:999px;outline:none}
+    body.light .login-box input{background:#e0e0e0;color:#222;box-shadow:inset 4px 4px 8px #bebebe,inset -4px -4px 8px #ffffff;}
+    body.dark  .login-box input{background:#222;color:#fff;box-shadow:inset 4px 4px 8px #000,inset -4px -4px 8px #333;}
+    .login-box button{width:100%;padding:12px;margin-top:12px;border:none;border-radius:999px;font-weight:700;cursor:pointer}
+    body.light .login-box button{background:#e0e0e0;color:#222;box-shadow:4px 4px 8px #bebebe,-4px -4px 8px #ffffff;}
+    body.dark  .login-box button{background:#222;color:#fff;box-shadow:4px 4px 8px #000,-4px -4px 8px #333;}
+    .login-box a{font-size:13px;color:#ff5252;text-decoration:none}
 
-    /* App */
-    #website{display:none;min-height:100vh;width:100%}
-    .container{display:flex;min-height:100vh;width:100%}
+    /* ========== App Shell ========== */
+    #website{display:none;height:100vh;width:100%}
+    .container{display:flex;height:100%}
 
-    /* Sidebar */
-    .sidebar{width:280px;padding:20px;display:flex;flex-direction:column;gap:14px}
-    body.light .sidebar{background:#f0f0f0;border-right:2px solid #ccc}
-    body.dark .sidebar{background:#141416;border-right:2px solid #1f1f22}
-    .logo-container{position:relative;width:140px;height:140px;margin:0 auto 10px}
-    .rgb-ring{
-      position:absolute;inset:-10px;width:160px;height:160px;border-radius:50%;
-      background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);
-      animation:spin 4s linear infinite;filter:blur(4px);z-index:0
+    /* Sidebar (off-canvas mobile) */
+    .sidebar{
+      position:fixed;top:0;left:calc(-1 * var(--w-sidebar));bottom:0;width:var(--w-sidebar);
+      padding:18px;display:flex;flex-direction:column;z-index:1000;
+      transition:left .28s ease;
     }
-    .logo{position:relative;width:140px;height:140px;border-radius:50%;overflow:hidden;z-index:1}
-    .logo img{width:100%;height:100%;object-fit:cover}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    .menu h3{font-size:13px;opacity:.7;margin:8px 0}
-    .menu ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+    .sidebar.active{left:0}
+    body.light .sidebar{background:#f0f0f0;border-right:2px solid #ccc;}
+    body.dark  .sidebar{background:#1a1a1a;border-right:2px solid #222;}
+    .logo-box{width:140px;height:140px;margin:8px auto 14px}
+    .logo-box img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+
+    .menu h3{margin:10px 4px;font-size:13px;opacity:.75}
+    .menu ul{list-style:none}
     .menu li{
-      padding:10px 12px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:8px;
-      user-select:none
+      display:flex;align-items:center;gap:10px;justify-content:space-between;
+      padding:12px 12px;border-radius:12px;margin:6px 0;cursor:pointer;user-select:none
     }
-    body.light .menu li{background:#ddd}
-    body.dark .menu li{background:#1c1d20}
-    .menu li:hover{opacity:.95;transform:translateY(-1px)}
-    .pill{margin-left:auto;font-size:11px;opacity:.85}
+    .menu li .left{display:flex;align-items:center;gap:10px}
+    .menu .badge{
+      min-width:24px;height:24px;padding:0 8px;border-radius:999px;
+      display:inline-flex;align-items:center;justify-content:center;font-size:12px;
+      opacity:.85
+    }
+    body.light .menu li{background:#ddd;}
+    body.dark  .menu li{background:#222;}
+    body.light .menu .badge{background:#cfcfcf;color:#222;}
+    body.dark  .menu .badge{background:#333;color:#fff;}
+
+    /* Overlay for mobile when sidebar open */
+    .overlay{
+      position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(1px);
+      z-index:900;display:none;
+    }
+    .overlay.show{display:block}
 
     /* Main */
     .main{flex:1;display:flex;flex-direction:column;min-width:0}
-    .topbar{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px}
-    body.light .topbar{background:#f0f0f0;border-bottom:2px solid #ccc}
-    body.dark .topbar{background:#141416;border-bottom:2px solid #1f1f22}
+    /* Topbar */
+    .topbar{
+      display:flex;align-items:center;gap:10px;padding:8px 12px;
+    }
+    body.light .topbar{background:#f0f0f0;border-bottom:2px solid #ccc;}
+    body.dark  .topbar{background:#1a1a1a;border-bottom:2px solid #222;}
+    .menu-btn{font-size:24px;line-height:1;background:none;border:none;cursor:pointer}
+    .brand{
+      display:flex;align-items:center;gap:10px;flex:1;justify-content:center;
+      text-transform:lowercase;font-weight:800;letter-spacing:.5px;font-size:18px
+    }
+    .brand img{width:32px;height:32px;border-radius:50%;object-fit:cover}
+    .topbar-right{
+      display:flex;align-items:center;gap:10px;white-space:nowrap
+    }
+    .welcome{opacity:.85;font-size:13px}
+    .logout{border:none;border-radius:999px;padding:8px 12px;cursor:pointer;font-weight:700}
+    body.light .logout{background:#e0e0e0;color:#222;box-shadow:2px 2px 4px #cfcfcf,-2px -2px 4px #fff;}
+    body.dark  .logout{background:#222;color:#fff;box-shadow:2px 2px 4px #000,-2px -2px 4px #333;}
+
+    /* Content area */
     .content{flex:1;display:flex;overflow:hidden}
-    .section{display:none;flex:1;padding:18px;overflow:auto}
+    .section{display:none;padding:16px;overflow:auto;width:100%}
     .active{display:block}
 
-    /* Generic cards & grids */
-    .card{padding:18px;border-radius:14px;margin-bottom:16px}
-    body.light .card{background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-    body.dark .card{background:#16181d;box-shadow:0 2px 8px rgba(0,0,0,.6)}
-
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
-    .item{border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
-    body.light .item{background:#fafafa;border:1px solid #e9e9e9}
-    body.dark .item{background:#1a1c22;border:1px solid #24262d}
-    .item .thumb{position:relative;width:100%;padding-top:56%;background:#000}
-    .item iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-    .item .body{padding:12px;display:flex;flex-direction:column;gap:8px}
-    .badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px;opacity:.9}
-    .badge.you{background:#0b5cff;color:#fff}
-    .badge.pdf{background:#00a884;color:#fff}
-    .badge.link{background:#9c27b0;color:#fff}
-    .btn-row{display:flex;gap:8px;margin-top:4px}
-    .btn{padding:8px 10px;border:none;border-radius:10px;cursor:pointer;font-weight:600;text-decoration:none;text-align:center}
-    body.light .btn{background:#e7e7e7;color:#222}
-    body.dark .btn{background:#23262e;color:#f5f5f5}
-    .btn.primary{background:#0b5cff;color:#fff}
-    .muted{font-size:12px;opacity:.7}
-
-    /* Students list */
-    #student-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;list-style:none}
-    .student-item{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px}
-    .student-item img{width:34px;height:34px;border-radius:50%;object-fit:cover}
-    body.light .student-item{background:#e9e9e9}
-    body.dark .student-item{background:#1e2127}
+    /* Cards + grids for uploads */
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+    .card{padding:14px;border-radius:var(--radius);box-shadow:0 2px 6px rgba(0,0,0,.18)}
+    body.light .card{background:#fff;}
+    body.dark  .card{background:#222;color:#fff;}
+    .muted{opacity:.7}
 
     /* Chat */
-    .chat-wrap{display:flex;flex-direction:column;height:calc(100vh - 150px);max-height:720px}
-    .chat-header{text-align:center;padding:10px;border-radius:12px;margin-bottom:8px}
-    body.light .chat-header{background:#eee;border:1px solid #d7d7d7}
-    body.dark .chat-header{background:#15171c;border:1px solid #24262d}
-    .chat-messages{flex:1;overflow:auto;padding:10px;display:flex;flex-direction:column;gap:8px}
-    .bubble{max-width:74%;display:flex;gap:10px}
-    .bubble.me{margin-left:auto;flex-direction:row-reverse}
-    .avatar{width:38px;min-width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.15)}
-    .bubble-box{padding:10px 12px;border-radius:12px;font-size:14px;line-height:1.35;position:relative}
-    .meta{font-size:11px;opacity:.8;margin-bottom:4px}
-    .time{font-size:10px;opacity:.6;margin-top:4px;text-align:right}
-    body.light .bubble.student .bubble-box{background:#e0e0e0}
-    body.dark .bubble.student .bubble-box{background:#24272f}
-    body.light .bubble.admin .bubble-box{background:#0055ff;color:#fff}
-    body.dark .bubble.admin .bubble-box{background:#0b5cff;color:#fff}
-    .chat-input{display:flex;gap:8px;margin-top:8px}
-    .chat-input input{flex:1;padding:12px;border:none;outline:none;border-radius:12px}
-    body.light .chat-input input{background:#eee;color:#222;border:1px solid #d7d7d7}
-    body.dark .chat-input input{background:#1a1c22;color:#fff;border:1px solid #24262d}
-    .chat-input button{padding:12px 16px;border:none;border-radius:12px;cursor:pointer;font-weight:700}
-    body.light .chat-input button{background:#ddd;color:#222}
-    body.dark .chat-input button{background:#0055ff;color:#fff}
+    .chat-wrap{max-width:960px;margin:0 auto;width:100%;display:flex;flex-direction:column;height:calc(100% - 10px)}
+    .chat-header{padding:10px;text-align:center;border-radius:12px;margin-bottom:6px}
+    body.light .chat-header{background:#eee;border:1px solid #ccc;}
+    body.dark  .chat-header{background:#1a1a1a;border:1px solid #333;}
+    .chat-messages{flex:1;overflow-y:auto;padding:10px;border-radius:12px;margin-bottom:8px}
+    body.light .chat-messages{background:#f9f9f9;border:1px solid #ddd;}
+    body.dark  .chat-messages{background:#0d0d0d;border:1px solid #222;}
+    .message{max-width:78%;padding:10px 12px;margin:6px 0;border-radius:12px;font-size:14px}
+    .student-msg{background:#666;color:#fff;align-self:flex-start}
+    .admin-msg{background:#0055ff;color:#fff;align-self:flex-end}
+    .timestamp{font-size:10px;opacity:.8;margin-top:3px}
+    .chat-input{display:flex;gap:8px}
+    .chat-input input{flex:1;padding:10px;border:none;border-radius:12px;outline:none}
+    .chat-input button{padding:10px 16px;border:none;border-radius:12px;cursor:pointer;font-weight:700}
+    body.light .chat-input input{background:#eee;color:#222;}
+    body.dark  .chat-input input{background:#1a1a1a;color:#fff;}
+    body.light .chat-input button{background:#ddd;color:#222;}
+    body.dark  .chat-input button{background:#0055ff;color:#fff;}
 
-    /* Upload Manager */
-    .form{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-    .form .full{grid-column:1/-1}
-    .form input,.form select{padding:10px;border-radius:10px;border:1px solid transparent;outline:none}
-    body.light .form input, body.light .form select{background:#efefef;border-color:#e0e0e0}
-    body.dark .form input, body.dark .form select{background:#1a1c22;border-color:#24262d;color:#fff}
-    .table{width:100%;border-collapse:collapse}
-    .table th,.table td{padding:10px;text-align:left;border-bottom:1px solid rgba(200,200,200,.2)}
-    .table th{opacity:.8}
-    .danger{background:#d32f2f;color:#fff}
+    /* Desktop: sidebar docked by default */
+    @media(min-width:992px){
+      .sidebar{left:0}
+      .overlay{display:none!important}
+      .main{margin-left:var(--w-sidebar)}
+      .menu-btn{display:none}
+    }
+    /* Mobile tweaks */
+    @media(max-width:480px){
+      .brand{font-size:16px}
+      .welcome{display:none}
+      .brand img{width:28px;height:28px}
+    }
   </style>
 </head>
 <body class="light">
-
-  <!-- Theme Toggle -->
+  <!-- Theme -->
   <button class="theme-toggle" onclick="toggleTheme()">🌑 Dark</button>
 
-  <!-- Login Page -->
+  <!-- Login -->
   <div id="login-page">
     <div class="login-box">
       <img src="Screenshot_20250821_142735.jpg" alt="Logo">
       <h2>darklight000999</h2>
       <h3>LOGIN</h3>
-      <input type="text" id="username" placeholder="Username">
-      <input type="password" id="password" placeholder="Password">
+      <input id="username" placeholder="Username">
+      <input id="password" type="password" placeholder="Password">
       <button onclick="login()">Sign In</button>
-      <p><a href="#">Forgot Password? click here</a></p>
+      <p style="margin-top:8px"><a href="#">Forgot Password? click here</a></p>
     </div>
   </div>
 
-  <!-- Website -->
+  <!-- App -->
   <div id="website">
     <div class="container">
       <!-- Sidebar -->
-      <aside class="sidebar">
-        <div class="logo-container">
-          <div class="rgb-ring"></div>
-          <div class="logo"><img src="Screenshot_20250821_142735.jpg" alt="Logo"></div>
-        </div>
+      <aside class="sidebar" id="sidebar">
+        <div class="logo-box"><img src="Screenshot_20250821_142735.jpg" alt="Logo"></div>
 
-        <div class="menu">
+        <nav class="menu">
           <ul id="menu-items">
-            <li onclick="showSection('home')">🏠 Home</li>
-            <li onclick="showSection('youtube')">🎥 YouTube Videos <span class="pill" id="count-youtube">0</span></li>
-            <li onclick="showSection('notes')">📑 PDF & Notes <span class="pill" id="count-notes">0</span></li>
-            <li onclick="showSection('hacking')">🧪 Hacking <span class="pill" id="count-hacking">0</span></li>
-            <li onclick="showSection('live')">🎥 Live Class <span class="pill" id="count-live">0</span></li>
-            <li onclick="showSection('support')">🛟 Contact & Support</li>
-            <li onclick="showSection('chat')">💬 Chat <span class="pill" id="msgCountPill">0</span></li>
+            <li data-target="home" onclick="onNav(this)">
+              <div class="left">🏠 <span>Home</span></div>
+              <span class="badge" id="count-home">0</span>
+            </li>
+            <li data-target="youtube" onclick="onNav(this)">
+              <div class="left">🎬 <span>YouTube Videos</span></div>
+              <span class="badge" id="count-youtube">0</span>
+            </li>
+            <li data-target="notes" onclick="onNav(this)">
+              <div class="left">📑 <span>PDF & Notes</span></div>
+              <span class="badge" id="count-notes">0</span>
+            </li>
+            <li data-target="commands" onclick="onNav(this)">
+              <div class="left">🧰 <span>Hacking Commands</span></div>
+              <span class="badge" id="count-commands">0</span>
+            </li>
+            <li data-target="hacking" onclick="onNav(this)">
+              <div class="left">🧪 <span>Hacking</span></div>
+              <span class="badge" id="count-hacking">0</span>
+            </li>
+            <li data-target="live" onclick="onNav(this)">
+              <div class="left">🎥 <span>Live Class</span></div>
+              <span class="badge" id="count-live">0</span>
+            </li>
+            <li data-target="support" onclick="onNav(this)">
+              <div class="left">🆘 <span>Contact & Support</span></div>
+              <span class="badge" id="count-support">0</span>
+            </li>
+            <li data-target="chat" onclick="onNav(this)">
+              <div class="left">💬 <span>Chat</span></div>
+              <span class="badge" id="count-chat">0</span>
+            </li>
           </ul>
 
           <h3>Admin Panel</h3>
-          <ul id="admin-items" style="display:none;">
-            <li onclick="showSection('upload')">🗂️ Upload Manager</li>
-            <li onclick="showSection('students')">👥 Manage Students</li>
-            <li onclick="showSection('announce')">📢 Announcements</li>
-            <li onclick="showSection('analytics')">📊 Analytics</li>
+          <ul id="admin-items" style="display:none">
+            <li data-target="upload" onclick="onNav(this)">
+              <div class="left">📂 <span>Upload Manager</span></div>
+              <span class="badge" id="count-upload">0</span>
+            </li>
+            <li data-target="students" onclick="onNav(this)">
+              <div class="left">👥 <span>Manage Students</span></div>
+              <span class="badge" id="count-students">10</span>
+            </li>
+            <li data-target="announce" onclick="onNav(this)">
+              <div class="left">📢 <span>Announcements</span></div>
+              <span class="badge" id="count-announce">0</span>
+            </li>
+            <li data-target="analytics" onclick="onNav(this)">
+              <div class="left">📊 <span>Analytics</span></div>
+              <span class="badge" id="count-analytics">0</span>
+            </li>
           </ul>
-        </div>
+        </nav>
       </aside>
 
+      <!-- overlay for mobile -->
+      <div id="overlay" class="overlay" onclick="toggleSidebar(false)"></div>
+
       <!-- Main -->
-      <main class="main">
+      <main class="main" id="main">
+        <!-- Topbar -->
         <div class="topbar">
-          <span id="welcome">Welcome Guest</span>
-          <button onclick="logout()">Logout</button>
+          <button class="menu-btn" onclick="toggleSidebar(true)">☰</button>
+
+          <div class="brand">
+            <img src="Screenshot_20250821_142735.jpg" alt="L">
+            <span>darklight000999</span>
+            <img src="Screenshot_20250821_142735.jpg" alt="R">
+          </div>
+
+          <div class="topbar-right">
+            <span class="welcome" id="welcome">Welcome Guest</span>
+            <button class="logout" onclick="logout()">Logout</button>
+          </div>
         </div>
 
+        <!-- Content -->
         <div class="content">
           <section id="home" class="section active">
-            <div class="card">
-              <h2 style="margin-bottom:6px;">Welcome to darklight000999</h2>
-              <p>Theme toggle (top-right) से Light/Dark बदलें. Sidebar से sections खोलें. Chat 💬 अलग सेक्शन में है।</p>
-            </div>
+            <h2>Welcome to darklight000999</h2>
+            <p class="muted" style="margin-top:6px">Use the menu to open sections. Uploads appear category-wise with counts.</p>
           </section>
 
-          <!-- Category-wise Views -->
           <section id="youtube" class="section">
-            <div class="card"><h2>🎥 YouTube Videos</h2></div>
-            <div class="grid" id="youtube-grid"></div>
+            <h2>🎬 YouTube Videos</h2>
+            <div id="youtube-list" class="grid"></div>
+            <p id="youtube-empty" class="muted">No uploads yet.</p>
           </section>
 
           <section id="notes" class="section">
-            <div class="card"><h2>📑 PDF & Notes</h2></div>
-            <div class="grid" id="notes-grid"></div>
+            <h2>📑 PDF & Notes</h2>
+            <div id="notes-list" class="grid"></div>
+            <p id="notes-empty" class="muted">No uploads yet.</p>
+          </section>
+
+          <section id="commands" class="section">
+            <h2>🧰 Hacking Commands</h2>
+            <div id="commands-list" class="grid"></div>
+            <p id="commands-empty" class="muted">No uploads yet.</p>
           </section>
 
           <section id="hacking" class="section">
-            <div class="card"><h2>🧪 Hacking Uploads</h2></div>
-            <div class="grid" id="hacking-grid"></div>
+            <h2>🧪 Hacking Section</h2>
+            <p class="muted">Content curated by admins will appear here.</p>
           </section>
 
           <section id="live" class="section">
-            <div class="card"><h2>🎥 Live Class Files/Links</h2></div>
-            <div class="grid" id="live-grid"></div>
+            <h2>🎥 Live Class</h2>
+            <div id="live-list" class="grid"></div>
+            <p id="live-empty" class="muted">No uploads yet.</p>
           </section>
 
-          <section id="support" class="section"><div class="card"><h2>Contact & Support</h2></div></section>
+          <section id="support" class="section">
+            <h2>🆘 Contact & Support</h2>
+            <div id="support-list" class="grid"></div>
+            <p id="support-empty" class="muted">No uploads yet.</p>
+          </section>
 
-          <!-- Admin-only -->
           <section id="upload" class="section">
-            <div class="card">
-              <h2>🗂️ Upload Manager (Admin Only)</h2>
-              <div class="form">
-                <select id="up-category">
-                  <option value="youtube">YouTube Video</option>
-                  <option value="notes">PDF / Notes</option>
-                  <option value="hacking">Hacking</option>
-                  <option value="live">Live Class</option>
-                </select>
-                <input id="up-title" placeholder="Title (e.g. JavaScript Basics)">
-                <input id="up-url" class="full" placeholder="Link / URL (e.g. https://youtu.be/xxxx)">
-              </div>
-              <div class="btn-row">
-                <button class="btn primary" onclick="handleUpload()">+ Add Upload</button>
-                <button class="btn" onclick="exportUploads()">Export JSON</button>
-                <button class="btn" onclick="importUploadsPrompt()">Import JSON</button>
-              </div>
-            </div>
-
-            <div class="card">
-              <h3 style="margin-bottom:8px;">All Uploads</h3>
-              <div style="overflow:auto">
-                <table class="table" id="uploads-table">
-                  <thead>
-                    <tr><th>#</th><th>Category</th><th>Title</th><th>URL</th><th>By</th><th>Date</th><th>Actions</th></tr>
-                  </thead>
-                  <tbody></tbody>
-                </table>
-              </div>
+            <h2>📂 Upload Manager (Admin Only)</h2>
+            <div id="upload-form">
+              <select id="upload-category">
+                <option value="youtube">YouTube</option>
+                <option value="notes">Notes</option>
+                <option value="commands">Commands</option>
+                <option value="live">Live</option>
+                <option value="support">Support</option>
+              </select>
+              <input id="upload-title" placeholder="Title">
+              <input id="upload-link" placeholder="Link or Embed URL">
+              <button onclick="uploadContent()">Upload</button>
             </div>
           </section>
 
           <section id="students" class="section">
-            <div class="card">
-              <h2>Manage Students</h2>
-              <ul id="student-list"></ul>
-            </div>
+            <h2>👥 Manage Students</h2>
+            <ul id="student-list" style="margin-top:10px;line-height:1.9"></ul>
           </section>
 
-          <section id="announce" class="section"><div class="card"><h2>Announcements</h2></div></section>
+          <section id="announce" class="section">
+            <h2>📢 Announcements</h2>
+            <p class="muted">No announcements yet.</p>
+          </section>
 
           <section id="analytics" class="section">
-            <div class="card">
-              <h2>Analytics</h2>
-              <p id="stats"></p>
-            </div>
+            <h2>📊 Analytics</h2>
+            <p id="stats" class="muted"></p>
           </section>
 
-          <!-- CHAT (separate section) -->
           <section id="chat" class="section">
-            <div class="chat-wrap card">
+            <div class="chat-wrap">
               <div class="chat-header">Chat</div>
-              <div class="chat-messages" id="messages"></div>
+              <div id="messages" class="chat-messages"></div>
               <div class="chat-input">
-                <input type="text" id="msgBox" placeholder="Type a message..." onkeydown="if(event.key==='Enter'){sendMessage()}">
+                <input id="msgBox" placeholder="Type a message...">
                 <button onclick="sendMessage()">Send</button>
               </div>
             </div>
           </section>
-
         </div>
       </main>
     </div>
   </div>
 
   <script>
-    // ======= USER DIRECTORY (2 Admin + 10 Students) =======
-    const users = [
-      // Admins
-      { username:"admin1", displayName:"Admin 1", password:"A!dm1n-67Nq@9x#T", role:"admin", icon:"🥷", avatar:"https://i.pravatar.cc/200?img=5" },
-      { username:"admin2", displayName:"Admin 2", password:"A!dm2n-@4ZpQ8$hd", role:"admin", icon:"🥷", avatar:"https://i.pravatar.cc/200?img=15" },
-
-      // Students (10)
-      { username:"student1", displayName:"student1", password:"stU1@u!7Qp#93Lm", role:"student", icon:"🧑‍💼", avatar:"https://i.pravatar.cc/200?img=1" },
-      { username:"student2", displayName:"student2", password:"stU2@M5r$1b!02z", role:"student", icon:"🧑‍💼", avatar:"https://i.pravatar.cc/200?img=2" },
-      { username:"student3", displayName:"student3", password:"stU3#vT9!aQ6&pe", role:"student", icon:"🧑‍💼", avatar:"https://i.pravatar.cc/200?img=3" },
-      { username:"student4", displayName:"student4", password:"stU4$Yp1@G8z!mn", role:"student", icon:"🧑‍💼", avatar:"https://i.pravatar.cc/200?img=4" },
-      { username:"student5", displayName:"student5", password:"stU5!qW7#rP2@lx", role:"student", icon:"🧑‍💼", avatar:"https://i.pravatar.cc/200?img=6" },
-      { username:"student6", displayName:"student6", password:"stU6@9Lk!3z#Va2", role:"student", icon:"🧑‍💼", avatar:"https://i.pravatar.cc/200?img=7" },
-      { username:"student7", displayName:"student7", password:"stU7#xP2!Q9@bmZ", role:"student", icon:"🧑‍💼", avatar:"https://i.pravatar.cc/200?img=8" },
-      { username:"student8", displayName:"student8", password:"stU8!Zv4@1Tr#po", role:"student", icon:"🧑‍💼", avatar:"https://i.pravatar.cc/200?img=9" },
-      { username:"student9", displayName:"student9", password:"stU9@tQ6!Lp2#we", role:"student", icon:"🧑‍💼", avatar:"https://i.pravatar.cc/200?img=10" },
-      { username:"student10", displayName:"student10", password:"stU10!rA2#Qv8@k", role:"student", icon:"🧑‍💼", avatar:"https://i.pravatar.cc/200?img=11" },
+    /* ======= Data ======= */
+    const users=[
+      {username:"admin1",  password:"Adm!n@123"},
+      {username:"admin2",  password:"SecUr3#456"},
+      {username:"student1",password:"St#uD1"},
+      {username:"student2",password:"St#uD2"},
+      {username:"student3",password:"St#uD3"},
+      {username:"student4",password:"St#uD4"},
+      {username:"student5",password:"St#uD5"},
+      {username:"student6",password:"St#uD6"},
+      {username:"student7",password:"St#uD7"},
+      {username:"student8",password:"St#uD8"},
+      {username:"student9",password:"St#uD9"},
+      {username:"student10",password:"St#uD10"}
     ];
-
-    // ======= STATE =======
     let currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
-    let messages    = JSON.parse(localStorage.getItem("messages")) || [];
-    let uploads     = JSON.parse(localStorage.getItem("uploads"))  || []; // {id,category,title,url,by,time}
+    let uploads     = JSON.parse(localStorage.getItem("uploads")) || {};   // {cat:[{title,link}]}
+    let messages    = JSON.parse(localStorage.getItem("messages")) || [];  // chat
 
-    // ======= AUTH =======
+    /* ======= Auth ======= */
     function login(){
-      const uname = document.getElementById("username").value.trim();
-      const pass  = document.getElementById("password").value;
-      const found = users.find(u => u.username === uname && u.password === pass);
-      if(found){
-        currentUser = found;
-        localStorage.setItem("currentUser", JSON.stringify(currentUser));
-        document.getElementById("login-page").style.display = "none";
-        document.getElementById("website").style.display    = "block";
-        initSite();
-      }else{
-        alert("Invalid Login");
-      }
+      const uname=document.getElementById("username").value.trim();
+      const pass =document.getElementById("password").value;
+      const found=users.find(u=>u.username===uname && u.password===pass);
+      if(!found){alert("Invalid Login");return;}
+      currentUser=found;
+      localStorage.setItem("currentUser",JSON.stringify(currentUser));
+      document.getElementById("login-page").style.display="none";
+      document.getElementById("website").style.display="block";
+      initSite();
     }
     function logout(){
       localStorage.removeItem("currentUser");
       location.reload();
     }
 
-    // ======= INIT =======
+    /* ======= UI Init ======= */
     function initSite(){
-      document.getElementById("welcome").innerText = "Welcome " + currentUser.username;
-      if(currentUser.role === "admin"){
-        document.getElementById("admin-items").style.display = "block";
+      document.getElementById("welcome").innerText="Welcome "+currentUser.username;
+      // Admin panel visibility
+      if(currentUser.username.startsWith("admin")){
+        document.getElementById("admin-items").style.display="block";
+        document.getElementById("upload-form").style.display="block";
+      }else{
+        document.getElementById("admin-items").style.display="none";
+        document.getElementById("upload-form").style.display="none";
       }
-      updateMsgCountPill();
-      renderAllCategories();
-      renderUploadsTable();
+      renderUploads();
       renderMessages();
+      loadStudents();
+      loadAnalytics();
+      updateBadges();
     }
 
-    // ======= NAV =======
+    /* ======= Navigation ======= */
+    function onNav(li){
+      const target=li.getAttribute("data-target");
+      showSection(target);
+      // auto close sidebar on mobile
+      toggleSidebar(false);
+    }
     function showSection(id){
-      document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+      document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
       document.getElementById(id).classList.add("active");
-
-      if(id === "students")  loadStudents();
-      if(id === "analytics") loadAnalytics();
-      if(id === "chat")      renderMessages(); // ensure fresh paint when opening chat
-      if(["youtube","notes","hacking","live"].includes(id)) renderAllCategories();
-      if(id === "upload"){ renderUploadsTable(); }
+      if(id==="students") loadStudents();
+      if(id==="analytics")loadAnalytics();
+      if(id==="upload" && !currentUser.username.startsWith("admin")){
+        alert("Admin only!"); showSection("home");
+      }
     }
 
-    // ======= STUDENTS =======
-    function loadStudents(){
-      const list = document.getElementById("student-list");
-      list.innerHTML = "";
-      users.filter(u => u.role === "student").forEach(s => {
-        const li = document.createElement("li");
-        li.className = "student-item";
-        li.innerHTML = `
-          <img src="${s.avatar}" alt="${s.username}">
-          <div>
-            <div><strong>${s.displayName}</strong> ${s.icon}</div>
-            <div class="muted">${s.username}</div>
-          </div>
-        `;
-        list.appendChild(li);
-      });
+    /* ======= Sidebar Toggle (mobile) ======= */
+    function toggleSidebar(force){
+      const sb=document.getElementById("sidebar");
+      const ov=document.getElementById("overlay");
+      const willOpen = (typeof force==="boolean") ? force : !sb.classList.contains("active");
+      if(willOpen){sb.classList.add("active");ov.classList.add("show");}
+      else{sb.classList.remove("active");ov.classList.remove("show");}
     }
 
-    // ======= ANALYTICS =======
-    function loadAnalytics(){
-      const totalStudents = users.filter(u => u.role==="student").length;
-      const totalAdmins   = users.filter(u => u.role==="admin").length;
-      document.getElementById("stats").innerText =
-        "Total Students: " + totalStudents +
-        "\nAdmins: " + totalAdmins +
-        "\nMessages: " + messages.length +
-        "\nUploads: " + uploads.length;
-    }
-
-    // ======= CHAT =======
-    function updateMsgCountPill(){
-      const pill = document.getElementById("msgCountPill");
-      pill.textContent = messages.length;
-    }
+    /* ======= Chat ======= */
     function renderMessages(){
-      const box = document.getElementById("messages");
-      box.innerHTML = "";
-      messages.forEach(m => {
-        const wrap = document.createElement("div");
-        wrap.className = "bubble " + (m.role === "admin" ? "admin" : "student") + (currentUser && m.user === currentUser.username ? " me" : "");
-        wrap.innerHTML = `
-          <img class="avatar" src="${m.avatar}" alt="${m.user}">
-          <div class="bubble-box">
-            <div class="meta">[${m.displayName} ${m.icon}]</div>
-            <div class="text">${escapeHtml(m.text)}</div>
-            <div class="time">${m.time}</div>
-          </div>
-        `;
-        box.appendChild(wrap);
+      const box=document.getElementById("messages");
+      if(!box) return;
+      box.innerHTML="";
+      messages.forEach(m=>{
+        const div=document.createElement("div");
+        const isAdmin = m.user.startsWith("admin");
+        div.className="message "+(isAdmin?"admin-msg":"student-msg");
+        const icon=isAdmin?"🥷":"🧑‍💼";
+        div.innerHTML = `<b>[${m.user} ${icon}]</b> ${m.text}<div class="timestamp">${m.time}</div>`;
+        box.appendChild(div);
       });
-      box.scrollTop = box.scrollHeight;
-      updateMsgCountPill();
+      box.scrollTop=box.scrollHeight;
+      // badge
+      document.getElementById("count-chat").innerText = messages.length;
     }
     function sendMessage(){
-      const input = document.getElementById("msgBox");
-      const text  = input.value;
-      if(!currentUser){ alert("Please login first."); return; }
-      if(text.trim() === "") return;
-
-      const msg = {
-        user: currentUser.username,
-        displayName: currentUser.displayName,
-        text: text,
-        time: new Date().toLocaleTimeString(),
-        role: currentUser.role,
-        icon: currentUser.icon,
-        avatar: currentUser.avatar
-      };
+      const input=document.getElementById("msgBox");
+      const text = (input.value||"").trim();
+      if(!text) return;
+      const msg={user:currentUser.username,text,time:new Date().toLocaleTimeString()};
       messages.push(msg);
-      localStorage.setItem("messages", JSON.stringify(messages));
-      input.value = "";
+      localStorage.setItem("messages",JSON.stringify(messages));
+      input.value="";
       renderMessages();
+      loadAnalytics();
     }
 
-    // ======= UPLOAD MANAGER =======
-    function handleUpload(){
-      if(!currentUser || currentUser.role!=="admin"){
-        alert("Only admin can upload.");
-        return;
-      }
-      const cat   = document.getElementById("up-category").value;
-      const title = document.getElementById("up-title").value.trim();
-      const url   = document.getElementById("up-url").value.trim();
-      if(!title || !url){
-        alert("Please fill Title and URL.");
-        return;
-      }
-      const u = {
-        id: "u_" + Date.now(),
-        category: cat,
-        title: title,
-        url: url,
-        by: currentUser.displayName + " " + currentUser.icon,
-        time: new Date().toLocaleString()
-      };
-      uploads.push(u);
-      localStorage.setItem("uploads", JSON.stringify(uploads));
-      document.getElementById("up-title").value = "";
-      document.getElementById("up-url").value   = "";
-      renderAllCategories();
-      renderUploadsTable();
-      alert("Uploaded ✔️");
-    }
-
-    function deleteUpload(id){
-      if(!confirm("Delete this upload?")) return;
-      uploads = uploads.filter(x => x.id !== id);
-      localStorage.setItem("uploads", JSON.stringify(uploads));
-      renderAllCategories();
-      renderUploadsTable();
-    }
-
-    function renderUploadsTable(){
-      const tbody = document.querySelector("#uploads-table tbody");
-      if(!tbody) return;
-      tbody.innerHTML = "";
-      uploads.forEach((u,idx)=>{
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${idx+1}</td>
-          <td>${badgeFor(u.category)}</td>
-          <td>${escapeHtml(u.title)}</td>
-          <td><a href="${u.url}" target="_blank" rel="noopener">${short(u.url)}</a></td>
-          <td>${u.by}</td>
-          <td>${u.time}</td>
-          <td><button class="btn danger" onclick="deleteUpload('${u.id}')">Delete</button></td>
-        `;
-        tbody.appendChild(tr);
+    /* ======= Students ======= */
+    function loadStudents(){
+      const list=document.getElementById("student-list");
+      if(!list) return;
+      list.innerHTML="";
+      users.filter(u=>!u.username.startsWith("admin")).forEach(s=>{
+        const li=document.createElement("li");
+        li.textContent = `🧑‍💼 ${s.username}`;
+        list.appendChild(li);
       });
+      document.getElementById("count-students").innerText="10";
     }
 
-    // ======= CATEGORY RENDERERS =======
-    function renderAllCategories(){
-      renderCategory("youtube", document.getElementById("youtube-grid"));
-      renderCategory("notes",   document.getElementById("notes-grid"));
-      renderCategory("hacking", document.getElementById("hacking-grid"));
-      renderCategory("live",    document.getElementById("live-grid"));
-      // update counts
-      setCount("youtube");
-      setCount("notes");
-      setCount("hacking");
-      setCount("live");
+    /* ======= Analytics ======= */
+    function loadAnalytics(){
+      const totalUploads = Object.values(uploads).reduce((n,arr)=>n+(arr?arr.length:0),0);
+      const stats = `Total Students: 10
+Messages: ${messages.length}
+Uploads: ${totalUploads}`;
+      document.getElementById("stats").innerText=stats;
+      document.getElementById("count-analytics").innerText="•";
     }
 
-    function setCount(cat){
-      const count = uploads.filter(x=>x.category===cat).length;
-      const el = document.getElementById("count-"+cat);
-      if(el) el.textContent = count;
+    /* ======= Uploads ======= */
+    function uploadContent(){
+      if(!currentUser.username.startsWith("admin")) { alert("Admin only!"); return; }
+      const cat  = document.getElementById("upload-category").value;
+      const title= document.getElementById("upload-title").value.trim();
+      const link = document.getElementById("upload-link").value.trim();
+      if(!title || !link){alert("Title & Link required");return;}
+      if(!uploads[cat]) uploads[cat]=[];
+      uploads[cat].push({title,link});
+      localStorage.setItem("uploads",JSON.stringify(uploads));
+      document.getElementById("upload-title").value="";
+      document.getElementById("upload-link").value="";
+      renderUploads();
+      loadAnalytics();
+      updateBadges();
+      alert("Uploaded!");
     }
 
-    function renderCategory(cat, container){
-      if(!container) return;
-      container.innerHTML = "";
-      const items = uploads.filter(x=>x.category===cat);
-      if(items.length===0){
-        container.innerHTML = `<div class="muted">No uploads yet.</div>`;
-        return;
-      }
-      items.forEach(u=>{
-        const card = document.createElement("div");
-        card.className = "item";
-        if(cat==="youtube"){
-          const vid = youtubeIdFromUrl(u.url);
-          card.innerHTML = `
-            <div class="thumb">
-              ${vid ? `<iframe src="https://www.youtube.com/embed/${vid}" allowfullscreen></iframe>` : `<div style="color:#fff;display:flex;align-items:center;justify-content:center;height:100%">Invalid YouTube URL</div>`}
-            </div>
-            <div class="body">
-              <div class="badge you">YouTube</div>
-              <div><strong>${escapeHtml(u.title)}</strong></div>
-              <div class="muted">${u.by} • ${u.time}</div>
-              <div class="btn-row">
-                <a class="btn primary" href="${u.url}" target="_blank" rel="noopener">Open on YouTube</a>
-              </div>
-            </div>
-          `;
-        } else if(cat==="notes"){
-          const isPdf = /\.pdf(\?|$)/i.test(u.url);
-          card.innerHTML = `
-            <div class="thumb" style="background:#101423;color:#fff;display:flex;align-items:center;justify-content:center">
-              <div style="font-size:28px">📄</div>
-            </div>
-            <div class="body">
-              <div class="badge ${isPdf?'pdf':'link'}">${isPdf?'PDF':'Notes'}</div>
-              <div><strong>${escapeHtml(u.title)}</strong></div>
-              <div class="muted">${u.by} • ${u.time}</div>
-              <div class="btn-row">
-                <a class="btn primary" href="${u.url}" target="_blank" rel="noopener">${isPdf?'Open PDF':'Open Link'}</a>
-                <a class="btn" href="${u.url}" download>Download</a>
-              </div>
-            </div>
-          `;
-        } else if(cat==="hacking"){
-          card.innerHTML = `
-            <div class="thumb" style="background:#0b0d12;color:#8ab4ff;display:flex;align-items:center;justify-content:center">
-              <div style="font-size:22px">🧪</div>
-            </div>
-            <div class="body">
-              <div class="badge link">Hacking</div>
-              <div><strong>${escapeHtml(u.title)}</strong></div>
-              <div class="muted">${u.by} • ${u.time}</div>
-              <div class="btn-row">
-                <a class="btn primary" href="${u.url}" target="_blank" rel="noopener">Open</a>
-              </div>
-            </div>
-          `;
-        } else if(cat==="live"){
-          card.innerHTML = `
-            <div class="thumb" style="background:#0a1018;color:#7cf;display:flex;align-items:center;justify-content:center">
-              <div style="font-size:22px">🎥</div>
-            </div>
-            <div class="body">
-              <div class="badge link">Live Class</div>
-              <div><strong>${escapeHtml(u.title)}</strong></div>
-              <div class="muted">${u.by} • ${u.time}</div>
-              <div class="btn-row">
-                <a class="btn primary" href="${u.url}" target="_blank" rel="noopener">Join / Open</a>
-              </div>
-            </div>
-          `;
-        }
-        container.appendChild(card);
+    function renderUploads(){
+      const cats=["youtube","notes","commands","live","support"];
+      cats.forEach(cat=>{
+        const list  = document.getElementById(cat+"-list");
+        const empty = document.getElementById(cat+"-empty");
+        if(!list) return;
+        list.innerHTML="";
+        const items = uploads[cat]||[];
+        if(items.length===0){ if(empty) empty.style.display="block"; }
+        else{ if(empty) empty.style.display="none"; }
+        items.forEach(u=>{
+          const card=document.createElement("div");
+          card.className="card";
+          if(cat==="youtube"){
+            // if link is a video or playlist, embed; otherwise show anchor
+            if(u.link.includes("youtube.com") || u.link.includes("youtu.be")){
+              card.innerHTML = `<h4 style="margin-bottom:8px">${u.title}</h4>
+                <iframe width="100%" height="180" src="${u.link}" frameborder="0" allowfullscreen></iframe>`;
+            }else{
+              card.innerHTML = `<h4>${u.title}</h4><a href="${u.link}" target="_blank">${u.link}</a>`;
+            }
+          }else if(cat==="notes"){
+            card.innerHTML = `<h4>${u.title}</h4><a href="${u.link}" target="_blank">📄 Download</a>`;
+          }else{
+            card.innerHTML = `<h4>${u.title}</h4><a href="${u.link}" target="_blank">${u.link}</a>`;
+          }
+          list.appendChild(card);
+        });
       });
+      updateBadges();
     }
 
-    // ======= UTILS =======
-    function youtubeIdFromUrl(url){
-      // Handles youtu.be/ID or youtube.com/watch?v=ID etc.
-      const m = url.match(/(?:youtu\.be\/|v=|\/embed\/|shorts\/)([A-Za-z0-9_-]{6,})/i);
-      return m ? m[1] : null;
+    /* ======= Menu badges ======= */
+    function updateBadges(){
+      const getCount = c => (uploads[c] ? uploads[c].length : 0);
+      document.getElementById("count-youtube").innerText  = getCount("youtube");
+      document.getElementById("count-notes").innerText    = getCount("notes");
+      document.getElementById("count-commands").innerText = getCount("commands");
+      document.getElementById("count-live").innerText     = getCount("live");
+      document.getElementById("count-support").innerText  = getCount("support");
+      document.getElementById("count-home").innerText     = 0;
+      document.getElementById("count-upload").innerText   =
+        Object.values(uploads).reduce((n,arr)=>n+(arr?arr.length:0),0);
+      // chat count set in renderMessages()
+      document.getElementById("count-hacking").innerText  = 0;
     }
-    function badgeFor(cat){
-      const map = {youtube:'<span class="badge you">YouTube</span>',notes:'<span class="badge pdf">Notes</span>',hacking:'<span class="badge link">Hacking</span>',live:'<span class="badge link">Live</span>'};
-      return map[cat] || cat;
-    }
-    function short(u){ try{ const url=new URL(u); return url.hostname + url.pathname.slice(0,24) + (url.pathname.length>24?'…':''); }catch{ return u; } }
-    function escapeHtml(str){ return String(str).replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m])); }
 
-    // ======= THEME =======
+    /* ======= Theme ======= */
     function toggleTheme(){
-      const btn = document.querySelector(".theme-toggle");
-      if(document.body.classList.contains("light")){
-        document.body.classList.remove("light"); document.body.classList.add("dark");
-        btn.innerText = "🌞 Light";
-        localStorage.setItem("theme","dark");
-      }else{
-        document.body.classList.remove("dark"); document.body.classList.add("light");
-        btn.innerText = "🌑 Dark";
-        localStorage.setItem("theme","light");
-      }
+      const isLight=document.body.classList.contains("light");
+      document.body.classList.toggle("light",!isLight);
+      document.body.classList.toggle("dark", isLight);
+      document.querySelector(".theme-toggle").innerText = isLight ? "🌞 Light" : "🌑 Dark";
+      localStorage.setItem("theme", isLight ? "dark" : "light");
     }
-    (function restoreTheme(){
-      const t = localStorage.getItem("theme");
-      if(t){
-        document.body.className = t;
-        document.querySelector(".theme-toggle").innerText = t==="dark" ? "🌞 Light" : "🌑 Dark";
-      }
+    // restore theme
+    (function(){
+      const t=localStorage.getItem("theme");
+      if(t){document.body.className=t;document.querySelector(".theme-toggle").innerText=(t==="dark"?"🌞 Light":"🌑 Dark");}
     })();
 
-    // ======= AUTO-LOGIN RESTORE =======
-    (function boot(){
-      if(currentUser){
-        document.getElementById("login-page").style.display = "none";
-        document.getElementById("website").style.display    = "block";
-        initSite();
-      }
-    })();
+    // Auto-login session restore
+    if(currentUser){
+      document.getElementById("login-page").style.display="none";
+      document.getElementById("website").style.display="block";
+      initSite();
+    }
   </script>
 </body>
 </html>
