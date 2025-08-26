@@ -5,285 +5,234 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>darklight000999</title>
   <style>
-    * {margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;transition:0.3s;}
-    body {display:flex;justify-content:center;align-items:center;height:100vh;}
+    :root {
+      --bg-light: #f4f4f4;
+      --text-light: #222;
+      --bg-dark: #1e1e1e;
+      --text-dark: #fff;
+      --accent: #00f7ff;
+    }
+    body.light {
+      background: var(--bg-light);
+      color: var(--text-light);
+    }
+    body.dark {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
 
-    /* THEME COLORS */
-    body.light {background:#e0e0e0;color:#222;}
-    body.dark {background:#111;color:#fff;}
-
-    /* Theme Button */
-    .theme-toggle {
-      position:fixed;top:10px;right:10px;padding:8px 15px;border:none;
-      border-radius:20px;cursor:pointer;font-size:14px;z-index:999;
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      transition: background 0.3s, color 0.3s;
     }
 
     /* Login Page */
-    #login-page {
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      height:100vh;width:100%;
+    .login-container {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     .login-box {
-      width:350px;padding:30px;border-radius:15px;text-align:center;
-      box-shadow:8px 8px 16px #bebebe, -8px -8px 16px #ffffff;
+      background: rgba(255,255,255,0.9);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      text-align: center;
+      position: relative;
+      width: 300px;
+      transition: background 0.3s, color 0.3s;
     }
-    body.dark .login-box {background:#1a1a1a;box-shadow:8px 8px 16px #000,-8px -8px 16px #222;}
-    body.light .login-box {background:#e0e0e0;}
-    .login-box img {width:100px;height:100px;border-radius:50%;margin-bottom:10px;}
-    .login-box h2 {margin-bottom:5px;}
-    .login-box h3 {margin-bottom:20px;font-size:16px;color:gray;}
+    body.dark .login-box {
+      background: rgba(34,34,34,0.9);
+    }
+
+    /* Logo with thin RGB ring */
+    .logo-container {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 10px;
+    }
+    .rgb-ring {
+      position: absolute;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: conic-gradient(red, yellow, lime, cyan, blue, magenta, red);
+      animation: rotate 4s linear infinite;
+      z-index: 0;
+    }
+    .logo {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .login-box h1 {
+      margin: 10px 0 5px;
+    }
+    .login-box h2 {
+      margin-bottom: 20px;
+    }
     .login-box input {
-      width:100%;padding:12px;margin:10px 0;border:none;outline:none;
-      border-radius:25px;
-    }
-    body.light .login-box input {
-      background:#e0e0e0;box-shadow:inset 4px 4px 8px #bebebe, inset -4px -4px 8px #ffffff;color:#222;
-    }
-    body.dark .login-box input {
-      background:#222;color:#fff;box-shadow:inset 4px 4px 8px #000,inset -4px -4px 8px #333;
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 15px;
+      outline: none;
+      box-shadow: inset 2px 2px 5px #aaa, inset -2px -2px 5px #fff;
     }
     .login-box button {
-      width:100%;padding:12px;margin:15px 0;border:none;cursor:pointer;
-      border-radius:25px;font-weight:bold;
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      margin-top: 10px;
+      background: var(--accent);
+      color: #000;
+      font-weight: bold;
     }
-    body.light .login-box button {background:#e0e0e0;color:#333;box-shadow:4px 4px 8px #bebebe,-4px -4px 8px #ffffff;}
-    body.dark .login-box button {background:#222;color:#fff;box-shadow:4px 4px 8px #000,-4px -4px 8px #333;}
-    .login-box a {font-size:13px;color:red;text-decoration:none;}
-    .login-box a:hover {text-decoration:underline;}
+    .theme-toggle {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      font-size: 20px;
+    }
 
-    /* Hide Website until login */
-    #website {display:none;height:100vh;width:100%;}
-
-    /* Sidebar + Main */
-    .container {display:flex;height:100%;}
-    .sidebar {width:260px;padding:20px;display:flex;flex-direction:column;}
-    body.light .sidebar {background:#f0f0f0;border-right:2px solid #ccc;}
-    body.dark .sidebar {background:#1a1a1a;border-right:2px solid #222;}
-    .logo-container {position:relative;width:140px;height:140px;margin:0 auto 20px;}
-    .rgb-ring {position:absolute;width:160px;height:160px;border-radius:50%;
-      background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);
-      animation:rotate 4s linear infinite;filter:blur(4px);z-index:0;}
-    .logo {position:relative;width:140px;height:140px;border-radius:50%;overflow:hidden;z-index:1;}
-    .logo img {width:100%;height:100%;object-fit:cover;}
-    @keyframes rotate{0%{transform:rotate(0);}100%{transform:rotate(360deg);}}
-
-    .menu {flex:1;}
-    .menu h3 {margin:10px 0;font-size:14px;}
-    .menu ul {list-style:none;}
-    .menu li {padding:10px;margin:5px 0;border-radius:8px;cursor:pointer;transition:0.3s;}
-    body.light .menu li {background:#ddd;}
-    body.dark .menu li {background:#222;}
-    .menu li:hover {opacity:0.8;}
-
-    .main {flex:1;display:flex;flex-direction:column;}
-    .topbar {padding:15px;display:flex;justify-content:space-between;align-items:center;}
-    body.light .topbar {background:#f0f0f0;border-bottom:2px solid #ccc;}
-    body.dark .topbar {background:#1a1a1a;border-bottom:2px solid #222;}
-    .content {flex:1;display:flex;overflow:hidden;}
-
-    /* Chat */
-    .chat-section {flex:1;display:flex;flex-direction:column;}
-    body.light .chat-section {background:#f9f9f9;}
-    body.dark .chat-section {background:#0d0d0d;}
-    .chat-header {padding:10px;text-align:center;}
-    body.light .chat-header {background:#eee;border-bottom:1px solid #ccc;}
-    body.dark .chat-header {background:#1a1a1a;border-bottom:1px solid #333;}
-    .chat-messages {flex:1;overflow-y:auto;padding:10px;}
-    .message {max-width:70%;padding:10px;margin:5px 0;border-radius:10px;font-size:14px;}
-    .student-msg {background:#666;align-self:flex-start;}
-    .admin-msg {background:#0055ff;align-self:flex-end;color:#fff;}
-    .timestamp {font-size:10px;color:#aaa;margin-top:2px;}
-    .chat-input {display:flex;}
-    body.light .chat-input {border-top:1px solid #ccc;}
-    body.dark .chat-input {border-top:1px solid #333;}
-    .chat-input input {flex:1;padding:10px;border:none;outline:none;}
-    body.light .chat-input input {background:#eee;color:#222;}
-    body.dark .chat-input input {background:#1a1a1a;color:#fff;}
-    .chat-input button {padding:10px 20px;border:none;cursor:pointer;}
-    body.light .chat-input button {background:#ddd;color:#222;}
-    body.dark .chat-input button {background:#0055ff;color:#fff;}
-
-    .section {display:none;padding:20px;overflow-y:auto;}
-    .active {display:block;}
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      left: -250px;
+      top: 0;
+      width: 250px;
+      height: 100%;
+      background: #111;
+      padding-top: 60px;
+      transition: 0.3s;
+      z-index: 2000;
+    }
+    .sidebar.active {
+      left: 0;
+    }
+    .sidebar a {
+      padding: 15px;
+      display: block;
+      text-decoration: none;
+      color: white;
+      transition: 0.2s;
+    }
+    .sidebar a:hover {
+      background: #333;
+    }
+    .menu-btn {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      font-size: 25px;
+      cursor: pointer;
+      z-index: 2100;
+    }
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 25px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body class="light">
 
-  <!-- Theme Toggle -->
-  <button class="theme-toggle" onclick="toggleTheme()">🌑 Dark</button>
-
   <!-- Login Page -->
-  <div id="login-page">
+  <div class="login-container" id="loginPage">
     <div class="login-box">
-      <img src="Screenshot_20250821_142735.jpg" alt="Logo">
-      <h2>darklight000999</h2>
-      <h3>LOGIN</h3>
+      <div class="theme-toggle" id="themeToggle">🌑</div>
+      <div class="logo-container">
+        <div class="rgb-ring"></div>
+        <div class="logo">
+          <img src="Screenshot_20250821_142735.jpg" alt="Logo">
+        </div>
+      </div>
+      <h1>darklight000999</h1>
+      <h2>LOGIN</h2>
       <input type="text" id="username" placeholder="Username">
       <input type="password" id="password" placeholder="Password">
       <button onclick="login()">Sign In</button>
-      <p><a href="#">Forgot Password? click here</a></p>
     </div>
   </div>
 
-  <!-- Website -->
-  <div id="website">
-    <div class="container">
-      <!-- Sidebar -->
-      <div class="sidebar">
-        <div class="logo-container">
-          <div class="rgb-ring"></div>
-          <div class="logo"><img src="Screenshot_20250821_142735.jpg" alt="Logo"></div>
-        </div>
-        <div class="menu">
-          <ul id="menu-items">
-            <li onclick="showSection('home')">Home</li>
-            <li onclick="showSection('youtube')">YouTube Videos</li>
-            <li onclick="showSection('notes')">PDF & Notes</li>
-            <li onclick="showSection('commands')">Hacking Commands</li>
-            <li onclick="showSection('hacking')">Hacking</li>
-            <li onclick="showSection('live')">Live Class</li>
-            <li onclick="showSection('support')">Contact & Support</li>
-          </ul>
-          <h3>Admin Panel</h3>
-          <ul id="admin-items" style="display:none;">
-            <li onclick="showSection('upload')">Upload Manager</li>
-            <li onclick="showSection('students')">Manage Students</li>
-            <li onclick="showSection('announce')">Announcements</li>
-            <li onclick="showSection('analytics')">Analytics</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Main -->
-      <div class="main">
-        <div class="topbar">
-          <span id="welcome">Welcome Guest</span>
-          <button onclick="logout()">Logout</button>
-        </div>
-        <div class="content">
-          <div id="home" class="section active"><h2>Welcome to darklight000999</h2></div>
-          <div id="youtube" class="section"><iframe width="100%" height="400" src="https://www.youtube.com/embed/videoseries?list=PLMC9KNkIncKtPzgY-5rmhvj7fax8fdxoj" frameborder="0"></iframe></div>
-          <div id="notes" class="section"><h2>PDF & Notes Section</h2></div>
-          <div id="commands" class="section"><h2>Hacking Commands</h2></div>
-          <div id="hacking" class="section"><h2>Hacking Section</h2></div>
-          <div id="live" class="section"><h2>Live Class</h2></div>
-          <div id="support" class="section"><h2>Contact & Support</h2></div>
-          <div id="upload" class="section"><h2>Upload Manager (Admin Only)</h2></div>
-          <div id="students" class="section"><h2>Manage Students</h2><ul id="student-list"></ul></div>
-          <div id="announce" class="section"><h2>Announcements</h2></div>
-          <div id="analytics" class="section"><h2>Analytics</h2><p id="stats"></p></div>
-
-          <!-- Chat -->
-          <div class="chat-section">
-            <div class="chat-header">Chat</div>
-            <div class="chat-messages" id="messages"></div>
-            <div class="chat-input">
-              <input type="text" id="msgBox" placeholder="Type a message...">
-              <button onclick="sendMessage()">Send</button>
-            </div>
-          </div>
-        </div>
-      </div>
+  <!-- Sidebar -->
+  <div class="menu-btn" id="menuBtn">☰</div>
+  <div class="sidebar" id="sidebar">
+    <div class="close-btn" id="closeBtn">❌</div>
+    <a href="#">Home</a>
+    <a href="#">YouTube Videos</a>
+    <a href="#">PDF & Notes</a>
+    <a href="#">Hacking Commands</a>
+    <a href="#">Hacking</a>
+    <a href="#">Live Class</a>
+    <a href="#">Contact & Support</a>
+    <div id="adminLinks" style="display:none;">
+      <a href="#">Upload Manager</a>
+      <a href="#">Manage Students</a>
+      <a href="#">Announcements</a>
+      <a href="#">Analytics</a>
     </div>
   </div>
 
   <script>
-    const users = [
-      {username:"admin",password:"admin"},
-      {username:"student1",password:"123"},
-      {username:"student2",password:"123"},
-      {username:"student3",password:"123"},
-      {username:"student4",password:"123"},
-      {username:"student5",password:"123"},
-      {username:"student6",password:"123"},
-      {username:"student7",password:"123"},
-      {username:"student8",password:"123"},
-      {username:"student9",password:"123"},
-      {username:"student10",password:"123"},
-      {username:"student11",password:"123"},
-    ];
-    let currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
 
-    function login(){
-      let uname=document.getElementById("username").value;
-      let pass=document.getElementById("password").value;
-      let found=users.find(u=>u.username===uname && u.password===pass);
-      if(found){
-        currentUser=found;
-        localStorage.setItem("currentUser",JSON.stringify(currentUser));
-        document.getElementById("login-page").style.display="none";
-        document.getElementById("website").style.display="block";
-        initSite();
-      }else{alert("Invalid Login");}
-    }
-    function initSite(){
-      document.getElementById("welcome").innerText="Welcome "+currentUser.username;
-      if(currentUser.username==="admin"){document.getElementById("admin-items").style.display="block";}
-      renderMessages();
-    }
-    function showSection(id){
-      document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
-      document.getElementById(id).classList.add("active");
-      if(id==="students"){loadStudents();}
-      if(id==="analytics"){loadAnalytics();}
-    }
-    function logout(){localStorage.removeItem("currentUser");location.reload();}
+    themeToggle.addEventListener('click', () => {
+      body.classList.toggle('dark');
+      body.classList.toggle('light');
+      themeToggle.textContent = body.classList.contains('dark') ? '🌞' : '🌑';
+    });
 
-    // Chat
-    let messages=JSON.parse(localStorage.getItem("messages"))||[];
-    function renderMessages(){
-      let box=document.getElementById("messages");box.innerHTML="";
-      messages.forEach(m=>{
-        let div=document.createElement("div");
-        div.className="message "+(m.user==="admin"?"admin-msg":"student-msg");
-        div.innerHTML=`<b>${m.user}</b>: ${m.text}<div class="timestamp">${m.time}</div>`;
-        box.appendChild(div);
-      });
-      box.scrollTop=box.scrollHeight;
-    }
-    function sendMessage(){
-      let text=document.getElementById("msgBox").value;
-      if(text.trim()==="")return;
-      let msg={user:currentUser.username,text:text,time:new Date().toLocaleTimeString()};
-      messages.push(msg);
-      localStorage.setItem("messages",JSON.stringify(messages));
-      document.getElementById("msgBox").value="";
-      renderMessages();
-    }
+    function login() {
+      const username = document.getElementById('username').value;
+      const loginPage = document.getElementById('loginPage');
+      const adminLinks = document.getElementById('adminLinks');
 
-    // Students
-    function loadStudents(){
-      let list=document.getElementById("student-list");list.innerHTML="";
-      users.filter(u=>u.username!=="admin").forEach(s=>{
-        let li=document.createElement("li");li.innerText=s.username;list.appendChild(li);
-      });
-    }
+      const admin = "admin";
+      const users = ["user1","user2","user3","user4","user5","user6","user7","user8","user9","user10","user11"];
 
-    // Analytics
-    function loadAnalytics(){
-      document.getElementById("stats").innerText=
-        "Total Students: 11\nMessages: "+messages.length+"\nUploads: 0";
-    }
-
-    // Theme Toggle
-    function toggleTheme(){
-      if(document.body.classList.contains("light")){
-        document.body.classList.remove("light");document.body.classList.add("dark");
-        document.querySelector(".theme-toggle").innerText="🌞 Light";
-        localStorage.setItem("theme","dark");
-      }else{
-        document.body.classList.remove("dark");document.body.classList.add("light");
-        document.querySelector(".theme-toggle").innerText="🌑 Dark";
-        localStorage.setItem("theme","light");
+      if (username === admin) {
+        loginPage.style.display = "none";
+        adminLinks.style.display = "block";
+      } else if (users.includes(username)) {
+        loginPage.style.display = "none";
+      } else {
+        alert("Invalid Username!");
       }
     }
-    if(localStorage.getItem("theme")){
-      document.body.className=localStorage.getItem("theme");
-      document.querySelector(".theme-toggle").innerText=document.body.classList.contains("dark")?"🌞 Light":"🌑 Dark";
-    }
 
-    // Auto-login
-    if(currentUser){document.getElementById("login-page").style.display="none";document.getElementById("website").style.display="block";initSite();}
+    const sidebar = document.getElementById("sidebar");
+    const menuBtn = document.getElementById("menuBtn");
+    const closeBtn = document.getElementById("closeBtn");
+
+    menuBtn.onclick = () => sidebar.classList.add("active");
+    closeBtn.onclick = () => sidebar.classList.remove("active");
   </script>
 </body>
 </html>
