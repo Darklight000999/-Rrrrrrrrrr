@@ -12,75 +12,161 @@
       --text-dark: #fff;
       --accent: #00f7ff;
     }
-    body.light { background: var(--bg-light); color: var(--text-light); }
-    body.dark { background: var(--bg-dark); color: var(--text-dark); }
-    body, html { margin: 0; padding: 0; font-family: Arial, sans-serif; transition: 0.3s; }
+    body.light {
+      background: var(--bg-light);
+      color: var(--text-light);
+    }
+    body.dark {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+    body, html {
+      margin: 0; padding: 0;
+      font-family: Arial, sans-serif;
+      transition: background 0.3s, color 0.3s;
+    }
 
     /* Login Page */
-    .login-container { height: 100vh; display: flex; justify-content: center; align-items: center; }
-    .login-box {
-      background: rgba(255,255,255,0.9); padding: 30px; border-radius: 20px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.2); text-align: center; width: 300px;
+    .login-container {
+      height: 100vh; display: flex;
+      justify-content: center; align-items: center;
     }
-    body.dark .login-box { background: rgba(34,34,34,0.9); }
-    .logo-container { position: relative; width: 120px; height: 120px; margin: 0 auto 10px; }
+    .login-box {
+      background: rgba(255,255,255,0.9);
+      padding: 30px; border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      text-align: center; position: relative;
+      width: 300px; transition: background 0.3s, color 0.3s;
+    }
+    body.dark .login-box {
+      background: rgba(34,34,34,0.9);
+    }
+    .logo-container {
+      position: relative; width: 120px; height: 120px;
+      margin: 0 auto 10px;
+    }
     .rgb-ring {
-      position: absolute; inset: -5px; border-radius: 50%;
+      position: absolute; inset: -5px;
+      border-radius: 50%;
       background: conic-gradient(red, yellow, lime, cyan, blue, magenta, red);
       animation: rotate 4s linear infinite;
+      z-index: 0;
     }
-    .logo { position: relative; width: 120px; height: 120px; border-radius: 50%; overflow: hidden; }
-    .logo img { width: 100%; height: 100%; object-fit: cover; }
-    @keyframes rotate { 0% {transform: rotate(0);} 100% {transform: rotate(360deg);} }
-    .login-box input, .login-box button { width: 100%; padding: 10px; margin: 10px 0; border-radius: 15px; border: none; }
-    .login-box button { background: var(--accent); font-weight: bold; cursor: pointer; }
-    .theme-toggle { position: absolute; top: 10px; right: 10px; cursor: pointer; font-size: 20px; }
+    .logo {
+      position: relative; width: 120px; height: 120px;
+      border-radius: 50%; overflow: hidden; z-index: 1;
+    }
+    .logo img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .login-box h1 { margin: 10px 0 5px; }
+    .login-box h2 { margin-bottom: 20px; }
+    .login-box input {
+      width: 100%; padding: 10px; margin: 10px 0;
+      border: none; border-radius: 15px; outline: none;
+      box-shadow: inset 2px 2px 5px #aaa, inset -2px -2px 5px #fff;
+    }
+    .login-box button {
+      width: 100%; padding: 10px; border: none;
+      border-radius: 15px; cursor: pointer; margin-top: 10px;
+      background: var(--accent); color: #000; font-weight: bold;
+    }
+    .theme-toggle {
+      position: absolute; top: 10px; right: 10px;
+      cursor: pointer; font-size: 20px;
+    }
 
     /* Sidebar */
-    .sidebar { position: fixed; left: -250px; top: 0; width: 250px; height: 100%; background: #111;
-      padding-top: 60px; transition: 0.3s; z-index: 2000; display: none; }
+    .sidebar {
+      position: fixed; left: -250px; top: 0;
+      width: 250px; height: 100%; background: #111;
+      padding-top: 60px; transition: 0.3s; z-index: 2000;
+      display: none;
+    }
     .sidebar.active { left: 0; }
-    .sidebar a { padding: 15px; display: block; color: white; cursor: pointer; }
+    .sidebar a {
+      padding: 15px; display: block;
+      text-decoration: none; color: white; transition: 0.2s;
+      cursor: pointer;
+    }
     .sidebar a:hover { background: #333; }
-    .menu-btn { position: fixed; top: 15px; left: 15px; font-size: 25px; cursor: pointer; z-index: 2100; display: none; }
-    .close-btn { position: absolute; top: 15px; right: 15px; font-size: 25px; cursor: pointer; }
+    .menu-btn {
+      position: fixed; top: 15px; left: 15px;
+      font-size: 25px; cursor: pointer;
+      z-index: 2100; display: none;
+    }
+    .close-btn {
+      position: absolute; top: 15px; right: 15px;
+      font-size: 25px; cursor: pointer;
+    }
 
-    /* Content */
-    .main-content { margin-left: 0; padding: 20px; transition: margin-left 0.3s; }
-    .sidebar.active ~ .main-content { margin-left: 250px; }
+    /* Main Content */
+    .main-content {
+      margin-left: 0; padding: 20px;
+      transition: margin-left 0.3s;
+    }
+    .sidebar.active ~ .main-content {
+      margin-left: 250px;
+    }
 
-    /* Chat */
-    .chat-container { position: fixed; right: 20px; bottom: 20px; width: 300px; max-height: 400px;
-      background: rgba(255,255,255,0.95); border-radius: 15px; display: none; flex-direction: column; }
-    body.dark .chat-container { background: rgba(34,34,34,0.95); }
-    .chat-header { padding: 10px; background: var(--accent); font-weight: bold; text-align: center; }
-    .chat-messages { flex: 1; padding: 10px; overflow-y: auto; }
-    .msg { margin: 5px 0; padding: 8px; border-radius: 10px; font-size: 14px; }
-    .msg.student { background: #ddd; }
+    /* Chat Box */
+    .chat-container {
+      position: fixed; right: 20px; bottom: 20px;
+      width: 300px; max-height: 400px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 15px; box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      display: none; flex-direction: column;
+    }
+    body.dark .chat-container {
+      background: rgba(34,34,34,0.95);
+    }
+    .chat-header {
+      padding: 10px; background: var(--accent);
+      color: black; font-weight: bold; text-align: center;
+      border-radius: 15px 15px 0 0;
+    }
+    .chat-messages {
+      flex: 1; padding: 10px; overflow-y: auto;
+    }
+    .msg {
+      margin: 5px 0; padding: 8px;
+      border-radius: 10px; font-size: 14px;
+    }
+    .msg.student { background: #ddd; text-align: left; }
     .msg.admin { background: #aee; text-align: right; }
-    .msg-controls { font-size: 10px; cursor: pointer; color: red; margin-left: 5px; }
     body.dark .msg.student { background: #444; }
-    body.dark .msg.admin { background: #006; color: #fff; }
-    .chat-input { display: flex; }
-    .chat-input input { flex: 1; padding: 10px; border: none; border-radius: 0 0 0 15px; }
-    .chat-input button { padding: 10px; border: none; background: var(--accent); border-radius: 0 0 15px 0; }
-
-    /* Upload Manager */
-    .file-card { border: 1px solid #ccc; border-radius: 10px; padding: 10px; margin: 10px 0; }
-    .file-card h4 { margin: 0; }
+    body.dark .msg.admin { background: #006; color: white; }
+    .chat-input {
+      display: flex; border-top: 1px solid #ccc;
+    }
+    .chat-input input {
+      flex: 1; padding: 10px; border: none; border-radius: 0 0 0 15px;
+      outline: none;
+    }
+    .chat-input button {
+      padding: 10px; border: none; cursor: pointer;
+      background: var(--accent); border-radius: 0 0 15px 0;
+    }
   </style>
 </head>
 <body class="light">
 
-  <!-- Login -->
+  <!-- Login Page -->
   <div class="login-container" id="loginPage">
     <div class="login-box">
       <div class="theme-toggle" id="themeToggle">🌑</div>
       <div class="logo-container">
         <div class="rgb-ring"></div>
-        <div class="logo"><img src="Screenshot_20250821_142735.jpg"></div>
+        <div class="logo">
+          <img src="Screenshot_20250821_142735.jpg" alt="Logo">
+        </div>
       </div>
-      <h1>darklight000999</h1><h2>LOGIN</h2>
+      <h1>darklight000999</h1>
+      <h2>LOGIN</h2>
       <input type="text" id="username" placeholder="Username">
       <input type="password" id="password" placeholder="Password">
       <button onclick="login()">Sign In</button>
@@ -92,10 +178,18 @@
   <div class="sidebar" id="sidebar">
     <div class="close-btn" id="closeBtn">❌</div>
     <a onclick="loadPage('home')">Home</a>
-    <a onclick="loadPage('notes')">Notes & Uploads</a>
+    <a onclick="loadPage('youtube')">YouTube Videos</a>
+    <a onclick="loadPage('notes')">PDF & Notes</a>
+    <a onclick="loadPage('commands')">Hacking Commands</a>
+    <a onclick="loadPage('hacking')">Hacking</a>
+    <a onclick="loadPage('class')">Live Class</a>
+    <a onclick="loadPage('support')">Contact & Support</a>
     <a onclick="openChat()">💬 Chat</a>
     <div id="adminLinks" style="display:none;">
       <a onclick="loadPage('upload')">Upload Manager</a>
+      <a onclick="loadPage('students')">Manage Students</a>
+      <a onclick="loadPage('announce')">Announcements</a>
+      <a onclick="loadPage('analytics')">Analytics</a>
     </div>
     <a onclick="logout()">🚪 Logout</a>
   </div>
@@ -103,127 +197,107 @@
   <!-- Main Content -->
   <div class="main-content" id="content">
     <h2>Welcome to darklight000999</h2>
-    <p>Please login to continue.</p>
+    <p>Login successful! Select a menu from Sidebar.</p>
   </div>
 
-  <!-- Chat -->
+  <!-- Chat Box -->
   <div class="chat-container" id="chatBox">
-    <div class="chat-header">Chat Room</div>
+    <div class="chat-header">Chat</div>
     <div class="chat-messages" id="chatMessages"></div>
     <div class="chat-input">
-      <input type="text" id="chatInput" placeholder="Type...">
+      <input type="text" id="chatInput" placeholder="Type a message...">
       <button onclick="sendMessage()">Send</button>
     </div>
   </div>
 
-<script>
-const themeToggle = document.getElementById('themeToggle');
-const body = document.body;
-themeToggle.addEventListener('click', () => {
-  body.classList.toggle('dark'); body.classList.toggle('light');
-  themeToggle.textContent = body.classList.contains('dark') ? '🌞' : '🌑';
-});
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    themeToggle.addEventListener('click', () => {
+      body.classList.toggle('dark');
+      body.classList.toggle('light');
+      themeToggle.textContent = body.classList.contains('dark') ? '🌞' : '🌑';
+    });
 
-const admin = "admin";
-const users = ["user1","user2","user3","user4","user5","user6","user7","user8","user9","user10","user11"];
-let currentUser = null;
+    const admin = "admin";
+    const users = ["user1","user2","user3","user4","user5","user6","user7","user8","user9","user10","user11"];
+    let currentUser = null;
 
-// ---------------- LOGIN ----------------
-function login() {
-  const username = document.getElementById('username').value;
-  if (username === admin || users.includes(username)) {
-    currentUser = username;
-    document.getElementById('loginPage').style.display="none";
-    document.getElementById('sidebar').style.display="block";
-    document.getElementById('menuBtn').style.display="block";
-    if (username === admin) document.getElementById('adminLinks').style.display="block";
-    loadPage('home');
-    loadNotes();
-    loadChat();
-  } else alert("Invalid Username");
-}
-function logout() {
-  currentUser = null;
-  document.getElementById("loginPage").style.display="flex";
-  document.getElementById("sidebar").style.display="none";
-  document.getElementById("menuBtn").style.display="none";
-  document.getElementById("chatBox").style.display="none";
-  document.getElementById("content").innerHTML="<h2>Welcome</h2><p>Please login to continue.</p>";
-}
+    function login() {
+      const username = document.getElementById('username').value;
+      const loginPage = document.getElementById('loginPage');
+      const sidebar = document.getElementById('sidebar');
+      const menuBtn = document.getElementById('menuBtn');
+      const adminLinks = document.getElementById('adminLinks');
 
-// ---------------- Sidebar ----------------
-const sidebar = document.getElementById("sidebar");
-document.getElementById("menuBtn").onclick = () => sidebar.classList.add("active");
-document.getElementById("closeBtn").onclick = () => sidebar.classList.remove("active");
-
-// ---------------- Content Loader ----------------
-function loadPage(page) {
-  const c = document.getElementById("content");
-  if (page==='home') c.innerHTML="<h2>Home</h2><p>Welcome, "+currentUser+"</p>";
-  if (page==='upload' && currentUser==='admin') {
-    c.innerHTML=`<h2>Upload Manager</h2>
-      <input type="file" id="fileInput" multiple>
-      <button onclick="uploadFiles()">Upload</button>
-      <div id="uploadList"></div>`;
-  }
-  if (page==='notes') {
-    c.innerHTML="<h2>Notes & Uploads</h2><div id='notesList'></div>";
-    loadNotes();
-  }
-  sidebar.classList.remove("active");
-}
-
-// ---------------- Notes Upload ----------------
-function uploadFiles() {
-  const files = document.getElementById('fileInput').files;
-  let notes = JSON.parse(localStorage.getItem('notes')||"[]");
-  for (let f of files) {
-    notes.push({name:f.name, type:f.type, time:new Date().toLocaleString()});
-  }
-  localStorage.setItem('notes', JSON.stringify(notes));
-  loadNotes();
-}
-function loadNotes() {
-  let notes = JSON.parse(localStorage.getItem('notes')||"[]");
-  let div = document.getElementById('notesList');
-  if (!div) return;
-  div.innerHTML="";
-  notes.forEach(n=>{
-    div.innerHTML+=`<div class='file-card'><h4>${n.name}</h4><p>Type: ${n.type} | Uploaded: ${n.time}</p></div>`;
-  });
-}
-
-// ---------------- Chat ----------------
-function openChat(){ document.getElementById("chatBox").style.display="flex"; }
-function sendMessage() {
-  const input=document.getElementById("chatInput");
-  if(!input.value.trim()) return;
-  let chat=JSON.parse(localStorage.getItem('chat')||"[]");
-  chat.push({user:currentUser,text:input.value});
-  localStorage.setItem('chat',JSON.stringify(chat));
-  input.value=""; loadChat();
-}
-function loadChat() {
-  let chat=JSON.parse(localStorage.getItem('chat')||"[]");
-  let cm=document.getElementById("chatMessages");
-  cm.innerHTML="";
-  chat.forEach((m,i)=>{
-    let div=document.createElement("div");
-    div.className="msg "+(m.user==="admin"?"admin":"student");
-    div.innerHTML=`${m.user}: ${m.text}`;
-    if(currentUser==="admin"){
-      div.innerHTML+=` <span class='msg-controls' onclick='deleteMsg(${i})'>🗑</span>`;
+      if (username === admin) {
+        currentUser = "admin";
+        loginPage.style.display = "none";
+        sidebar.style.display = "block";
+        menuBtn.style.display = "block";
+        adminLinks.style.display = "block";
+      } else if (users.includes(username)) {
+        currentUser = username;
+        loginPage.style.display = "none";
+        sidebar.style.display = "block";
+        menuBtn.style.display = "block";
+      } else {
+        alert("Invalid Username!");
+      }
     }
-    cm.appendChild(div);
-  });
-  cm.scrollTop=cm.scrollHeight;
-}
-function deleteMsg(i){
-  let chat=JSON.parse(localStorage.getItem('chat')||"[]");
-  chat.splice(i,1);
-  localStorage.setItem('chat',JSON.stringify(chat));
-  loadChat();
-}
-</script>
+
+    function logout() {
+      currentUser = null;
+      document.getElementById("loginPage").style.display = "flex";
+      document.getElementById("sidebar").style.display = "none";
+      document.getElementById("menuBtn").style.display = "none";
+      document.getElementById("chatBox").style.display = "none";
+      document.getElementById("content").innerHTML =
+        "<h2>Welcome to darklight000999</h2><p>Please login to continue.</p>";
+    }
+
+    const sidebar = document.getElementById("sidebar");
+    const menuBtn = document.getElementById("menuBtn");
+    const closeBtn = document.getElementById("closeBtn");
+    menuBtn.onclick = () => sidebar.classList.add("active");
+    closeBtn.onclick = () => sidebar.classList.remove("active");
+
+    // Load Pages inside main content
+    function loadPage(page) {
+      let content = document.getElementById("content");
+      switch(page) {
+        case 'home': content.innerHTML = "<h2>Home</h2><p>This is Home Page content.</p>"; break;
+        case 'youtube': content.innerHTML = "<h2>YouTube Videos</h2><iframe width='100%' height='300' src='https://www.youtube.com/embed/videoseries?list=PLu0W_9lII9ajyk081To1Cbt2eI5913SsL' frameborder='0'></iframe>"; break;
+        case 'notes': content.innerHTML = "<h2>PDF & Notes</h2><p>Here students can access notes.</p>"; break;
+        case 'commands': content.innerHTML = "<h2>Hacking Commands</h2><p>Linux/Termux Commands List...</p>"; break;
+        case 'hacking': content.innerHTML = "<h2>Hacking</h2><p>Ethical Hacking resources here...</p>"; break;
+        case 'class': content.innerHTML = "<h2>Live Class</h2><p>Join Live Class sessions here.</p>"; break;
+        case 'support': content.innerHTML = "<h2>Contact & Support</h2><p>Email us at support@darklight.com</p>"; break;
+        case 'upload': content.innerHTML = "<h2>Upload Manager (Admin)</h2><p>Upload files for students.</p>"; break;
+        case 'students': content.innerHTML = "<h2>Manage Students (Admin)</h2><p>List of students logged in.</p>"; break;
+        case 'announce': content.innerHTML = "<h2>Announcements</h2><p>Admin can post updates here.</p>"; break;
+        case 'analytics': content.innerHTML = "<h2>Analytics</h2><p>Student count, messages count...</p>"; break;
+      }
+      sidebar.classList.remove("active");
+    }
+
+    // Chat System
+    const chatBox = document.getElementById("chatBox");
+    const chatMessages = document.getElementById("chatMessages");
+
+    function openChat() {
+      chatBox.style.display = "flex";
+    }
+    function sendMessage() {
+      const input = document.getElementById("chatInput");
+      if (input.value.trim() === "") return;
+      const msg = document.createElement("div");
+      msg.className = "msg " + (currentUser === "admin" ? "admin" : "student");
+      msg.innerText = currentUser + ": " + input.value;
+      chatMessages.appendChild(msg);
+      input.value = "";
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+  </script>
 </body>
 </html>
