@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>darklight000999</title>
+  <style>
+    :root {
+      --bg-light: #f4f4f4;
+      --text-light: #222;
+      --bg-dark: #1e1e1e;
+      --text-dark: #fff;
+      --accent: #00f7ff;
+    }
+    body.light {
+      background: var(--bg-light);
+      color: var(--text-light);
+    }
+    body.dark {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    /* Login Page */
+    .login-container {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .login-box {
+      background: rgba(255,255,255,0.9);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      text-align: center;
+      position: relative;
+      width: 300px;
+      transition: background 0.3s, color 0.3s;
+    }
+    body.dark .login-box {
+      background: rgba(34,34,34,0.9);
+    }
+
+    /* Logo with thin RGB ring */
+    .logo-container {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 10px;
+    }
+    .rgb-ring {
+      position: absolute;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: conic-gradient(red, yellow, lime, cyan, blue, magenta, red);
+      animation: rotate 4s linear infinite;
+      z-index: 0;
+    }
+    .logo {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .login-box h1 {
+      margin: 10px 0 5px;
+    }
+    .login-box h2 {
+      margin-bottom: 20px;
+    }
+    .login-box input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 15px;
+      outline: none;
+      box-shadow: inset 2px 2px 5px #aaa, inset -2px -2px 5px #fff;
+    }
+    .login-box button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      margin-top: 10px;
+      background: var(--accent);
+      color: #000;
+      font-weight: bold;
+    }
+    .theme-toggle {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      left: -250px;
+      top: 0;
+      width: 250px;
+      height: 100%;
+      background: #111;
+      padding-top: 60px;
+      transition: 0.3s;
+      z-index: 2000;
+    }
+    .sidebar.active {
+      left: 0;
+    }
+    .sidebar a {
+      padding: 15px;
+      display: block;
+      text-decoration: none;
+      color: white;
+      transition: 0.2s;
+    }
+    .sidebar a:hover {
+      background: #333;
+    }
+    .menu-btn {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      font-size: 25px;
+      cursor: pointer;
+      z-index: 2100;
+    }
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 25px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body class="light">
+
+  <!-- Login Page -->
+  <div class="login-container" id="loginPage">
+    <div class="login-box">
+      <div class="theme-toggle" id="themeToggle">🌑</div>
+      <div class="logo-container">
+        <div class="rgb-ring"></div>
+        <div class="logo">
+          <img src="Screenshot_20250821_142735.jpg" alt="Logo">
+        </div>
+      </div>
+      <h1>darklight000999</h1>
+      <h2>LOGIN</h2>
+      <input type="text" id="username" placeholder="Username">
+      <input type="password" id="password" placeholder="Password">
+      <button onclick="login()">Sign In</button>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="menu-btn" id="menuBtn">☰</div>
+  <div class="sidebar" id="sidebar">
+    <div class="close-btn" id="closeBtn">❌</div>
+    <a href="#">Home</a>
+    <a href="#">YouTube Videos</a>
+    <a href="#">PDF & Notes</a>
+    <a href="#">Hacking Commands</a>
+    <a href="#">Hacking</a>
+    <a href="#">Live Class</a>
+    <a href="#">Contact & Support</a>
+    <div id="adminLinks" style="display:none;">
+      <a href="#">Upload Manager</a>
+      <a href="#">Manage Students</a>
+      <a href="#">Announcements</a>
+      <a href="#">Analytics</a>
+    </div>
+  </div>
+
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+
+    themeToggle.addEventListener('click', () => {
+      body.classList.toggle('dark');
+      body.classList.toggle('light');
+      themeToggle.textContent = body.classList.contains('dark') ? '🌞' : '🌑';
+    });
+
+    function login() {
+      const username = document.getElementById('username').value;
+      const loginPage = document.getElementById('loginPage');
+      const adminLinks = document.getElementById('adminLinks');
+
+      const admin = "admin";
+      const users = ["user1","user2","user3","user4","user5","user6","user7","user8","user9","user10","user11"];
+
+      if (username === admin) {
+        loginPage.style.display = "none";
+        adminLinks.style.display = "block";
+      } else if (users.includes(username)) {
+        loginPage.style.display = "none";
+      } else {
+        alert("Invalid Username!");
+      }
+    }
+
+    const sidebar = document.getElementById("sidebar");
+    const menuBtn = document.getElementById("menuBtn");
+    const closeBtn = document.getElementById("closeBtn");
+
+    menuBtn.onclick = () => sidebar.classList.add("active");
+    closeBtn.onclick = () => sidebar.classList.remove("active");
+  </script>
+</body>
+</html>
