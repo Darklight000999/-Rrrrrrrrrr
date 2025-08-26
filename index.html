@@ -2,232 +2,215 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Dashboard</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>darklight000999</title>
   <style>
-    * {margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif;}
-    body {
-      display:flex;
-      background:#1e1e2f;
-      color:white;
-      height:100vh;
-      overflow:hidden;
-    }
+    /* ---- Reset & Body ---- */
+    * {margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;}
+    body {display:flex;height:100vh;background:#111;color:#fff;overflow:hidden;}
 
-    /* Sidebar */
+    /* ---- Sidebar ---- */
     .sidebar {
-      width:240px;
-      background:#2c2f48;
-      padding:20px 0;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
+      width:260px;background:#1a1a1a;padding:20px;display:flex;flex-direction:column;
+      border-right:2px solid #222;position:relative;
+    }
+    .logo-container {position:relative;width:140px;height:140px;margin:0 auto 20px;}
+    .rgb-ring {
+      position:absolute;width:160px;height:160px;border-radius:50%;
+      background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);
+      animation:rotate 4s linear infinite;filter:blur(4px);z-index:0;
     }
     .logo {
-      margin-bottom:30px;
-      width:80px;
-      height:80px;
-      border-radius:50%;
-      background:#333 url('https://via.placeholder.com/80') no-repeat center/cover;
-      border:3px solid cyan;
+      position:relative;width:140px;height:140px;border-radius:50%;
+      overflow:hidden;z-index:1;
     }
-    .sidebar ul {
-      list-style:none;
-      width:100%;
-    }
-    .sidebar ul li {
-      padding:15px 25px;
-      display:flex;
-      align-items:center;
-      gap:15px;
-      color:#ddd;
-      cursor:pointer;
-      transition:0.3s;
-      position:relative;
-    }
-    .sidebar ul li:hover {
-      background:#3c3f5a;
-      color:white;
-    }
-    .sidebar ul li i {
-      position:relative;
-      font-size:20px;
-      z-index:2;
-    }
-    /* RGB Ring for Icons */
-    .sidebar ul li i::before {
-      content:"";
-      position:absolute;
-      top:-10px;left:-10px;
-      width:40px;height:40px;
-      border-radius:50%;
-      background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);
-      animation:rotate 4s linear infinite;
-      z-index:-1;
-    }
-    .sidebar ul li i::after {
-      content:"";
-      position:absolute;
-      top:-6px;left:-6px;
-      width:32px;height:32px;
-      border-radius:50%;
-      background:#2c2f48;
-      z-index:1;
-    }
-    @keyframes rotate {from{transform:rotate(0);}to{transform:rotate(360deg);}}
+    .logo img {width:100%;height:100%;object-fit:cover;}
+    @keyframes rotate{0%{transform:rotate(0);}100%{transform:rotate(360deg);}}
 
-    /* Main Content */
-    .main {
-      flex:1;
-      display:flex;
-      flex-direction:column;
+    .menu {flex:1;}
+    .menu h3 {margin:10px 0;font-size:14px;color:#999;}
+    .menu ul {list-style:none;}
+    .menu li {
+      padding:10px;margin:5px 0;background:#222;border-radius:8px;cursor:pointer;
+      transition:0.3s;
     }
+    .menu li:hover {background:#333;}
+
+    /* ---- Main Content ---- */
+    .main {flex:1;display:flex;flex-direction:column;}
     .topbar {
-      height:60px;
-      background:#2c2f48;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:0 20px;
+      padding:15px;background:#1a1a1a;border-bottom:2px solid #222;
+      display:flex;justify-content:space-between;align-items:center;
     }
-    .chatbox {
-      flex:1;
-      background:#1e1e2f;
-      display:flex;
-      flex-direction:column;
-      padding:15px;
-      overflow:hidden;
+    .content {flex:1;display:flex;overflow:hidden;}
+    
+    /* ---- Chat Section ---- */
+    .chat-section {flex:1;display:flex;flex-direction:column;background:#0d0d0d;}
+    .chat-header {padding:10px;text-align:center;background:#1a1a1a;border-bottom:1px solid #333;}
+    .chat-messages {flex:1;overflow-y:auto;padding:10px;}
+    .message {
+      max-width:70%;padding:10px;margin:5px 0;border-radius:10px;
+      position:relative;font-size:14px;
     }
-    .messages {
-      flex:1;
-      overflow-y:auto;
-      padding:10px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
+    .student-msg {background:#333;align-self:flex-start;}
+    .admin-msg {background:#0055ff;align-self:flex-end;}
+    .timestamp {font-size:10px;color:#aaa;margin-top:2px;}
+    .chat-input {display:flex;border-top:1px solid #333;}
+    .chat-input input {
+      flex:1;padding:10px;background:#1a1a1a;border:none;color:#fff;outline:none;
     }
-    .msg {
-      max-width:60%;
-      padding:10px 15px;
-      border-radius:15px;
-      font-size:14px;
-      position:relative;
+    .chat-input button {
+      padding:10px 20px;background:#0055ff;border:none;color:#fff;cursor:pointer;
     }
-    .msg.student {
-      align-self:flex-start;
-      background:#3a3f5c;
-    }
-    .msg.admin {
-      align-self:flex-end;
-      background:#ff0057;
-    }
-    .msg small {
-      display:block;
-      font-size:10px;
-      opacity:0.7;
-      margin-top:5px;
-    }
-    .input-area {
-      display:flex;
-      gap:10px;
-      padding:10px;
-      background:#2c2f48;
-    }
-    .input-area input {
-      flex:1;
-      padding:10px;
-      border:none;
-      border-radius:10px;
-      outline:none;
-    }
-    .input-area button {
-      padding:10px 20px;
-      border:none;
-      border-radius:10px;
-      background:#ff0057;
-      color:white;
-      cursor:pointer;
-    }
+
+    /* ---- Hidden Sections ---- */
+    .section {display:none;padding:20px;overflow-y:auto;}
+    .active {display:block;}
   </style>
 </head>
 <body>
+  <!-- Sidebar -->
   <div class="sidebar">
-    <div class="logo"></div>
-    <ul id="menu">
-      <li><i class="fas fa-home"></i> Home</li>
-      <li><i class="fab fa-youtube"></i> YouTube Videos</li>
-      <li><i class="fas fa-file-pdf"></i> PDF & Notes</li>
-      <li><i class="fas fa-terminal"></i> Hacking Commands</li>
-      <li><i class="fas fa-user-secret"></i> Hacking</li>
-      <li><i class="fas fa-video"></i> Live Class</li>
-      <li><i class="fas fa-headset"></i> Contact & Support</li>
-    </ul>
+    <div class="logo-container">
+      <div class="rgb-ring"></div>
+      <div class="logo"><img src="Screenshot_20250821_142735.jpg" alt="Logo"></div>
+    </div>
+    <div class="menu">
+      <ul id="menu-items">
+        <li onclick="showSection('home')">Home</li>
+        <li onclick="showSection('youtube')">YouTube Videos</li>
+        <li onclick="showSection('notes')">PDF & Notes</li>
+        <li onclick="showSection('commands')">Hacking Commands</li>
+        <li onclick="showSection('hacking')">Hacking</li>
+        <li onclick="showSection('live')">Live Class</li>
+        <li onclick="showSection('support')">Contact & Support</li>
+      </ul>
+      <h3>Admin Panel</h3>
+      <ul id="admin-items" style="display:none;">
+        <li onclick="showSection('upload')">Upload Manager</li>
+        <li onclick="showSection('students')">Manage Students</li>
+        <li onclick="showSection('announce')">Announcements</li>
+        <li onclick="showSection('analytics')">Analytics</li>
+      </ul>
+    </div>
   </div>
 
+  <!-- Main -->
   <div class="main">
     <div class="topbar">
-      <h3 id="roleDisplay">Dashboard</h3>
-      <span id="usernameDisplay"></span>
+      <span id="welcome">Welcome Guest</span>
+      <button onclick="logout()">Logout</button>
     </div>
+    <div class="content">
+      <!-- Sections -->
+      <div id="home" class="section active"><h2>Welcome to darklight000999</h2></div>
+      <div id="youtube" class="section"><iframe width="100%" height="400" src="https://www.youtube.com/embed/videoseries?list=PLMC9KNkIncKtPzgY-5rmhvj7fax8fdxoj" frameborder="0"></iframe></div>
+      <div id="notes" class="section"><h2>PDF & Notes Section</h2></div>
+      <div id="commands" class="section"><h2>Hacking Commands</h2></div>
+      <div id="hacking" class="section"><h2>Hacking Section</h2></div>
+      <div id="live" class="section"><h2>Live Class</h2></div>
+      <div id="support" class="section"><h2>Contact & Support</h2></div>
 
-    <!-- Chat Section -->
-    <div class="chatbox">
-      <div class="messages" id="messages"></div>
-      <div class="input-area">
-        <input type="text" id="msgInput" placeholder="Type a message...">
-        <button onclick="sendMessage()">Send</button>
+      <!-- Admin Sections -->
+      <div id="upload" class="section"><h2>Upload Manager (Admin Only)</h2></div>
+      <div id="students" class="section"><h2>Manage Students</h2><ul id="student-list"></ul></div>
+      <div id="announce" class="section"><h2>Announcements</h2></div>
+      <div id="analytics" class="section"><h2>Analytics</h2><p id="stats"></p></div>
+
+      <!-- Chat -->
+      <div class="chat-section">
+        <div class="chat-header">Chat</div>
+        <div class="chat-messages" id="messages"></div>
+        <div class="chat-input">
+          <input type="text" id="msgBox" placeholder="Type a message...">
+          <button onclick="sendMessage()">Send</button>
+        </div>
       </div>
     </div>
   </div>
 
-<script>
-  // Load role from login
-  const role = localStorage.getItem("role") || "student";
-  const username = localStorage.getItem("username") || "Guest";
-  document.getElementById("roleDisplay").innerText = role === "admin" ? "Admin Panel" : "Student Panel";
-  document.getElementById("usernameDisplay").innerText = username;
+  <script>
+    // ---- User Data ----
+    const users = [
+      {username:"admin.Rks",password:"Rks_1234567@"},
+      {username:"darkmoon07890@gmail.com",password:"darkmoon12345678"},
+      {username:"student2",password:"123"},
+      {username:"student3",password:"123"},
+      {username:"student4",password:"123"},
+      {username:"student5",password:"123"},
+      {username:"student6",password:"123"},
+      {username:"student7",password:"123"},
+      {username:"student8",password:"123"},
+      {username:"student9",password:"123"},
+      {username:"student10",password:"123"},
+      {username:"student11",password:"123"},
+    ];
 
-  // Extra menu for admin
-  if(role === "admin"){
-    const menu = document.getElementById("menu");
-    menu.innerHTML += `
-      <li><i class="fas fa-upload"></i> Upload Manager</li>
-      <li><i class="fas fa-users"></i> Manage Students</li>
-      <li><i class="fas fa-bullhorn"></i> Announcements</li>
-      <li><i class="fas fa-chart-line"></i> Analytics</li>
-    `;
-  }
+    let currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
+    if(!currentUser){
+      let uname = prompt("Enter Username:");
+      let pass = prompt("Enter Password:");
+      let found = users.find(u=>u.username===uname && u.password===pass);
+      if(found){currentUser=found;localStorage.setItem("currentUser",JSON.stringify(currentUser));}
+      else {alert("Invalid Login");location.reload();}
+    }
+    document.getElementById("welcome").innerText="Welcome "+currentUser.username;
 
-  // Chat
-  let messages = JSON.parse(localStorage.getItem("messages") || "[]");
-  const msgBox = document.getElementById("messages");
+    if(currentUser.username==="admin"){
+      document.getElementById("admin-items").style.display="block";
+    }
 
-  function renderMessages(){
-    msgBox.innerHTML = "";
-    messages.forEach(m=>{
-      const div = document.createElement("div");
-      div.className = "msg " + m.role;
-      div.innerHTML = `<strong>${m.user}</strong><br>${m.text}<small>${m.time}</small>`;
-      msgBox.appendChild(div);
-    });
-    msgBox.scrollTop = msgBox.scrollHeight;
-  }
-  renderMessages();
+    // ---- Sections ----
+    function showSection(id){
+      document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+      if(id==="students"){loadStudents();}
+      if(id==="analytics"){loadAnalytics();}
+    }
 
-  function sendMessage(){
-    const text = document.getElementById("msgInput").value.trim();
-    if(!text) return;
-    const msg = {
-      user: username,
-      role: role,
-      text: text,
-      time: new Date().toLocaleTimeString()
-    };
-    messages.push(msg);
-    localStorage.setItem("messages", JSON.stringify(messages));
-    document.getElementById("msgInput").value = "";
+    // ---- Logout ----
+    function logout(){
+      localStorage.removeItem("currentUser");
+      location.reload();
+    }
+
+    // ---- Chat ----
+    let messages = JSON.parse(localStorage.getItem("messages")) || [];
+    function renderMessages(){
+      let box=document.getElementById("messages");box.innerHTML="";
+      messages.forEach(m=>{
+        let div=document.createElement("div");
+        div.className="message "+(m.user==="admin"?"admin-msg":"student-msg");
+        div.innerHTML=`<b>${m.user}</b>: ${m.text}<div class="timestamp">${m.time}</div>`;
+        box.appendChild(div);
+      });
+      box.scrollTop=box.scrollHeight;
+    }
+    function sendMessage(){
+      let text=document.getElementById("msgBox").value;
+      if(text.trim()==="")return;
+      let msg={user:currentUser.username,text:text,time:new Date().toLocaleTimeString()};
+      messages.push(msg);
+      localStorage.setItem("messages",JSON.stringify(messages));
+      document.getElementById("msgBox").value="";
+      renderMessages();
+    }
     renderMessages();
-  }
-</script>
+
+    // ---- Students List ----
+    function loadStudents(){
+      let list=document.getElementById("student-list");
+      list.innerHTML="";
+      users.filter(u=>u.username!=="admin").forEach(s=>{
+        let li=document.createElement("li");li.innerText=s.username;list.appendChild(li);
+      });
+    }
+
+    // ---- Analytics ----
+    function loadAnalytics(){
+      document.getElementById("stats").innerText=
+        "Total Students: 11\nMessages: "+messages.length+"\nUploads: 0";
+    }
+  </script>
 </body>
 </html>
