@@ -20,7 +20,7 @@
     .login-container { height: 100vh; display: flex; justify-content: center; align-items: center; }
     .login-box {
       background: rgba(255,255,255,0.9); padding: 30px; border-radius: 20px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.2); text-align: center; width: 320px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2); text-align: center; width: 300px;
     }
     body.dark .login-box { background: rgba(34,34,34,0.9); }
     .logo-container { position: relative; width: 120px; height: 120px; margin: 0 auto 10px; }
@@ -81,7 +81,7 @@
         <div class="logo"><img src="Screenshot_20250821_142735.jpg"></div>
       </div>
       <h1>darklight000999</h1><h2>LOGIN</h2>
-      <input type="email" id="email" placeholder="Email">
+      <input type="text" id="username" placeholder="Username">
       <input type="password" id="password" placeholder="Password">
       <button onclick="login()">Sign In</button>
     </div>
@@ -124,44 +124,23 @@ themeToggle.addEventListener('click', () => {
   themeToggle.textContent = body.classList.contains('dark') ? '🌞' : '🌑';
 });
 
-// ---------------- USERS ----------------
-const accounts = [
-  // Admins
-  {email:"admin1@darklight.com", pass:"Asur@Admin1", role:"admin"},
-  {email:"admin2@darklight.com", pass:"Asur@Admin2", role:"admin"},
-  // Students
-  {email:"user1@darklight.com", pass:"Asur@12345", role:"student"},
-  {email:"user2@darklight.com", pass:"Asur@12345", role:"student"},
-  {email:"user3@darklight.com", pass:"Asur@12345", role:"student"},
-  {email:"user4@darklight.com", pass:"Asur@12345", role:"student"},
-  {email:"user5@darklight.com", pass:"Asur@12345", role:"student"},
-  {email:"user6@darklight.com", pass:"Asur@12345", role:"student"},
-  {email:"user7@darklight.com", pass:"Asur@12345", role:"student"},
-  {email:"user8@darklight.com", pass:"Asur@12345", role:"student"},
-  {email:"user9@darklight.com", pass:"Asur@12345", role:"student"},
-  {email:"user10@darklight.com", pass:"Asur@12345", role:"student"},
-  {email:"user11@darklight.com", pass:"Asur@12345", role:"student"}
-];
-
+const admin = "admin";
+const users = ["user1","user2","user3","user4","user5","user6","user7","user8","user9","user10","user11"];
 let currentUser = null;
 
 // ---------------- LOGIN ----------------
 function login() {
-  const email = document.getElementById('email').value;
-  const pass = document.getElementById('password').value;
-  const acc = accounts.find(u=>u.email===email && u.pass===pass);
-  if (acc) {
-    currentUser = acc;
+  const username = document.getElementById('username').value;
+  if (username === admin || users.includes(username)) {
+    currentUser = username;
     document.getElementById('loginPage').style.display="none";
     document.getElementById('sidebar').style.display="block";
     document.getElementById('menuBtn').style.display="block";
-    if (acc.role==="admin") document.getElementById('adminLinks').style.display="block";
+    if (username === admin) document.getElementById('adminLinks').style.display="block";
     loadPage('home');
     loadNotes();
     loadChat();
-  } else {
-    alert("Invalid Email or Password!");
-  }
+  } else alert("Invalid Username");
 }
 function logout() {
   currentUser = null;
@@ -180,15 +159,9 @@ document.getElementById("closeBtn").onclick = () => sidebar.classList.remove("ac
 // ---------------- Content Loader ----------------
 function loadPage(page) {
   const c = document.getElementById("content");
-  if (page==='home') c.innerHTML="<h2>Home</h2><p>Welcome, "+currentUser.email+"</p>";
-  if (page==='upload' && currentUser.role==='admin') {
+  if (page==='home') c.innerHTML="<h2>Home</h2><p>Welcome, "+currentUser+"</p>";
+  if (page==='upload' && currentUser==='admin') {
     c.innerHTML=`<h2>Upload Manager</h2>
-      <select id="category">
-        <option value="Notes">Notes</option>
-        <option value="PDF">PDF</option>
-        <option value="Image">Image</option>
-        <option value="Video">Video</option>
-      </select>
       <input type="file" id="fileInput" multiple>
       <button onclick="uploadFiles()">Upload</button>
       <div id="uploadList"></div>`;
@@ -203,10 +176,9 @@ function loadPage(page) {
 // ---------------- Notes Upload ----------------
 function uploadFiles() {
   const files = document.getElementById('fileInput').files;
-  const cat = document.getElementById('category').value;
   let notes = JSON.parse(localStorage.getItem('notes')||"[]");
   for (let f of files) {
-    notes.push({name:f.name, type:f.type, cat:cat, time:new Date().toLocaleString()});
+    notes.push({name:f.name, type:f.type, time:new Date().toLocaleString()});
   }
   localStorage.setItem('notes', JSON.stringify(notes));
   loadNotes();
@@ -216,12 +188,8 @@ function loadNotes() {
   let div = document.getElementById('notesList');
   if (!div) return;
   div.innerHTML="";
-  let cats=["Notes","PDF","Image","Video"];
-  cats.forEach(c=>{
-    div.innerHTML+=`<h3>${c}</h3>`;
-    notes.filter(n=>n.cat===c).forEach(n=>{
-      div.innerHTML+=`<div class='file-card'><h4>${n.name}</h4><p>Type: ${n.type} | Uploaded: ${n.time}</p></div>`;
-    });
+  notes.forEach(n=>{
+    div.innerHTML+=`<div class='file-card'><h4>${n.name}</h4><p>Type: ${n.type} | Uploaded: ${n.time}</p></div>`;
   });
 }
 
@@ -231,7 +199,7 @@ function sendMessage() {
   const input=document.getElementById("chatInput");
   if(!input.value.trim()) return;
   let chat=JSON.parse(localStorage.getItem('chat')||"[]");
-  chat.push({user:currentUser.email,text:input.value});
+  chat.push({user:currentUser,text:input.value});
   localStorage.setItem('chat',JSON.stringify(chat));
   input.value=""; loadChat();
 }
@@ -241,9 +209,9 @@ function loadChat() {
   cm.innerHTML="";
   chat.forEach((m,i)=>{
     let div=document.createElement("div");
-    div.className="msg "+(m.user.includes("admin")?"admin":"student");
+    div.className="msg "+(m.user==="admin"?"admin":"student");
     div.innerHTML=`${m.user}: ${m.text}`;
-    if(currentUser.role==="admin"){
+    if(currentUser==="admin"){
       div.innerHTML+=` <span class='msg-controls' onclick='deleteMsg(${i})'>🗑</span>`;
     }
     cm.appendChild(div);
