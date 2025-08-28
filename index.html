@@ -3,115 +3,94 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>darklight000999 - Dashboard</title>
-  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet"/>
+  <title>darklight000999 | Login</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet"/>
+
+  <!-- Neumorphism CSS -->
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      width: 350px;
+      padding: 40px;
+      border-radius: 20px;
+      background: #e0e0e0;
+      box-shadow: 20px 20px 60px #bebebe,
+                  -20px -20px 60px #ffffff;
+      text-align: center;
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: scale(0.95);}
+      to {opacity: 1; transform: scale(1);}
+    }
+    .container img {
+      width: 100px;
+      margin-bottom: 20px;
+      border-radius: 50%;
+      box-shadow: 5px 5px 15px #aaa,
+                  -5px -5px 15px #fff;
+    }
+    h2 {
+      margin-bottom: 30px;
+      color: #333;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      box-shadow: 5px 5px 15px #aaa,
+                  -5px -5px 15px #fff;
+      transition: 0.3s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 2px 2px 10px #aaa,
+                  -2px -2px 10px #fff;
+    }
+    .logout-btn {
+      background: linear-gradient(135deg, #ff4b2b, #ff416c);
+    }
+  </style>
 </head>
 <body>
-  <!-- Theme Toggle -->
-  <button id="themeBtn" onclick="toggleTheme()">🌑 Dark</button>
+  <div class="container">
+    <!-- Logo -->
+    <img src="Screenshot_20250821_142735.jpg" alt="Logo">
 
-  <!-- Auth Buttons (Netlify Identity Widget) -->
-  <div id="auth-section">
+    <h2>darklight000999</h2>
+
+    <!-- Netlify Identity Login/Signup -->
     <button onclick="netlifyIdentity.open()">🔑 Login / Signup</button>
-    <button onclick="netlifyIdentity.logout()">🚪 Logout</button>
-    <p id="user-info"></p>
+    <button class="logout-btn" onclick="netlifyIdentity.logout()">🚪 Logout</button>
   </div>
 
-  <!-- Admin Dashboard -->
-  <div id="adminDash" style="display:none">
-    <h2>👑 Admin Dashboard</h2>
-    <input type="file" id="adminFile"/>
-    <select id="fileCategory">
-      <option value="Notes">📘 Notes</option>
-      <option value="Assignments">📝 Assignments</option>
-      <option value="Results">📊 Results</option>
-      <option value="Updates">📢 Updates</option>
-    </select>
-    <button onclick="uploadFile()">Upload</button>
-    <div id="adminFileList"></div>
-
-    <h3>📝 Create Blog</h3>
-    <input id="postTitle" placeholder="Enter Title"/>
-    <div id="editor" style="height:200px;background:#fff;color:#000"></div>
-    <button onclick="publishPost()">Publish Post</button>
-  </div>
-
-  <!-- Student Dashboard -->
-  <div id="studentDash" style="display:none">
-    <h2>🎓 Student Dashboard</h2>
-    <div id="studentFileList"></div>
-    <div id="postList"></div>
-  </div>
-
-  <!-- Quill -->
-  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-  <!-- Netlify Identity -->
+  <!-- Netlify Identity Widget -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
   <script>
-    let uploadedFiles=[];
-    let posts=[];
-    let quill = new Quill('#editor',{theme:'snow'});
-    
-    // Theme
-    function toggleTheme(){
-      document.body.classList.toggle("light");
-      document.getElementById("themeBtn").innerText=document.body.classList.contains("light")?"🌑 Dark":"☀️ Light";
-    }
-
-    // File Upload
-    function uploadFile(){
-      const file=document.getElementById("adminFile").files[0];
-      const cat=document.getElementById("fileCategory").value;
-      if(!file){alert("⚠️ Please select a file.");return;}
-      uploadedFiles.push({name:file.name,category:cat});
-      renderFiles();
-    }
-
-    function renderFiles(){
-      const studentList=document.getElementById("studentFileList");
-      studentList.innerHTML="";
-      uploadedFiles.forEach(f=>{
-        studentList.innerHTML+=`<div>📄 ${f.name} [${f.category}]</div>`;
-      });
-      document.getElementById("adminFileList").innerHTML=studentList.innerHTML;
-    }
-
-    // Blog
-    function publishPost(){
-      let title=document.getElementById("postTitle").value.trim();
-      let content=quill.root.innerHTML;
-      if(!title||!content){alert("⚠️ Title + Content required");return;}
-      posts.push({title,content});
-      renderPosts();
-    }
-    function renderPosts(){
-      const postList=document.getElementById("postList");
-      postList.innerHTML="";
-      posts.forEach(p=>{
-        postList.innerHTML+=`<div><h3>${p.title}</h3>${p.content}</div>`;
-      });
-    }
-
-    // Netlify Identity Events
     netlifyIdentity.on("login", user => {
-      document.getElementById("user-info").innerText="Welcome "+user.email;
-      if(user.email.includes("admin")){ // simple check → आप Role Tagging भी कर सकते हैं
-        document.getElementById("adminDash").style.display="block";
-        document.getElementById("studentDash").style.display="none";
-      }else{
-        document.getElementById("studentDash").style.display="block";
-        document.getElementById("adminDash").style.display="none";
-      }
+      alert("Welcome " + user.email);
+      window.location.href = "/dashboard.html"; // login के बाद redirect
     });
-
     netlifyIdentity.on("logout", () => {
-      document.getElementById("user-info").innerText="";
-      document.getElementById("adminDash").style.display="none";
-      document.getElementById("studentDash").style.display="none";
+      alert("Logged out!");
     });
-
-    netlifyIdentity.init();
   </script>
 </body>
 </html>
