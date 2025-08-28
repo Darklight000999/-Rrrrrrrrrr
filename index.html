@@ -1,96 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>darklight000999 | Login</title>
-
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet"/>
 
-  <!-- Neumorphism CSS -->
   <style>
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+    :root{
+      --card:#e0e0e0; --shadow1:#bebebe; --shadow2:#ffffff;
+      --grad1:#667eea; --grad2:#764ba2;
     }
-    .container {
-      width: 350px;
-      padding: 40px;
-      border-radius: 20px;
-      background: #e0e0e0;
-      box-shadow: 20px 20px 60px #bebebe,
-                  -20px -20px 60px #ffffff;
-      text-align: center;
-      animation: fadeIn 1s ease-in-out;
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:Poppins,system-ui,Segoe UI,Arial,sans-serif;
+      min-height:100vh; display:grid; place-items:center;
+      background:linear-gradient(135deg,var(--grad1),var(--grad2));
+      padding:24px;
     }
-    @keyframes fadeIn {
-      from {opacity: 0; transform: scale(0.95);}
-      to {opacity: 1; transform: scale(1);}
+    .card{
+      width:min(92vw,380px); padding:36px 28px; border-radius:22px; text-align:center;
+      background:var(--card);
+      box-shadow:20px 20px 60px var(--shadow1), -20px -20px 60px var(--shadow2);
+      animation:fade .7s ease;
     }
-    .container img {
-      width: 100px;
-      margin-bottom: 20px;
-      border-radius: 50%;
-      box-shadow: 5px 5px 15px #aaa,
-                  -5px -5px 15px #fff;
+    @keyframes fade{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
+
+    /* ==== RGB RING (rotates) + Static logo ==== */
+    .logo-wrap{position:relative; width:130px; height:130px; margin:0 auto 18px;}
+    /* spinning ring */
+    .rgb-ring{
+      position:absolute; inset:0; border-radius:50%;
+      background:conic-gradient(red,orange,yellow,green,cyan,blue,purple,red);
+      animation:spin 5s linear infinite;             /* ring घूमेगा */
+      /* inner hole to see only the ring */
+      -webkit-mask: radial-gradient(circle 58px, transparent 62px, #000 63px);
+              mask: radial-gradient(circle 58px, transparent 62px, #000 63px);
+      filter: drop-shadow(0 0 10px rgba(255,255,255,.35));
     }
-    h2 {
-      margin-bottom: 30px;
-      color: #333;
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* static logo (won't rotate) */
+    .logo{
+      position:absolute; inset:0; display:grid; place-items:center;
+      pointer-events:none;
     }
-    button {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      font-size: 16px;
-      font-weight: 600;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: #fff;
-      box-shadow: 5px 5px 15px #aaa,
-                  -5px -5px 15px #fff;
-      transition: 0.3s;
+    .logo img{
+      width:110px; height:110px; border-radius:50%; object-fit:cover;
+      box-shadow: 6px 6px 14px rgba(0,0,0,.15),
+                  -4px -4px 12px rgba(255,255,255,.6) inset;
+      background:#fff;
     }
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 2px 2px 10px #aaa,
-                  -2px -2px 10px #fff;
+
+    h2{margin:6px 0 24px; color:#333; letter-spacing:.3px}
+
+    .btn{
+      width:100%; padding:12px 14px; border:none; border-radius:14px; cursor:pointer;
+      font-weight:700; font-size:16px; color:#fff;
+      background:linear-gradient(135deg,var(--grad1),var(--grad2));
+      box-shadow:6px 6px 14px rgba(0,0,0,.18), -6px -6px 14px rgba(255,255,255,.65);
+      transition:transform .15s ease, box-shadow .15s ease; margin:10px 0;
     }
-    .logout-btn {
-      background: linear-gradient(135deg, #ff4b2b, #ff416c);
-    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn:active{transform:translateY(0); box-shadow:3px 3px 10px rgba(0,0,0,.2)}
+
+    .btn.logout{background:linear-gradient(135deg,#ff4b2b,#ff416c)}
+    .credits{margin-top:14px; font-size:12px; color:#666}
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Logo -->
-    <img src="Screenshot_20250821_142735.jpg" alt="Logo">
+  <div class="card">
+    <!-- RGB ring + static logo -->
+    <div class="logo-wrap">
+      <div class="rgb-ring"></div>
+      <div class="logo">
+        <img src="Screenshot_20250821_142735.jpg" alt="Logo"
+             onerror="this.src='https://via.placeholder.com/110?text=Logo'">
+      </div>
+    </div>
 
     <h2>darklight000999</h2>
 
-    <!-- Netlify Identity Login/Signup -->
-    <button onclick="netlifyIdentity.open()">🔑 Login / Signup</button>
-    <button class="logout-btn" onclick="netlifyIdentity.logout()">🚪 Logout</button>
+    <!-- Netlify Identity controls -->
+    <button class="btn" onclick="netlifyIdentity.open()">🔑 Login / Signup</button>
+    <button class="btn logout" onclick="netlifyIdentity.logout()">🚪 Logout</button>
+
+    <div class="credits" id="who"></div>
   </div>
 
   <!-- Netlify Identity Widget -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script>
-    netlifyIdentity.on("login", user => {
-      alert("Welcome " + user.email);
-      window.location.href = "/dashboard.html"; // login के बाद redirect
+    // show current user
+    function showUser(u){
+      document.getElementById('who').textContent = u ? `Logged in as ${u.email}` : '';
+    }
+    netlifyIdentity.on('init', showUser);
+    netlifyIdentity.on('login', user => {
+      showUser(user);
+      // ✅ लॉगिन के बाद आपका डैशबोर्ड पेज
+      window.location.href = "/dashboard.html";
     });
-    netlifyIdentity.on("logout", () => {
-      alert("Logged out!");
-    });
+    netlifyIdentity.on('logout', () => showUser(null));
+    netlifyIdentity.init();
   </script>
 </body>
 </html>
