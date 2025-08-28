@@ -75,7 +75,6 @@
   body.light .menu li{background:#ddd;}
   body.dark  .menu li{background:#222;}
 
-  /* Hover + Active Animation */
   .menu li:hover{
     transform:translateX(0);
     opacity:1;
@@ -87,7 +86,6 @@
     transform:translateX(0);
     opacity:1;
   }
-
   .menu li span.icon{font-size:18px;width:22px;text-align:center}
 
   .sidebar-bottom{margin-top:auto;padding-top:12px}
@@ -113,16 +111,22 @@
   .section{display:none}
   .section.active{display:block}
 
-  @media(min-width:992px){
-    .sidebar{left:0}
-    .overlay{display:none!important}
-    .main{margin-left:var(--w-sidebar)}
-    .menu-btn{display:none}
+  /* ===== Upload Section ===== */
+  .upload-box{
+    border:2px dashed #4facfe;
+    padding:20px;
+    border-radius:12px;
+    text-align:center;
+    margin:20px 0;
   }
+  .upload-box input{display:block;margin:12px auto;padding:10px;}
+  .upload-box button{padding:10px 18px;border:none;border-radius:8px;font-weight:700;cursor:pointer;
+    background:linear-gradient(135deg,#4facfe,#00f2fe);color:#fff;}
+  .uploaded-list{margin-top:16px;}
+  .uploaded-item{padding:10px;border-bottom:1px solid #555;}
 </style>
 </head>
 <body class="light">
-  <!-- Theme -->
   <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">🌑 Dark</button>
 
   <!-- LOGIN -->
@@ -157,6 +161,7 @@
             <li data-target="cmd" onclick="onNav(this)"><span class="icon">💻</span> Hacking Commands</li>
             <li data-target="hack" onclick="onNav(this)"><span class="icon">⚡</span> Hacking</li>
             <li data-target="live" onclick="onNav(this)"><span class="icon">📡</span> Live Class</li>
+            <li data-target="upload" id="uploadMenu" onclick="onNav(this)" style="display:none"><span class="icon">⬆️</span> Uploads</li>
             <li data-target="support" onclick="onNav(this)"><span class="icon">🎧</span> Contact & Support</li>
           </ul>
         </nav>
@@ -185,6 +190,18 @@
           <section id="cmd" class="section"><h2>💻 Hacking Commands</h2><p>Command list coming soon.</p></section>
           <section id="hack" class="section"><h2>⚡ Hacking</h2><p>Hacking resources here.</p></section>
           <section id="live" class="section"><h2>📡 Live Class</h2><p>No live class scheduled.</p></section>
+          
+          <!-- Upload Section -->
+          <section id="upload" class="section">
+            <h2>⬆️ Uploads</h2>
+            <div class="upload-box" id="uploadBox">
+              <h3>Upload Files</h3>
+              <input type="file" id="fileInput" multiple>
+              <button onclick="uploadFiles()">Upload</button>
+              <div class="uploaded-list" id="uploadedList"></div>
+            </div>
+          </section>
+
           <section id="support" class="section"><h2>🎧 Contact & Support</h2><p>Contact us at support@email.com</p></section>
         </div>
       </main>
@@ -192,7 +209,6 @@
   </div>
 
 <script>
-  /* USERS */
   const users = [
     {username:"admin1",password:"Adm!n@123",role:"admin"},
     {username:"student1",password:"Pass@001",role:"student"}
@@ -210,6 +226,13 @@
     document.getElementById("login-page").style.display="none";
     document.getElementById("website").style.display="block";
     document.getElementById("welcome").innerText="Welcome "+user.username;
+
+    // सिर्फ Admin को Upload Menu दिखे
+    if(user.role==="admin"){
+      document.getElementById("uploadMenu").style.display="block";
+    } else {
+      document.getElementById("uploadMenu").style.display="none";
+    }
   }
   function logout(){
     currentUser=null;
@@ -232,6 +255,20 @@
     document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
     document.getElementById(el.dataset.target).classList.add("active");
     toggleSidebar(false);
+  }
+
+  // Upload Logic
+  function uploadFiles(){
+    const input=document.getElementById("fileInput");
+    const list=document.getElementById("uploadedList");
+    if(input.files.length===0){alert("No file selected");return;}
+    for(let file of input.files){
+      const item=document.createElement("div");
+      item.className="uploaded-item";
+      item.textContent="📂 "+file.name;
+      list.appendChild(item);
+    }
+    input.value="";
   }
 </script>
 </body>
