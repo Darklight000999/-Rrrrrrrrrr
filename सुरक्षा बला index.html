@@ -1,185 +1,693 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+
+<html lang="en" class="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login | darklight000999</title>
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dark Light — Educational Dashboard (Single File)</title>
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
   <style>
+    /* Animated gradient background on <body> using the given colors */
+    :root {
+      --c1: #ee7752;
+      --c2: #e73c7e;
+      --c3: #23a6d5;
+      --c4: #23d5ab;
+    }
     body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      transition: background 0.5s, color 0.5s;
-      overflow: hidden;
+      min-height: 100vh;
+      background: linear-gradient( -45deg, var(--c1), var(--c2), var(--c3), var(--c4) );
+      background-size: 400% 400%;
+      animation: gradient-flow 15s ease infinite;
     }
+    @keyframes gradient-flow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }/* glass-card utility */
+.glass-card {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
 
-    /* Background Water Waves */
-    .background {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(180deg, #2193b0, #6dd5ed);
-      top: 0;
-      left: 0;
-      z-index: -1;
-      overflow: hidden;
-    }
-    .wave {
-      position: absolute;
-      bottom: 0;
-      width: 200%;
-      height: 200px;
-      background: rgba(255,255,255,0.3);
-      border-radius: 100%;
-      animation: wave 8s linear infinite;
-    }
-    .wave:nth-child(2) {
-      bottom: 20px;
-      animation: wave 12s linear infinite reverse;
-    }
-    @keyframes wave {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
+/* Fade-in animation */
+.animate-fade-in { animation: fadein .4s ease both; }
+@keyframes fadein { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Theme Toggle */
-    .theme-toggle {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: rgba(255,255,255,0.2);
-      border: none;
-      padding: 8px 16px;
-      border-radius: 25px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
-      backdrop-filter: blur(10px);
-      color: #333;
-    }
+/* Secure view: disable selection / right click (best-effort) */
+.no-select { user-select: none; -webkit-user-select:none; }
 
-    /* Login Container */
-    .login-container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(255,255,255,0.2);
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-      backdrop-filter: blur(12px);
-      text-align: center;
-      width: 320px;
-    }
-
-    /* Logo with RGB Ring */
-    .logo-ring {
-      position: relative;
-      width: 120px;
-      height: 120px;
-      margin: 0 auto 20px;
-    }
-    .logo-ring::before {
-      content: "";
-      position: absolute;
-      top: -8px; left: -8px;
-      width: 136px; height: 136px;
-      border-radius: 50%;
-      background: conic-gradient(red, orange, yellow, lime, cyan, blue, violet, red);
-      animation: rotate 3s linear infinite;
-      z-index: 0;
-    }
-    .logo-ring img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      position: relative;
-      z-index: 1;
-    }
-    @keyframes rotate {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    h2 {
-      margin: 10px 0;
-      font-weight: 600;
-      color: #333;
-    }
-
-    .login-btn {
-      width: 100%;
-      padding: 12px;
-      margin-top: 15px;
-      border: none;
-      border-radius: 25px;
-      background: linear-gradient(90deg, #2193b0, #6dd5ed);
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .login-btn:hover {
-      transform: scale(1.05);
-    }
-
-    /* Dark Theme */
-    body.dark {
-      background: #121212;
-      color: white;
-    }
-    body.dark .login-container {
-      background: rgba(0,0,0,0.6);
-    }
-    body.dark .theme-toggle {
-      background: rgba(255,255,255,0.1);
-      color: #fff;
-    }
   </style>
-</head>
-<body>
-  <!-- Background -->
-  <div class="background">
-    <div class="wave"></div>
-    <div class="wave"></div>
-  </div>
-
-  <!-- Theme Toggle -->
-  <button class="theme-toggle" onclick="toggleTheme()">🌑 Dark</button>
-
-  <!-- Login Box -->
-  <div class="login-container">
-    <div class="logo-ring">
-      <img src="Screenshot_20250821_142735.jpg" alt="Logo">
-    </div>
-    <h2>darklight000999</h2>
-    <button class="login-btn" onclick="netlifyIdentity.open()">🔑 Login / Signup</button>
-  </div>
-
-  <!-- Netlify Identity Widget -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script>
-    // Theme Toggle
-    function toggleTheme() {
-      document.body.classList.toggle("dark");
-      const btn = document.querySelector(".theme-toggle");
-      if(document.body.classList.contains("dark")){
-        btn.textContent = "🌞 Light";
+    // Tailwind config (primary accent like shadcn hsl(262.1 83.3% 57.8%))
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              DEFAULT: 'hsl(262.1 83.3% 57.8%)'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="text-white/90 selection:bg-white/20 selection:text-white">  <!-- LOGIN VIEW -->  <section id="loginView" class="min-h-screen flex items-center justify-center p-4">
+    <div class="glass-card w-full max-w-md p-6 md:p-8 animate-fade-in">
+      <div class="flex flex-col items-center gap-4 mb-6">
+        <img src="https://raw.githubusercontent.com/Darklight000999/Darklight000999.github.io/c1a7300919f5eeefcbc4cac40a731d4cfd8e29aa/Screenshot_20250821_142735.jpg?raw=true" alt="Dark Light Logo" class="w-20 h-20 rounded-xl object-cover shadow"/>
+        <h1 class="text-2xl font-bold">Dark Light</h1>
+        <p class="text-white/70 text-sm">Educational Dashboard — Dummy Firebase Auth</p>
+      </div>
+      <form id="loginForm" class="space-y-4">
+        <div>
+          <label class="block text-sm mb-1">Email</label>
+          <input id="email" type="email" required placeholder="you@example.com" class="w-full px-3 py-2 rounded-lg bg-white/10 focus:bg-white/15 outline-none border border-white/20 focus:border-primary"/>
+        </div>
+        <div>
+          <label class="block text-sm mb-1">Password</label>
+          <input id="password" type="password" required placeholder="••••••••" class="w-full px-3 py-2 rounded-lg bg-white/10 focus:bg-white/15 outline-none border border-white/20 focus:border-primary"/>
+        </div>
+        <button class="w-full py-2.5 rounded-xl bg-primary hover:opacity-90 font-semibold">
+          Log In
+        </button>
+        <p class="text-xs text-white/70">
+          Demo accounts — Student: <b>user@example.com</b> / <b>password123</b> &nbsp; | &nbsp; Operator: <b>operator@example.com</b> / <b>password123</b>
+        </p>
+      </form>
+    </div>
+  </section>  <!-- DASHBOARD LAYOUT -->  <section id="appView" class="hidden min-h-screen">
+    <div class="flex min-h-screen">
+      <!-- Sidebar -->
+      <aside id="sidebar" class="glass-card m-3 p-3 w-72 shrink-0 transition-all duration-300 overflow-y-auto">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <div class="w-9 h-9 rounded-lg bg-white/15 grid place-items-center"><i data-lucide="sparkles"></i></div>
+            <span class="font-bold">Dark Light</span>
+          </div>
+          <button id="collapseBtn" class="p-2 rounded-lg hover:bg-white/10"><i data-lucide="panel-left-close"></i></button>
+        </div>
+        <nav id="menu" class="space-y-1 text-sm">
+          <!-- Menu items will be injected, labels customizable in Settings -->
+        </nav>
+      </aside><!-- Main -->
+  <main class="flex-1 m-3 ml-0">
+    <!-- Header -->
+    <header class="glass-card p-3 flex items-center justify-between">
+      <div class="font-semibold" id="pageTitle">Dashboard</div>
+      <div class="flex items-center gap-2">
+        <button id="themeToggle" class="px-3 py-2 rounded-lg hover:bg-white/10"><i data-lucide="sun"></i></button>
+        <div class="relative">
+          <button id="profileBtn" class="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-white/10">
+            <img id="hdrAvatar" class="w-8 h-8 rounded-lg object-cover" src="https://api.dicebear.com/8.x/pixel-art/svg?seed=dl"/>
+            <span id="hdrName" class="text-sm font-medium">User</span>
+            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+          </button>
+          <div id="profileMenu" class="hidden absolute right-0 mt-2 w-44 glass-card p-2 text-sm">
+            <button data-nav="/dashboard/profile" class="w-full text-left px-2 py-2 rounded-lg hover:bg-white/10">Profile</button>
+            <button id="logoutBtn" class="w-full text-left px-2 py-2 rounded-lg hover:bg-white/10">Logout</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Pages Container -->
+    <div id="pages" class="mt-3 space-y-3">
+      <!-- ANNOUNCEMENTS -->
+      <section data-route="/dashboard/announcements" class="page glass-card p-4 hidden animate-fade-in">
+        <h2 class="text-xl font-bold mb-3">Announcements</h2>
+        <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-3" id="annList"></div>
+      </section>
+
+      <!-- CHAT -->
+      <section data-route="/dashboard/chat" class="page glass-card p-4 hidden animate-fade-in">
+        <h2 class="text-xl font-bold mb-3">Chat</h2>
+        <div class="grid grid-cols-12 gap-3">
+          <div class="col-span-4 glass-card p-2 max-h-[65vh] overflow-y-auto" id="chatUsers"></div>
+          <div class="col-span-8 glass-card p-2 flex flex-col">
+            <div id="chatWindow" class="flex-1 overflow-y-auto space-y-2 p-2"></div>
+            <form id="chatForm" class="mt-2 flex items-center gap-2">
+              <input id="chatInput" class="flex-1 px-3 py-2 rounded-lg bg-white/10 border border-white/20 outline-none" placeholder="Type a message..."/>
+              <input type="file" id="imgPicker" accept="image/*" class="hidden"/>
+              <button type="button" id="pickImg" class="px-3 py-2 rounded-lg hover:bg-white/10"><i data-lucide="image"></i></button>
+              <button class="px-4 py-2 rounded-lg bg-primary">Send</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- LIVE CLASS -->
+      <section data-route="/dashboard/live-class" class="page glass-card p-4 hidden animate-fade-in">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-xl font-bold">Live Class</h2>
+          <button id="addClassBtn" class="hidden px-3 py-2 rounded-lg bg-primary">Add Class</button>
+        </div>
+        <div id="classGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+      </section>
+
+      <!-- NOTES -->
+      <section data-route="/dashboard/notes" class="page glass-card p-4 hidden animate-fade-in">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-xl font-bold">Notes</h2>
+          <a data-nav="/dashboard/notes/upload" id="uploadLink" class="hidden px-3 py-2 rounded-lg bg-primary cursor-pointer">Upload New Resource</a>
+        </div>
+        <div class="flex gap-2 mb-3">
+          <button data-tab="docs" class="tab px-3 py-1.5 rounded-lg bg-white/10">Documents</button>
+          <button data-tab="images" class="tab px-3 py-1.5 rounded-lg">Images</button>
+          <button data-tab="videos" class="tab px-3 py-1.5 rounded-lg">Videos</button>
+        </div>
+        <div id="notesWrap" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+      </section>
+
+      <!-- NOTES UPLOAD (operator) -->
+      <section data-route="/dashboard/notes/upload" class="page glass-card p-4 hidden animate-fade-in">
+        <h2 class="text-xl font-bold mb-3">Upload New Resource</h2>
+        <form id="uploadForm" class="space-y-3">
+          <div class="grid sm:grid-cols-2 gap-3">
+            <input required id="uTitle" placeholder="Title" class="px-3 py-2 rounded-lg bg-white/10 border border-white/20 outline-none"/>
+            <select id="uType" class="px-3 py-2 rounded-lg bg-white/10 border border-white/20 outline-none">
+              <option value="docs">Document</option>
+              <option value="images">Image</option>
+              <option value="videos">Video</option>
+            </select>
+          </div>
+          <input id="uURL" required placeholder="URL (file or YouTube)" class="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 outline-none"/>
+          <button class="px-4 py-2 rounded-lg bg-primary">Upload</button>
+        </form>
+      </section>
+
+      <!-- NOTES SECURE VIEW (best-effort) -->
+      <section data-route="/dashboard/notes/view" class="page glass-card p-4 hidden animate-fade-in">
+        <h2 class="text-xl font-bold mb-3">Secure View</h2>
+        <div id="secureContainer" class="no-select" oncontextmenu="return false"></div>
+        <p class="text-sm text-white/70 mt-2">Right-click & download disabled (best-effort in browser).</p>
+      </section>
+
+      <!-- COMMANDS -->
+      <section data-route="/dashboard/commands" class="page glass-card p-4 hidden animate-fade-in">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-xl font-bold">Commands</h2>
+          <button id="addCmdGroup" class="hidden px-3 py-2 rounded-lg bg-primary">Add Group</button>
+        </div>
+        <div id="cmdWrap" class="space-y-3"></div>
+      </section>
+
+      <!-- PROFILE -->
+      <section data-route="/dashboard/profile" class="page glass-card p-4 hidden animate-fade-in">
+        <h2 class="text-xl font-bold mb-3">Profile</h2>
+        <div class="flex items-center gap-4">
+          <div class="relative group">
+            <img id="pfAvatar" class="w-24 h-24 rounded-2xl object-cover" src="https://api.dicebear.com/8.x/pixel-art/svg?seed=dl"/>
+            <label for="pfPick" class="absolute inset-0 hidden group-hover:grid place-items-center bg-black/40 rounded-2xl cursor-pointer">
+              <i data-lucide="pencil" class="w-6 h-6"></i>
+            </label>
+            <input id="pfPick" type="file" accept="image/*" class="hidden"/>
+          </div>
+          <div class="space-y-2 flex-1">
+            <input id="pfName" class="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 outline-none" placeholder="Your name"/>
+            <input id="pfPass" type="password" class="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 outline-none" placeholder="New password (optional)"/>
+            <button id="pfSave" class="px-4 py-2 rounded-lg bg-primary">Save Changes</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SETTINGS (operator only) -->
+      <section data-route="/dashboard/settings" class="page glass-card p-4 hidden animate-fade-in">
+        <h2 class="text-xl font-bold mb-3">Settings (Operator)</h2>
+        <p class="text-sm mb-2">Rename or hide sidebar items:</p>
+        <div id="settingsWrap" class="space-y-2"></div>
+      </section>
+
+      <!-- VIDEO GENERATOR -->
+      <section data-route="/dashboard/video-generator" class="page glass-card p-4 hidden animate-fade-in">
+        <h2 class="text-xl font-bold mb-3">AI Video Generator (Demo)</h2>
+        <p class="text-sm text-white/80 mb-2">Single-file demo: generates an animated SVG clip (acts like a video) from your prompt.</p>
+        <textarea id="vgText" rows="4" class="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 outline-none" placeholder="Describe the video..."></textarea>
+        <div class="mt-3 flex items-center gap-2">
+          <button id="vgBtn" class="px-4 py-2 rounded-lg bg-primary">Generate Video</button>
+          <div id="vgSpinner" class="hidden animate-spin w-5 h-5 border-2 border-white/30 border-t-white rounded-full"></div>
+        </div>
+        <div id="vgOut" class="mt-4"></div>
+      </section>
+    </div>
+  </main>
+</div>
+
+  </section>  <!-- Generic modal for Live Class video -->  <div id="modal" class="hidden fixed inset-0 z-50 grid place-items-center p-4 bg-black/60">
+    <div class="glass-card w-full max-w-3xl p-3">
+      <div class="flex justify-between items-center mb-2">
+        <h3 id="modalTitle" class="font-semibold">Live Session</h3>
+        <button id="modalClose" class="p-2 rounded-lg hover:bg-white/10"><i data-lucide="x"></i></button>
+      </div>
+      <div id="modalBody" class="aspect-video w-full">
+        <!-- iframe injected here -->
+      </div>
+    </div>
+  </div>  <script>
+    // --- UTILITIES ---
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => Array.from(document.querySelectorAll(sel));
+    const storage = {
+      get: (k, d=null) => { try { return JSON.parse(localStorage.getItem(k)) ?? d } catch { return d } },
+      set: (k, v) => localStorage.setItem(k, JSON.stringify(v)),
+      del: k => localStorage.removeItem(k)
+    };
+
+    const DEFAULT_MENU = [
+      { route: '/dashboard/announcements', icon:'megaphone', label:'Announcements', show:true },
+      { route: '/dashboard/chat',          icon:'messages-square', label:'Chat', show:true },
+      { route: '/dashboard/live-class',    icon:'video', label:'Live Class', show:true },
+      { route: '/dashboard/notes',         icon:'notebook', label:'Notes', show:true },
+      { route: '/dashboard/commands',      icon:'terminal', label:'Commands', show:true },
+      { route: '/dashboard/video-generator',icon:'clapperboard', label:'Video Generator', show:true },
+      { route: '/dashboard/profile',       icon:'user', label:'Profile', show:true },
+      { route: '/dashboard/settings',      icon:'settings', label:'Settings', show:true, operatorOnly:true },
+    ];
+
+    const DEMO_ANN = [
+      {title:'Welcome to Dark Light', date:'2025-08-28', body:'Kick off your learning journey!', icon:'sparkles'},
+      {title:'Live Class at 7 PM', date:'2025-08-29', body:'Join the YouTube live for Q&A.', icon:'broadcast'},
+      {title:'New Notes Uploaded', date:'2025-08-30', body:'Find fresh resources in Notes.', icon:'folder-up'}
+    ];
+
+    const DEMO_USERS = [
+      { id:'u1', name:'Alice', avatar:'https://api.dicebear.com/8.x/pixel-art/svg?seed=alice' },
+      { id:'u2', name:'Bob',   avatar:'https://api.dicebear.com/8.x/pixel-art/svg?seed=bob' },
+      { id:'u3', name:'Cody',  avatar:'https://api.dicebear.com/8.x/pixel-art/svg?seed=cody' }
+    ];
+
+    const DEMO_CLASSES = [
+      { id:'c1', title:'Algebra Basics', yt:'https://www.youtube.com/embed/dQw4w9WgXcQ' },
+      { id:'c2', title:'History of AI',  yt:'https://www.youtube.com/embed/9bZkp7q19f0' }
+    ];
+
+    const DEMO_NOTES = [
+      { id:'n1', type:'docs', title:'Syllabus PDF', url:'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' },
+      { id:'n2', type:'images', title:'Diagram', url:'https://picsum.photos/seed/dl/800/500' },
+      { id:'n3', type:'videos', title:'Intro Video', url:'https://www.youtube.com/watch?v=jNQXAC9IVRw' }
+    ];
+
+    const DEMO_CMDS = [
+      { id:'g1', name:'Git Basics', cmds:[
+        {label:'Init', text:'git init'},
+        {label:'Status', text:'git status'},
+        {label:'Commit', text:'git commit -m "msg"'}
+      ]},
+      { id:'g2', name:'Node', cmds:[
+        {label:'Start', text:'npm run dev'},
+        {label:'Build', text:'npm run build'}
+      ]}
+    ];
+
+    // --- AUTH ---
+    function currentUser(){ return storage.get('dl_user'); }
+
+    function login(email, password){
+      const valid = [
+        { email:'user@example.com',     pass:'password123', role:'student', name:'Student User' },
+        { email:'operator@example.com', pass:'password123', role:'operator', name:'Operator' }
+      ];
+      const u = valid.find(v => v.email===email && v.pass===password);
+      if(!u) return null;
+      const user = {
+        email: u.email, role: u.role, name: u.name,
+        avatar: 'https://api.dicebear.com/8.x/pixel-art/svg?seed=' + encodeURIComponent(u.name)
+      };
+      storage.set('dl_user', user);
+      return user;
+    }
+
+    function logout(){ storage.del('dl_user'); location.hash = ''; renderApp(); }
+
+    // --- APP INIT ---
+    function renderApp(){
+      const user = currentUser();
+      if(!user){
+        $('#loginView').classList.remove('hidden');
+        $('#appView').classList.add('hidden');
+        return;
+      }
+      // Set header user
+      $('#hdrName').textContent = user.name || user.email;
+      $('#hdrAvatar').src = user.avatar || 'https://api.dicebear.com/8.x/pixel-art/svg?seed=dl';
+
+      // Sidebar menu (apply settings)
+      const saved = storage.get('dl_sidebar_settings') || DEFAULT_MENU;
+      const menu = saved.map(m => ({...DEFAULT_MENU.find(d=>d.route===m.route)||{}, ...m}));
+      const menuEl = $('#menu');
+      menuEl.innerHTML = '';
+      menu.filter(i => i.show !== false && (!i.operatorOnly || user.role==='operator'))
+        .forEach(item => {
+          const a = document.createElement('a');
+          a.href = `#${item.route}`;
+          a.dataset.nav = item.route;
+          a.className = 'flex items-center gap-2 px-2 py-2 rounded-lg hover:bg-white/10';
+          a.innerHTML = `<i data-lucide="${item.icon}"></i><span>${item.label}</span>`;
+          menuEl.appendChild(a);
+        });
+
+      // Operator-only controls
+      $('#addClassBtn').classList.toggle('hidden', user.role!=='operator');
+      $('#uploadLink').classList.toggle('hidden', user.role!=='operator');
+      $('#addCmdGroup').classList.toggle('hidden', user.role!=='operator');
+
+      // Show app
+      $('#loginView').classList.add('hidden');
+      $('#appView').classList.remove('hidden');
+
+      // Route
+      const route = location.hash.replace('#','') || '/dashboard/announcements';
+      navigate(route);
+      lucide.createIcons();
+    }
+
+    // --- NAVIGATION ---
+    function navigate(route){
+      $$('#pages .page').forEach(p => p.classList.add('hidden'));
+      const page = $(`#pages .page[data-route="${route}"]`) || (route.startsWith('/dashboard/notes/view') && $('[data-route="/dashboard/notes/view"]'));
+      if(!page){ location.hash = '#/dashboard/announcements'; return; }
+      page.classList.remove('hidden');
+      $('#pageTitle').textContent = (route.split('/').pop() || 'Dashboard').replace('-', ' ').replace(/\b\w/g, m=>m.toUpperCase());
+
+      // Special handlers
+      if(route==='/dashboard/announcements') renderAnnouncements();
+      if(route==='/dashboard/chat') renderChat();
+      if(route==='/dashboard/live-class') renderClasses();
+      if(route==='/dashboard/notes') renderNotes('docs');
+      if(route==='/dashboard/notes/upload') {/* form visible */}
+      if(route.startsWith('/dashboard/notes/view')) renderSecureView();
+      if(route==='/dashboard/commands') renderCommands();
+      if(route==='/dashboard/profile') renderProfile();
+      if(route==='/dashboard/settings') renderSettings();
+    }
+
+    window.addEventListener('hashchange', () => {
+      const user = currentUser(); if(!user){ location.hash=''; return; }
+      const route = location.hash.replace('#','');
+      navigate(route);
+      lucide.createIcons();
+    });
+
+    // --- ANNOUNCEMENTS ---
+    function renderAnnouncements(){
+      const wrap = $('#annList');
+      wrap.innerHTML = '';
+      (storage.get('dl_ann')||DEMO_ANN).forEach(a => {
+        const card = document.createElement('div');
+        card.className = 'glass-card p-3';
+        card.innerHTML = `
+          <div class="flex items-center gap-2 mb-2">
+            <div class="w-9 h-9 rounded-lg bg-white/10 grid place-items-center"><i data-lucide="${a.icon||'bell'}"></i></div>
+            <div>
+              <div class="font-semibold">${a.title}</div>
+              <div class="text-xs text-white/70">${a.date}</div>
+            </div>
+          </div>
+          <p class="text-sm">${a.body}</p>`;
+        wrap.appendChild(card);
+      });
+    }
+
+    // --- CHAT ---
+    let CHAT_STATE = { active: DEMO_USERS[0].id, threads: {} };
+    function renderChat(){
+      // Users list
+      const list = $('#chatUsers');
+      list.innerHTML = '';
+      DEMO_USERS.forEach(u => {
+        const btn = document.createElement('button');
+        btn.className = 'w-full flex items-center gap-2 p-2 rounded-lg hover:bg-white/10 ' + (CHAT_STATE.active===u.id?'bg-white/10':'');
+        btn.innerHTML = `<img class="w-8 h-8 rounded-lg" src="${u.avatar}"><div class="text-left"><div class=\"text-sm font-medium\">${u.name}</div><div class=\"text-xs text-white/70\">Online</div></div>`;
+        btn.onclick = () => { CHAT_STATE.active=u.id; renderChat(); };
+        list.appendChild(btn);
+      });
+
+      // Thread
+      const win = $('#chatWindow');
+      const th = CHAT_STATE.threads[CHAT_STATE.active] || (CHAT_STATE.threads[CHAT_STATE.active]=[]);
+      win.innerHTML = '';
+      th.forEach(m => {
+        const row = document.createElement('div');
+        row.className = 'flex ' + (m.me?'justify-end':'justify-start');
+        row.innerHTML = `<div class="max-w-[75%] glass-card p-2">${m.type==='img'?`<img class="rounded" src="${m.data}">`:`<div class="text-sm">${m.data}</div>`}</div>`;
+        win.appendChild(row);
+      });
+      win.scrollTop = win.scrollHeight;
+    }
+
+    $('#pickImg').addEventListener('click', ()=> $('#imgPicker').click());
+    $('#imgPicker').addEventListener('change', (e)=>{
+      const f = e.target.files[0]; if(!f) return;
+      const r = new FileReader(); r.onload = () => {
+        const th = CHAT_STATE.threads[CHAT_STATE.active];
+        th.push({ me:true, type:'img', data:r.result }); renderChat();
+      }; r.readAsDataURL(f);
+    });
+    $('#chatForm').addEventListener('submit', (e)=>{
+      e.preventDefault(); const v = $('#chatInput').value.trim(); if(!v) return;
+      const th = CHAT_STATE.threads[CHAT_STATE.active]; th.push({ me:true, type:'txt', data:v });
+      $('#chatInput').value=''; renderChat();
+      // fake reply
+      setTimeout(()=>{ th.push({ me:false, type:'txt', data:'Got it! ✅' }); renderChat(); }, 500);
+    });
+
+    // --- LIVE CLASS ---
+    function renderClasses(){
+      const data = storage.get('dl_classes') || DEMO_CLASSES;
+      const grid = $('#classGrid'); grid.innerHTML='';
+      data.forEach(c => {
+        const card = document.createElement('div');
+        card.className = 'glass-card p-3';
+        card.innerHTML = `
+          <div class="flex items-center justify-between mb-2">
+            <div class="font-medium">${c.title}</div>
+            ${currentUser().role==='operator'?`<button class="px-2 py-1 rounded bg-white/10 hover:bg-white/20 text-xs" data-del="${c.id}">Delete</button>`:''}
+          </div>
+          <button class="w-full px-3 py-2 rounded-lg bg-primary" data-open="${c.id}">Open</button>`;
+        grid.appendChild(card);
+      });
+      grid.querySelectorAll('[data-open]').forEach(b=>b.onclick = () => openClass(data.find(x=>x.id===b.dataset.open)));
+      grid.querySelectorAll('[data-del]').forEach(b=>b.onclick = () => { const id = b.dataset.del; const left = data.filter(x=>x.id!==id); storage.set('dl_classes', left); renderClasses(); });
+    }
+
+    function openClass(item){
+      $('#modalTitle').textContent = item.title;
+      $('#modalBody').innerHTML = `<iframe class="w-full h-full rounded-lg" src="${item.yt}" title="YouTube video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+      $('#modal').classList.remove('hidden');
+    }
+    $('#modalClose').onclick = ()=>{ $('#modal').classList.add('hidden'); $('#modalBody').innerHTML=''; };
+
+    $('#addClassBtn').onclick = () => {
+      const t = prompt('Class title?'); if(!t) return;
+      const y = prompt('YouTube embed URL (https://www.youtube.com/embed/...) ?'); if(!y) return;
+      const data = storage.get('dl_classes') || DEMO_CLASSES;
+      data.push({ id: 'c'+(Date.now()), title:t, yt:y });
+      storage.set('dl_classes', data); renderClasses();
+    };
+
+    // --- NOTES ---
+    let currentTab = 'docs';
+    function renderNotes(tab){
+      if(tab) currentTab = tab;
+      $$('.tab').forEach(t=> t.classList.toggle('bg-white/10', t.dataset.tab===currentTab));
+      const wrap = $('#notesWrap'); wrap.innerHTML='';
+      const items = (storage.get('dl_notes')||DEMO_NOTES).filter(n=>n.type===currentTab);
+      items.forEach(n => {
+        const card = document.createElement('div');
+        card.className = 'glass-card p-3';
+        card.innerHTML = `
+          <div class="font-medium mb-2">${n.title}</div>
+          <div class="flex gap-2">
+            <a class="px-3 py-1.5 rounded bg-primary" href="#/dashboard/notes/view?id=${n.id}">View</a>
+            ${currentUser().role==='operator'?`<button class="px-3 py-1.5 rounded bg-white/10 hover:bg-white/20" data-del="${n.id}">Delete</button>`:''}
+          </div>`;
+        wrap.appendChild(card);
+      });
+      wrap.querySelectorAll('[data-del]').forEach(b=>b.onclick = () => {
+        const all = storage.get('dl_notes')||DEMO_NOTES; storage.set('dl_notes', all.filter(x=>x.id!==b.dataset.del)); renderNotes();
+      });
+    }
+    $$('.tab').forEach(t => t.onclick = ()=> renderNotes(t.dataset.tab));
+
+    // Upload
+    $('#uploadForm').addEventListener('submit', e=>{
+      e.preventDefault();
+      const n = { id:'n'+Date.now(), type:$('#uType').value, title:$('#uTitle').value, url:$('#uURL').value };
+      const all = storage.get('dl_notes')||DEMO_NOTES; all.push(n); storage.set('dl_notes', all);
+      alert('Uploaded!'); location.hash = '#/dashboard/notes';
+    });
+
+    // Secure View
+    function renderSecureView(){
+      const params = new URLSearchParams(location.hash.split('?')[1]||'');
+      const id = params.get('id');
+      const item = (storage.get('dl_notes')||DEMO_NOTES).find(x=>x.id===id) || DEMO_NOTES[0];
+      const box = $('#secureContainer'); box.innerHTML='';
+      if(item.type==='docs'){
+        box.innerHTML = `<iframe sandbox="allow-same-origin allow-scripts" class="w-full h-[70vh] rounded-lg" src="${item.url}"></iframe>`;
+      } else if(item.type==='images'){
+        box.innerHTML = `<img class="w-full max-h-[70vh] object-contain pointer-events-none" src="${item.url}">`;
       } else {
-        btn.textContent = "🌑 Dark";
+        // video (YouTube)
+        const yt = item.url.includes('youtube.com')||item.url.includes('youtu.be');
+        if(yt){
+          const id = item.url.split('v=')[1] || item.url.split('/').pop();
+          box.innerHTML = `<iframe class="w-full h-[70vh] rounded-lg" src="https://www.youtube.com/embed/${id}" allow="encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+        } else {
+          box.innerHTML = `<video class="w-full rounded-lg" controls controlsList="nodownload"><source src="${item.url}"></video>`;
+        }
       }
     }
 
-    // Netlify Identity
-    netlifyIdentity.on("login", user => {
-      alert("Welcome " + user.email);
-      window.location.href = "/dashboard.html"; // redirect after login
+    // --- COMMANDS ---
+    function renderCommands(){
+      const wrap = $('#cmdWrap'); wrap.innerHTML='';
+      const groups = storage.get('dl_cmds')||DEMO_CMDS;
+      groups.forEach(g => {
+        const acc = document.createElement('div');
+        acc.className = 'glass-card p-2';
+        acc.innerHTML = `
+          <div class="flex items-center justify-between">
+            <button class="font-medium text-left py-2" data-acc="${g.id}">${g.name}</button>
+            ${currentUser().role==='operator'?`<button class="text-xs px-2 py-1 rounded bg-white/10 hover:bg-white/20" data-del="${g.id}">Remove</button>`:''}
+          </div>
+          <div class="space-y-2 hidden" id="acc-${g.id}"></div>`;
+        wrap.appendChild(acc);
+        const body = acc.querySelector('#acc-'+g.id);
+        g.cmds.forEach(c => {
+          const row = document.createElement('div');
+          row.className = 'flex items-center justify-between glass-card p-2';
+          row.innerHTML = `<div class="text-sm">${c.label}: <code class="opacity-90">${c.text}</code></div><button class="px-2 py-1 rounded bg-primary text-xs" data-copy="${c.text}">Copy</button>`;
+          body.appendChild(row);
+        });
+        acc.querySelector(`[data-acc="${g.id}"]`).onclick = ()=> body.classList.toggle('hidden');
+        if(currentUser().role==='operator') acc.querySelector(`[data-del="${g.id}"]`)?.addEventListener('click', ()=>{
+          const left = groups.filter(x=>x.id!==g.id); storage.set('dl_cmds', left); renderCommands();
+        });
+      });
+      wrap.querySelectorAll('[data-copy]').forEach(b=> b.onclick = async ()=>{ await navigator.clipboard.writeText(b.dataset.copy); b.textContent='Copied'; setTimeout(()=>b.textContent='Copy',800); });
+    }
+
+    $('#addCmdGroup').onclick = ()=>{
+      const name = prompt('Group name?'); if(!name) return;
+      const txt = prompt('Commands (comma-separated)');
+      const cmds = (txt||'').split(',').map(s=>s.trim()).filter(Boolean).map((t,i)=>({label:'Cmd '+(i+1), text:t}));
+      const groups = storage.get('dl_cmds')||DEMO_CMDS; groups.push({ id:'g'+Date.now(), name, cmds }); storage.set('dl_cmds', groups); renderCommands();
+    };
+
+    // --- PROFILE ---
+    function renderProfile(){
+      const u = currentUser();
+      $('#pfAvatar').src = u.avatar; $('#pfName').value = u.name || '';
+    }
+    $('#pfPick').addEventListener('change', e=>{
+      const f = e.target.files[0]; if(!f) return; const r = new FileReader(); r.onload=()=>{
+        const u=currentUser(); u.avatar=r.result; storage.set('dl_user',u); $('#pfAvatar').src=r.result; $('#hdrAvatar').src=r.result; };
+        r.readAsDataURL(f);
     });
-  </script>
-</body>
+    $('#pfSave').onclick = ()=>{
+      const u=currentUser(); u.name = $('#pfName').value || u.name; const np = $('#pfPass').value.trim(); if(np) u.password=np; storage.set('dl_user',u); $('#hdrName').textContent=u.name; alert('Saved');
+    };
+
+    // --- SETTINGS (operator) ---
+    function renderSettings(){
+      const user = currentUser(); if(user.role!=='operator'){ location.hash = '#/dashboard/announcements'; return; }
+      const conf = storage.get('dl_sidebar_settings') || DEFAULT_MENU;
+      const wrap = $('#settingsWrap'); wrap.innerHTML = '';
+      conf.forEach(item => {
+        const row = document.createElement('div'); row.className='glass-card p-2 flex items-center gap-2';
+        row.innerHTML = `
+          <input value="${item.label}" class="flex-1 px-2 py-1 rounded bg-white/10 border border-white/20" />
+          <label class="flex items-center gap-1 text-sm"><input type="checkbox" ${item.show!==false?'checked':''}/> Show</label>
+          <span class="text-xs opacity-80">${item.route}</span>`;
+        const [inp, chk] = row.querySelectorAll('input');
+        inp.oninput = ()=>{ item.label = inp.value; save(); };
+        chk.onchange = ()=>{ item.show = chk.checked; save(); };
+        wrap.appendChild(row);
+      });
+      function save(){ storage.set('dl_sidebar_settings', conf); renderApp(); }
+    }
+
+    // --- VIDEO GENERATOR (demo SVG) ---
+    function fakeVideoFromText(t){
+      // returns a data: URL of an animated SVG, acting like a lightweight "video"
+      const esc = (s)=> s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      const svg = `<?xml version='1.0' encoding='UTF-8'?>
+      <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 450'>
+        <defs>
+          <linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
+            <stop offset='0%' stop-color='${getComputedStyle(document.documentElement).getPropertyValue('--c1')||'#ee7752'}'/>
+            <stop offset='50%' stop-color='${getComputedStyle(document.documentElement).getPropertyValue('--c3')||'#23a6d5'}'/>
+            <stop offset='100%' stop-color='${getComputedStyle(document.documentElement).getPropertyValue('--c4')||'#23d5ab'}'/>
+          </linearGradient>
+        </defs>
+        <rect width='100%' height='100%' fill='url(#g)'>
+          <animate attributeName='x' from='-100' to='100' dur='6s' repeatCount='indefinite'/>
+        </rect>
+        <g>
+          <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'
+            font-family='ui-sans-serif, system-ui' font-size='28' fill='white' opacity='0.95'>${esc(t||'Your AI video will appear here')}</text>
+        </g>
+        <circle cx='100' cy='380' r='20' fill='white' opacity='0.3'>
+          <animate attributeName='cx' values='100;700;100' dur='5s' repeatCount='indefinite'/>
+        </circle>
+      </svg>`;
+      return 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
+    }
+
+    $('#vgBtn').onclick = async ()=>{
+      const text = $('#vgText').value.trim() || 'Learning with Dark Light';
+      $('#vgSpinner').classList.remove('hidden');
+      await new Promise(r=>setTimeout(r, 1100));
+      $('#vgSpinner').classList.add('hidden');
+      const url = fakeVideoFromText(text);
+      $('#vgOut').innerHTML = `<video class='w-full rounded-lg' autoplay loop muted playsinline>
+        <source src='${url}' type='image/svg+xml'>
+      </video>`;
+    };
+
+    // --- HEADER UI ---
+    $('#profileBtn').onclick = ()=> $('#profileMenu').classList.toggle('hidden');
+    $('#logoutBtn').onclick = logout;
+
+    // Theme toggle
+    function applyTheme(){ document.documentElement.classList.toggle('dark', storage.get('dl_theme','dark')==='dark'); }
+    applyTheme();
+    $('#themeToggle').onclick = ()=>{ const cur = storage.get('dl_theme','dark'); storage.set('dl_theme', cur==='dark'?'light':'dark'); applyTheme(); };
+
+    // Sidebar collapse
+    let collapsed = false;
+    $('#collapseBtn').onclick = ()=>{
+      collapsed = !collapsed;
+      $('#sidebar').classList.toggle('w-20', collapsed);
+      $('#sidebar').classList.toggle('w-72', !collapsed);
+      $$('#sidebar #menu a span').forEach(s=> s.classList.toggle('hidden', collapsed));
+    };
+
+    // Login form
+    $('#loginForm').addEventListener('submit', e=>{
+      e.preventDefault();
+      const u = login($('#email').value.trim(), $('#password').value.trim());
+      if(!u){ alert('Invalid credentials'); return; }
+      renderApp();
+    });
+
+    // Global nav
+    document.body.addEventListener('click', e=>{
+      const a = e.target.closest('[data-nav]');
+      if(a){ e.preventDefault(); location.hash = '#'+a.dataset.nav; $('#profileMenu').classList.add('hidden'); }
+    });
+
+    // Restore session
+    renderApp();
+  </script></body>
 </html>
