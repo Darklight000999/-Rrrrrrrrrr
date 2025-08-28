@@ -60,17 +60,35 @@
     -webkit-mask: radial-gradient(circle 55px, transparent 70px, black 71px);}
   .logo-box img{position:relative;width:90px;height:90px;border-radius:50%;object-fit:cover;z-index:2;}
 
+  /* ==== MENU ==== */
   .menu{flex:1;overflow:auto}
-  .menu h3{margin:10px 4px;font-size:13px;opacity:.75}
   .menu ul{list-style:none}
-  .menu li{display:flex;align-items:center;gap:10px;justify-content:space-between;
-    padding:12px;border-radius:12px;margin:6px 0;cursor:pointer;user-select:none}
+  .menu li{
+    display:flex;align-items:center;gap:10px;
+    padding:12px 14px;border-radius:12px;margin:6px 0;
+    cursor:pointer;user-select:none;
+    font-size:15px;font-weight:600;
+    transform:translateX(-8px);
+    opacity:0.85;
+    transition:all .25s ease;
+  }
   body.light .menu li{background:#ddd;}
   body.dark  .menu li{background:#222;}
-  .menu .badge{min-width:24px;height:24px;padding:0 8px;border-radius:999px;
-    display:inline-flex;align-items:center;justify-content:center;font-size:12px;opacity:.85}
-  body.light .menu .badge{background:#cfcfcf;color:#222;}
-  body.dark  .menu .badge{background:#333;color:#fff;}
+
+  /* Hover + Active Animation */
+  .menu li:hover{
+    transform:translateX(0);
+    opacity:1;
+    box-shadow:0 3px 8px rgba(0,0,0,.25);
+  }
+  .menu li.active{
+    background:linear-gradient(135deg,#4facfe,#00f2fe);
+    color:#fff;
+    transform:translateX(0);
+    opacity:1;
+  }
+
+  .menu li span.icon{font-size:18px;width:22px;text-align:center}
 
   .sidebar-bottom{margin-top:auto;padding-top:12px}
   .logout{width:100%;border:none;border-radius:999px;padding:10px 12px;cursor:pointer;font-weight:700}
@@ -133,8 +151,13 @@
         </div>
         <nav class="menu">
           <ul>
-            <li data-target="home" onclick="onNav(this)"><div class="left">🏠 Home</div></li>
-            <li data-target="youtube" onclick="onNav(this)"><div class="left">🎬 YouTube</div></li>
+            <li data-target="home" onclick="onNav(this)"><span class="icon">🏠</span> Home</li>
+            <li data-target="youtube" onclick="onNav(this)"><span class="icon">🎬</span> YouTube</li>
+            <li data-target="notes" onclick="onNav(this)"><span class="icon">📒</span> PDF & Notes</li>
+            <li data-target="cmd" onclick="onNav(this)"><span class="icon">💻</span> Hacking Commands</li>
+            <li data-target="hack" onclick="onNav(this)"><span class="icon">⚡</span> Hacking</li>
+            <li data-target="live" onclick="onNav(this)"><span class="icon">📡</span> Live Class</li>
+            <li data-target="support" onclick="onNav(this)"><span class="icon">🎧</span> Contact & Support</li>
           </ul>
         </nav>
         <div class="sidebar-bottom">
@@ -156,9 +179,13 @@
           <span class="welcome" id="welcome">Welcome Guest</span>
         </div>
         <div class="content">
-          <section id="home" class="section active"><h2>🏠 Home</h2><p>Welcome to dashboard.</p></sectio>
-          <section id="nots" nots and pdf="section"><h2>📒📝 Nots and PDF</h2><p>No videos yet.</p></section>
-         <section id="youtube" class="section"><h2>🎬 YouTube</h2><p>No Nots and PDF yet.</p></section>
+          <section id="home" class="section active"><h2>🏠 Home</h2><p>Welcome to dashboard.</p></section>
+          <section id="notes" class="section"><h2>📒 PDF & Notes</h2><p>No notes yet.</p></section>
+          <section id="youtube" class="section"><h2>🎬 YouTube</h2><p>No videos yet.</p></section>
+          <section id="cmd" class="section"><h2>💻 Hacking Commands</h2><p>Command list coming soon.</p></section>
+          <section id="hack" class="section"><h2>⚡ Hacking</h2><p>Hacking resources here.</p></section>
+          <section id="live" class="section"><h2>📡 Live Class</h2><p>No live class scheduled.</p></section>
+          <section id="support" class="section"><h2>🎧 Contact & Support</h2><p>Contact us at support@email.com</p></section>
         </div>
       </main>
     </div>
@@ -200,6 +227,8 @@
     else{sb.classList.remove("active");ov.classList.remove("show");}
   }
   function onNav(el){
+    document.querySelectorAll(".menu li").forEach(x=>x.classList.remove("active"));
+    el.classList.add("active");
     document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
     document.getElementById(el.dataset.target).classList.add("active");
     toggleSidebar(false);
