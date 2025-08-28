@@ -1,108 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>darklight000999 | Login</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet"/>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | darklight000999</title>
   <style>
-    :root{
-      --card:#e0e0e0; --shadow1:#bebebe; --shadow2:#ffffff;
-      --grad1:#667eea; --grad2:#764ba2;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0; font-family:Poppins,system-ui,Segoe UI,Arial,sans-serif;
-      min-height:100vh; display:grid; place-items:center;
-      background:linear-gradient(135deg,var(--grad1),var(--grad2));
-      padding:24px;
-    }
-    .card{
-      width:min(92vw,380px); padding:36px 28px; border-radius:22px; text-align:center;
-      background:var(--card);
-      box-shadow:20px 20px 60px var(--shadow1), -20px -20px 60px var(--shadow2);
-      animation:fade .7s ease;
-    }
-    @keyframes fade{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
+    /* Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-    /* ==== RGB RING (rotates) + Static logo ==== */
-    .logo-wrap{position:relative; width:130px; height:130px; margin:0 auto 18px;}
-    /* spinning ring */
-    .rgb-ring{
-      position:absolute; inset:0; border-radius:50%;
-      background:conic-gradient(red,orange,yellow,green,cyan,blue,purple,red);
-      animation:spin 5s linear infinite;             /* ring घूमेगा */
-      /* inner hole to see only the ring */
-      -webkit-mask: radial-gradient(circle 58px, transparent 62px, #000 63px);
-              mask: radial-gradient(circle 58px, transparent 62px, #000 63px);
-      filter: drop-shadow(0 0 10px rgba(255,255,255,.35));
-    }
-    @keyframes spin{to{transform:rotate(360deg)}}
-
-    /* static logo (won't rotate) */
-    .logo{
-      position:absolute; inset:0; display:grid; place-items:center;
-      pointer-events:none;
-    }
-    .logo img{
-      width:110px; height:110px; border-radius:50%; object-fit:cover;
-      box-shadow: 6px 6px 14px rgba(0,0,0,.15),
-                  -4px -4px 12px rgba(255,255,255,.6) inset;
-      background:#fff;
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      transition: background 0.5s, color 0.5s;
+      overflow: hidden;
     }
 
-    h2{margin:6px 0 24px; color:#333; letter-spacing:.3px}
-
-    .btn{
-      width:100%; padding:12px 14px; border:none; border-radius:14px; cursor:pointer;
-      font-weight:700; font-size:16px; color:#fff;
-      background:linear-gradient(135deg,var(--grad1),var(--grad2));
-      box-shadow:6px 6px 14px rgba(0,0,0,.18), -6px -6px 14px rgba(255,255,255,.65);
-      transition:transform .15s ease, box-shadow .15s ease; margin:10px 0;
+    /* Water wave background */
+    .background {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: linear-gradient(180deg, #2193b0, #6dd5ed);
+      overflow: hidden;
+      z-index: -1;
     }
-    .btn:hover{transform:translateY(-1px)}
-    .btn:active{transform:translateY(0); box-shadow:3px 3px 10px rgba(0,0,0,.2)}
+    .wave {
+      position: absolute;
+      bottom: 0;
+      width: 200%;
+      height: 200px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 100%;
+      animation: wave 8s linear infinite;
+    }
+    .wave:nth-child(2) {
+      bottom: 10px;
+      animation: wave 12s linear infinite reverse;
+    }
+    @keyframes wave {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
 
-    .btn.logout{background:linear-gradient(135deg,#ff4b2b,#ff416c)}
-    .credits{margin-top:14px; font-size:12px; color:#666}
+    /* Theme toggle */
+    .theme-toggle {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(255,255,255,0.2);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Login box */
+    .login-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255,255,255,0.2);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      backdrop-filter: blur(12px);
+      text-align: center;
+      width: 320px;
+    }
+
+    /* Logo with RGB ring */
+    .logo-ring {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 20px;
+    }
+    .logo-ring::before {
+      content: "";
+      position: absolute;
+      top: -8px; left: -8px;
+      width: 136px; height: 136px;
+      border-radius: 50%;
+      background: conic-gradient(red, orange, yellow, lime, cyan, blue, violet, red);
+      animation: rotate 3s linear infinite;
+      z-index: 0;
+    }
+    .logo-ring img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      position: relative;
+      z-index: 1;
+    }
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Input fields */
+    .login-container input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 25px;
+      outline: none;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    /* Button */
+    .login-container button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 25px;
+      background: linear-gradient(90deg, #2193b0, #6dd5ed);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .login-container button:hover {
+      transform: scale(1.05);
+    }
+
+    /* Dark theme */
+    body.dark {
+      background: #121212;
+      color: white;
+    }
+    body.dark .login-container {
+      background: rgba(0,0,0,0.6);
+    }
+    body.dark .theme-toggle {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
   </style>
 </head>
 <body>
-  <div class="card">
-    <!-- RGB ring + static logo -->
-    <div class="logo-wrap">
-      <div class="rgb-ring"></div>
-      <div class="logo">
-        <img src="Screenshot_20250821_142735.jpg" alt="Logo"
-             onerror="this.src='https://via.placeholder.com/110?text=Logo'">
-      </div>
-    </div>
-
-    <h2>darklight000999</h2>
-
-    <!-- Netlify Identity controls -->
-    <button class="btn" onclick="netlifyIdentity.open()">🔑 Login / Signup</button>
-    <button class="btn logout" onclick="netlifyIdentity.logout()">🚪 Logout</button>
-
-    <div class="credits" id="who"></div>
+  <div class="background">
+    <div class="wave"></div>
+    <div class="wave"></div>
   </div>
 
-  <!-- Netlify Identity Widget -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <button class="theme-toggle" onclick="toggleTheme()">🌑 Dark</button>
+
+  <div class="login-container">
+    <div class="logo-ring">
+      <img src="Screenshot_20250821_142735.jpg" alt="Logo">
+    </div>
+    <h2>darklight000999</h2>
+    <p>LOGIN</p>
+    <input type="text" placeholder="Username">
+    <input type="password" placeholder="Password">
+    <button>Login</button>
+  </div>
+
   <script>
-    // show current user
-    function showUser(u){
-      document.getElementById('who').textContent = u ? `Logged in as ${u.email}` : '';
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+      const btn = document.querySelector(".theme-toggle");
+      if(document.body.classList.contains("dark")){
+        btn.textContent = "🌞 Light";
+      } else {
+        btn.textContent = "🌑 Dark";
+      }
     }
-    netlifyIdentity.on('init', showUser);
-    netlifyIdentity.on('login', user => {
-      showUser(user);
-      // ✅ लॉगिन के बाद आपका डैशबोर्ड पेज
-      window.location.href = "/dashboard.html";
-    });
-    netlifyIdentity.on('logout', () => showUser(null));
-    netlifyIdentity.init();
   </script>
 </body>
 </html>
