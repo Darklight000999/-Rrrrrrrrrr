@@ -1,145 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>darklight000999</title>
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;transition:.25s;}
-    :root{--w-sidebar:260px;--radius:14px;}
-    body{height:100vh;overflow:hidden;}
-    /* Theme */
-    body.light{background:#e0e0e0;color:#222;}
-    body.dark{background:#111;color:#fff;}
-    /* Theme Toggle */
-    .theme-toggle{
-      position:fixed;top:10px;right:10px;padding:8px 14px;border:none;border-radius:999px;
-      cursor:pointer;font-size:14px;z-index:1100;
-    }
-    /* Login */
-    #login-page{display:flex;align-items:center;justify-content:center;height:100vh;width:100%;}
-    .login-box{width:350px;max-width:92%;padding:28px;border-radius:18px;text-align:center}
-    body.light .login-box{background:#e0e0e0;box-shadow:8px 8px 16px #bebebe,-8px -8px 16px #ffffff;}
-    body.dark .login-box{background:#1a1a1a;box-shadow:8px 8px 16px #000,-8px -8px 16px #222;}
-    .login-box img{width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:10px;
-      border:4px solid transparent;background:linear-gradient(45deg,red,blue,green,yellow,purple) border-box;
-      -webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);
-      -webkit-mask-composite:xor;mask-composite:exclude;animation:spin 4s linear infinite;}
-    @keyframes spin{100%{transform:rotate(360deg);}}
-    .login-box h3{margin:8px 0 18px;color:gray}
-    .login-box input{width:100%;padding:12px 16px;margin:8px 0;border:none;border-radius:999px;outline:none}
-    body.light .login-box input{background:#e0e0e0;color:#222;box-shadow:inset 4px 4px 8px #bebebe,inset -4px -4px 8px #ffffff;}
-    body.dark  .login-box input{background:#222;color:#fff;box-shadow:inset 4px 4px 8px #000,inset -4px -4px 8px #333;}
-    .login-box button{width:100%;padding:12px;margin-top:12px;border:none;border-radius:999px;font-weight:700;cursor:pointer}
-    body.light .login-box button{background:#e0e0e0;color:#222;box-shadow:4px 4px 8px #bebebe,-4px -4px 8px #ffffff;}
-    body.dark  .login-box button{background:#222;color:#fff;box-shadow:4px 4px 8px #000,-4px -4px 8px #333;}
-    .login-box a{font-size:13px;color:#ff5252;text-decoration:none}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>darklight000999</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;transition:.25s;}
+  :root{--w-sidebar:260px;--radius:14px;}
+  body{height:100vh;overflow:hidden;}
+  /* Theme */
+  body.light{background:#e0e0e0;color:#222;}
+  body.dark{background:#111;color:#fff;}
+  .theme-toggle{
+    position:fixed;top:10px;right:10px;padding:8px 14px;border:none;border-radius:999px;
+    cursor:pointer;font-size:14px;z-index:1100;
+  }
 
-    /* App */
-    #website{display:none;height:100vh;width:100%}
-    .container{display:flex;height:100%}
+  /* Login */
+  #login-page{display:flex;align-items:center;justify-content:center;height:100vh;width:100%;}
+  .login-box{width:350px;max-width:92%;padding:28px;border-radius:18px;text-align:center}
+  body.light .login-box{background:#e0e0e0;box-shadow:8px 8px 16px #bebebe,-8px -8px 16px #ffffff;}
+  body.dark .login-box{background:#1a1a1a;box-shadow:8px 8px 16px #000,-8px -8px 16px #222;}
+  .login-box img{width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:10px;}
+  /* Rainbow ring around logo (via wrapper) */
+  .avatar-wrap{width:110px;height:110px;margin:0 auto 10px;border-radius:50%;
+               padding:5px;background:conic-gradient(red,orange,yellow,green,cyan,blue,purple);}
+  .avatar-wrap .logo-img{display:block;width:100%;height:100%;border-radius:50%;}
+  @keyframes spin{100%{transform:rotate(360deg);}}
+  .avatar-wrap{animation:spin 5s linear infinite}
+  .login-box h3{margin:8px 0 18px;color:gray}
+  .login-box input{width:100%;padding:12px 16px;margin:8px 0;border:none;border-radius:999px;outline:none}
+  body.light .login-box input{background:#e0e0e0;color:#222;box-shadow:inset 4px 4px 8px #bebebe,inset -4px -4px 8px #ffffff;}
+  body.dark  .login-box input{background:#222;color:#fff;box-shadow:inset 4px 4px 8px #000,inset -4px -4px 8px #333;}
+  .login-box button{width:100%;padding:12px;margin-top:12px;border:none;border-radius:999px;font-weight:700;cursor:pointer}
+  body.light .login-box button{background:#e0e0e0;color:#222;box-shadow:4px 4px 8px #bebebe,-4px -4px 8px #ffffff;}
+  body.dark  .login-box button{background:#222;color:#fff;box-shadow:4px 4px 8px #000,-4px -4px 8px #333;}
+  .login-box a{font-size:13px;color:#ff5252;text-decoration:none}
 
-    /* Sidebar */
-    .sidebar{
-      position:fixed;top:0;left:calc(-1 * var(--w-sidebar));bottom:0;width:var(--w-sidebar);
-      padding:18px;display:flex;flex-direction:column;z-index:1000;transition:left .28s ease;
-    }
-    .sidebar.active{left:0}
-    body.light .sidebar{background:#f0f0f0;border-right:2px solid #ccc;}
-    body.dark  .sidebar{background:#1a1a1a;border-right:2px solid #222;}
-    .logo-box{width:120px;height:120px;margin:8px auto 14px}
-    .logo-box img{width:100%;height:100%;border-radius:50%;object-fit:cover;
-      border:3px solid transparent;background:linear-gradient(45deg,red,blue,green,yellow,purple) border-box;
-      -webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);
-      -webkit-mask-composite:xor;mask-composite:exclude;animation:spin 5s linear infinite;}
+  /* App */
+  #website{display:none;height:100vh;width:100%}
+  .container{display:flex;height:100%}
 
-    .menu{flex:1;overflow:auto}
-    .menu h3{margin:10px 4px;font-size:13px;opacity:.75}
-    .menu ul{list-style:none}
-    .menu li{display:flex;align-items:center;gap:10px;justify-content:space-between;
-      padding:12px 12px;border-radius:12px;margin:6px 0;cursor:pointer;user-select:none}
-    .menu li .left{display:flex;align-items:center;gap:10px}
-    .menu .badge{min-width:24px;height:24px;padding:0 8px;border-radius:999px;
-      display:inline-flex;align-items:center;justify-content:center;font-size:12px;opacity:.85}
-    body.light .menu li{background:#ddd;}
-    body.dark  .menu li{background:#222;}
-    body.light .menu .badge{background:#cfcfcf;color:#222;}
-    body.dark  .menu .badge{background:#333;color:#fff;}
+  /* Sidebar */
+  .sidebar{
+    position:fixed;top:0;left:calc(-1 * var(--w-sidebar));bottom:0;width:var(--w-sidebar);
+    padding:18px;display:flex;flex-direction:column;z-index:1000;transition:left .28s ease;
+  }
+  .sidebar.active{left:0}
+  body.light .sidebar{background:#f0f0f0;border-right:2px solid #ccc;}
+  body.dark  .sidebar{background:#1a1a1a;border-right:2px solid #222;}
+  .logo-box{width:120px;height:120px;margin:8px auto 14px;border-radius:50%;
+            padding:6px;background:conic-gradient(red,orange,yellow,green,cyan,blue,purple);animation:spin 6s linear infinite}
+  .logo-box .logo-img{width:100%;height:100%;border-radius:50%;display:block;object-fit:cover;background:#0000}
 
-    /* Sidebar Bottom Logout */
-    .sidebar-bottom{margin-top:auto;padding-top:12px}
-    .logout{width:100%;border:none;border-radius:999px;padding:10px 12px;cursor:pointer;font-weight:700}
-    body.light .logout{background:#e0e0e0;color:#222;box-shadow:2px 2px 4px #cfcfcf,-2px -2px 4px #fff;}
-    body.dark  .logout{background:#222;color:#fff;box-shadow:2px 2px 4px #000,-2px -2px 4px #333;}
+  .menu{flex:1;overflow:auto}
+  .menu h3{margin:10px 4px;font-size:13px;opacity:.75}
+  .menu ul{list-style:none}
+  .menu li{display:flex;align-items:center;gap:10px;justify-content:space-between;
+    padding:12px 12px;border-radius:12px;margin:6px 0;cursor:pointer;user-select:none}
+  .menu li .left{display:flex;align-items:center;gap:10px}
+  .menu .badge{min-width:24px;height:24px;padding:0 8px;border-radius:999px;
+    display:inline-flex;align-items:center;justify-content:center;font-size:12px;opacity:.85}
+  body.light .menu li{background:#ddd;}
+  body.dark  .menu li{background:#222;}
+  body.light .menu .badge{background:#cfcfcf;color:#222;}
+  body.dark  .menu .badge{background:#333;color:#fff;}
 
-    /* Overlay */
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(1px);z-index:900;display:none;}
-    .overlay.show{display:block}
+  .sidebar-bottom{margin-top:auto;padding-top:12px}
+  .logout{width:100%;border:none;border-radius:999px;padding:10px 12px;cursor:pointer;font-weight:700}
+  body.light .logout{background:#e0e0e0;color:#222;box-shadow:2px 2px 4px #cfcfcf,-2px -2px 4px #fff;}
+  body.dark  .logout{background:#222;color:#fff;box-shadow:2px 2px 4px #000,-2px -2px 4px #333;}
 
-    /* Main */
-    .main{flex:1;display:flex;flex-direction:column;min-width:0}
-    .topbar{display:flex;align-items:center;gap:10px;padding:8px 12px;}
-    body.light .topbar{background:#f0f0f0;border-bottom:2px solid #ccc;}
-    body.dark  .topbar{background:#1a1a1a;border-bottom:2px solid #222;}
-    .menu-btn{font-size:24px;background:none;border:none;cursor:pointer}
-    .brand{display:flex;align-items:center;gap:10px;flex:1;justify-content:center;
-      text-transform:lowercase;font-weight:800;letter-spacing:.5px;font-size:18px}
-    .brand img{width:32px;height:32px;border-radius:50%;object-fit:cover}
-    .welcome{opacity:.85;font-size:13px}
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(1px);z-index:900;display:none;}
+  .overlay.show{display:block}
 
-    /* Content */
-    .content{flex:1;display:flex;overflow:hidden}
-    .section{display:none;padding:16px;overflow:auto;width:100%}
-    .active{display:block}
+  /* Main */
+  .main{flex:1;display:flex;flex-direction:column;min-width:0}
+  .topbar{display:flex;align-items:center;gap:10px;padding:8px 12px;}
+  body.light .topbar{background:#f0f0f0;border-bottom:2px solid #ccc;}
+  body.dark  .topbar{background:#1a1a1a;border-bottom:2px solid #222;}
+  .menu-btn{font-size:24px;background:none;border:none;cursor:pointer}
+  .brand{display:flex;align-items:center;gap:10px;flex:1;justify-content:center;
+    text-transform:lowercase;font-weight:800;letter-spacing:.5px;font-size:18px}
+  .brand .brand-logo{width:32px;height:32px;border-radius:50%;object-fit:cover}
 
-    /* Cards + grids */
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
-    .card{padding:14px;border-radius:var(--radius);box-shadow:0 2px 6px rgba(0,0,0,.18)}
-    body.light .card{background:#fff;}
-    body.dark  .card{background:#222;color:#fff;}
-    .muted{opacity:.7}
+  .welcome{opacity:.85;font-size:13px}
+  .content{flex:1;display:flex;overflow:hidden}
+  .section{display:none;padding:16px;overflow:auto;width:100%}
+  .active{display:block}
 
-    /* Chat */
-    .chat-wrap{max-width:960px;margin:0 auto;width:100%;display:flex;flex-direction:column;height:calc(100% - 10px)}
-    .chat-header{padding:10px;text-align:center;border-radius:12px;margin-bottom:6px}
-    body.light .chat-header{background:#eee;border:1px solid #ccc;}
-    body.dark  .chat-header{background:#1a1a1a;border:1px solid #333;}
-    .chat-messages{flex:1;overflow-y:auto;padding:10px;border-radius:12px;margin-bottom:8px}
-    body.light .chat-messages{background:#f9f9f9;border:1px solid #ddd;}
-    body.dark  .chat-messages{background:#0d0d0d;border:1px solid #222;}
-    .message{max-width:78%;padding:10px 12px;margin:6px 0;border-radius:12px;font-size:14px}
-    .student-msg{background:#666;color:#fff;align-self:flex-start}
-    .admin-msg{background:#0055ff;color:#fff;align-self:flex-end}
-    .timestamp{font-size:10px;opacity:.8;margin-top:3px}
-    .chat-input{display:flex;gap:8px}
-    .chat-input input{flex:1;padding:10px;border:none;border-radius:12px;outline:none}
-    .chat-input button{padding:10px 16px;border:none;border-radius:12px;cursor:pointer;font-weight:700}
-    body.light .chat-input input{background:#eee;color:#222;}
-    body.dark  .chat-input input{background:#1a1a1a;color:#fff;}
-    body.light .chat-input button{background:#ddd;color:#222;}
-    body.dark  .chat-input button{background:#0055ff;color:#fff;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+  .card{padding:14px;border-radius:var(--radius);box-shadow:0 2px 6px rgba(0,0,0,.18)}
+  body.light .card{background:#fff;}
+  body.dark  .card{background:#222;color:#fff;}
+  .muted{opacity:.7}
 
-    /* Desktop */
-    @media(min-width:992px){
-      .sidebar{left:0}
-      .overlay{display:none!important}
-      .main{margin-left:var(--w-sidebar)}
-      .menu-btn{display:none}
-    }
-  </style>
+  /* Chat */
+  .chat-wrap{max-width:960px;margin:0 auto;width:100%;display:flex;flex-direction:column;height:calc(100% - 10px)}
+  .chat-header{padding:10px;text-align:center;border-radius:12px;margin-bottom:6px}
+  body.light .chat-header{background:#eee;border:1px solid #ccc;}
+  body.dark  .chat-header{background:#1a1a1a;border:1px solid #333;}
+  .chat-messages{flex:1;overflow-y:auto;padding:10px;border-radius:12px;margin-bottom:8px}
+  body.light .chat-messages{background:#f9f9f9;border:1px solid #ddd;}
+  body.dark  .chat-messages{background:#0d0d0d;border:1px solid #222;}
+  .message{max-width:78%;padding:10px 12px;margin:6px 0;border-radius:12px;font-size:14px}
+  .student-msg{background:#666;color:#fff;align-self:flex-start}
+  .admin-msg{background:#0055ff;color:#fff;align-self:flex-end}
+  .timestamp{font-size:10px;opacity:.8;margin-top:3px}
+  .chat-input{display:flex;gap:8px}
+  .chat-input input{flex:1;padding:10px;border:none;border-radius:12px;outline:none}
+  .chat-input button{padding:10px 16px;border:none;border-radius:12px;cursor:pointer;font-weight:700}
+  body.light .chat-input input{background:#eee;color:#222;}
+  body.dark  .chat-input input{background:#1a1a1a;color:#fff;}
+  body.light .chat-input button{background:#ddd;color:#222;}
+  body.dark  .chat-input button{background:#0055ff;color:#fff;}
+
+  @media(min-width:992px){
+    .sidebar{left:0}
+    .overlay{display:none!important}
+    .main{margin-left:var(--w-sidebar)}
+    .menu-btn{display:none}
+  }
+</style>
 </head>
 <body class="light">
   <!-- Theme -->
-  <button class="theme-toggle" onclick="toggleTheme()">🌑 Dark</button>
+  <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">🌑 Dark</button>
 
   <!-- Login -->
   <div id="login-page">
     <div class="login-box">
-      <img src="Screenshot_20250821_142735.jpg" alt="Logo">
+      <div class="avatar-wrap">
+        <img class="logo-img" src="Screenshot_20250821_142735.jpg" alt="Logo" onerror="useFallback(this)">
+      </div>
       <h2>darklight000999</h2>
       <h3>LOGIN</h3>
-      <input id="username" placeholder="Username">
-      <input id="password" type="password" placeholder="Password">
+      <input id="username" placeholder="Username" autocomplete="username">
+      <input id="password" type="password" placeholder="Password" autocomplete="current-password">
       <button onclick="login()">Login</button>
       <p style="margin-top:8px"><a href="#">Forgot Password? click here</a></p>
     </div>
@@ -150,7 +147,9 @@
     <div class="container">
       <!-- Sidebar -->
       <aside class="sidebar" id="sidebar">
-        <div class="logo-box"><img src="Screenshot_20250821_142735.jpg" alt="Logo"></div>
+        <div class="logo-box">
+          <img class="logo-img" src="Screenshot_20250821_142735.jpg" alt="Logo" onerror="useFallback(this)">
+        </div>
         <nav class="menu">
           <ul id="menu-items">
             <li data-target="home" onclick="onNav(this)"><div class="left">🏠 <span>Home</span></div><span class="badge" id="count-home">0</span></li>
@@ -180,13 +179,12 @@
 
       <!-- Main -->
       <main class="main" id="main">
-        <!-- Topbar -->
         <div class="topbar">
           <button class="menu-btn" onclick="toggleSidebar(true)">☰</button>
           <div class="brand">
-            <img src="Screenshot_20250821_142735.jpg" alt="L">
+            <img class="brand-logo logo-img" src="Screenshot_20250821_142735.jpg" alt="L" onerror="useFallback(this)">
             <span>darklight000999</span>
-            <img src="Screenshot_20250821_142735.jpg" alt="R">
+            <img class="brand-logo logo-img" src="Screenshot_20250821_142735.jpg" alt="R" onerror="useFallback(this)">
           </div>
           <span class="welcome" id="welcome">Welcome Guest</span>
         </div>
@@ -217,7 +215,209 @@
           <section id="students" class="section"><h2>👥 Manage Students</h2><ul id="student-list"></ul></section>
           <section id="announce" class="section"><h2>📢 Announcements</h2><p class="muted">No announcements yet.</p></section>
           <section id="analytics" class="section"><h2>📊 Analytics</h2><p id="stats" class="muted"></p></section>
-          <section id="chat" class="section"><div class="chat-wrap">
-            <div class="chat-header">Chat</div>
-            <div id="messages" class="chat-messages"></div>
-            <div class="chat-input"><input id="msgBox" placeholder="Type a
+          <section id="chat" class="section">
+            <div class="chat-wrap">
+              <div class="chat-header">Chat</div>
+              <div id="messages" class="chat-messages"></div>
+              <div class="chat-input">
+                <input id="msgBox" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendMessage()">
+                <button onclick="sendMessage()">Send</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+<script>
+  /* ====== USERS (2 Admin + 10 Students) ====== */
+  const users = [
+    {username:"admin1",   password:"Adm!n@123", role:"admin"},
+    {username:"admin2",   password:"SecUr3#456", role:"admin"},
+    {username:"student1", password:"Pass@001", role:"student"},
+    {username:"student2", password:"Pass@002", role:"student"},
+    {username:"student3", password:"Pass@003", role:"student"},
+    {username:"student4", password:"Pass@004", role:"student"},
+    {username:"student5", password:"Pass@005", role:"student"},
+    {username:"student6", password:"Pass@006", role:"student"},
+    {username:"student7", password:"Pass@007", role:"student"},
+    {username:"student8", password:"Pass@008", role:"student"},
+    {username:"student9", password:"Pass@009", role:"student"},
+    {username:"student10",password:"Pass@010", role:"student"}
+  ];
+  let currentUser = null;
+
+  /* ====== DATA ====== */
+  const db = { youtube:[], notes:[], commands:[], live:[], support:[] };
+
+  /* ====== IMAGE FALLBACK (Fix for logo not showing) ====== */
+  function useFallback(img){
+    // Animated gradient ring SVG with transparent center
+    const svg =
+      `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'>
+        <defs>
+          <linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='0%'>
+            <stop offset='0%' stop-color='red'/><stop offset='20%' stop-color='orange'/>
+            <stop offset='40%' stop-color='yellow'/><stop offset='60%' stop-color='green'/>
+            <stop offset='80%' stop-color='blue'/><stop offset='100%' stop-color='purple'/>
+          </linearGradient>
+        </defs>
+        <g transform='translate(60,60)'>
+          <g>
+            <circle r='50' fill='white'/>
+            <circle r='46' fill='white'/>
+          </g>
+          <g>
+            <circle r='52' fill='none' stroke='url(#g)' stroke-width='8'>
+              <animateTransform attributeName='transform' type='rotate' from='0' to='360' dur='4s' repeatCount='indefinite'/>
+            </circle>
+          </g>
+        </g>
+      </svg>`;
+    img.src = "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+  }
+
+  function ensureLogos(){
+    document.querySelectorAll('.logo-img').forEach(img=>{
+      if(!img.complete || img.naturalWidth===0){ useFallback(img); }
+    });
+  }
+
+  /* ====== AUTH ====== */
+  function login(){
+    const u = document.getElementById("username").value.trim();
+    const p = document.getElementById("password").value.trim();
+    const user = users.find(x=>x.username===u && x.password===p);
+    if(!user){ alert("❌ Invalid Username or Password!"); return; }
+
+    currentUser = user;
+    document.getElementById("login-page").style.display="none";
+    document.getElementById("website").style.display="block";
+    document.getElementById("welcome").innerText = "Welcome " + user.username;
+
+    // Show/Hide admin panel
+    document.getElementById("admin-items").style.display = user.role==="admin" ? "block" : "none";
+
+    // counts + lists
+    renderStudents();
+    updateBadges();
+  }
+
+  function logout(){
+    currentUser=null;
+    document.getElementById("website").style.display="none";
+    document.getElementById("login-page").style.display="flex";
+    document.getElementById("username").value="";
+    document.getElementById("password").value="";
+  }
+
+  /* ====== THEME / NAV ====== */
+  function toggleTheme(){
+    document.body.classList.toggle("dark");
+    document.body.classList.toggle("light");
+    const isDark=document.body.classList.contains("dark");
+    document.getElementById("themeBtn").textContent = isDark ? "☀️ Light" : "🌑 Dark";
+  }
+
+  function toggleSidebar(open){
+    const sb=document.getElementById("sidebar");
+    const ov=document.getElementById("overlay");
+    if(open){sb.classList.add("active");ov.classList.add("show");}
+    else{sb.classList.remove("active");ov.classList.remove("show");}
+  }
+
+  function onNav(el){
+    document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+    document.getElementById(el.dataset.target).classList.add("active");
+    toggleSidebar(false);
+  }
+
+  /* ====== CONTENT / BADGES ====== */
+  function updateBadges(){
+    const sum = Object.values(db).reduce((a,arr)=>a+arr.length,0);
+    setCount("home", sum);
+    setCount("youtube", db.youtube.length);
+    setCount("notes", db.notes.length);
+    setCount("commands", db.commands.length);
+    setCount("live", db.live.length);
+    setCount("support", db.support.length);
+    setCount("upload", db.youtube.length+db.notes.length+db.commands.length+db.live.length+db.support.length);
+    setCount("chat", document.getElementById("messages").children.length);
+    setCount("analytics", sum);
+    // students stays 10
+  }
+  function setCount(key,val){ const el=document.getElementById(`count-${key}`); if(el) el.textContent = String(val); }
+
+  function uploadContent(){
+    if(!currentUser || currentUser.role!=="admin"){ alert("Only admins can upload."); return; }
+    const cat = document.getElementById("upload-category").value;
+    const title = document.getElementById("upload-title").value.trim();
+    const link = document.getElementById("upload-link").value.trim();
+    if(!title || !link){ alert("Please enter title and link."); return; }
+    db[cat].push({title,link,by:currentUser.username,ts:new Date().toLocaleString()});
+    document.getElementById("upload-title").value="";
+    document.getElementById("upload-link").value="";
+    renderLists();
+    updateBadges();
+    alert("✅ Uploaded to " + cat);
+  }
+
+  function renderLists(){
+    renderGrid("youtube-list","youtube-empty",db.youtube);
+    renderGrid("notes-list","notes-empty",db.notes);
+    renderGrid("commands-list","commands-empty",db.commands);
+    renderGrid("live-list","live-empty",db.live);
+    renderGrid("support-list","support-empty",db.support);
+    document.getElementById("stats").textContent = `Total items: ${Object.values(db).reduce((a,b)=>a+b.length,0)}`;
+  }
+
+  function renderGrid(gridId, emptyId, arr){
+    const grid = document.getElementById(gridId), empty=document.getElementById(emptyId);
+    grid.innerHTML="";
+    if(arr.length===0){ empty.style.display="block"; return; }
+    empty.style.display="none";
+    arr.forEach(it=>{
+      const card=document.createElement("div");
+      card.className="card";
+      card.innerHTML = `<b>${it.title}</b><p class="muted">${it.by} • ${it.ts}</p><a href="${it.link}" target="_blank">Open</a>`;
+      grid.appendChild(card);
+    });
+  }
+
+  /* ====== STUDENTS ====== */
+  function renderStudents(){
+    const ul=document.getElementById("student-list");
+    ul.innerHTML="";
+    users.filter(u=>u.role==="student").forEach(st=>{
+      const li=document.createElement("li");
+      li.className="card";
+      li.innerHTML=`<b>${st.username}</b> <span class="muted">• active</span>`;
+      ul.appendChild(li);
+    });
+  }
+
+  /* ====== CHAT ====== */
+  function sendMessage(){
+    const box=document.getElementById("msgBox");
+    const txt=box.value.trim();
+    if(!txt) return;
+    const div=document.createElement("div");
+    div.className = "message " + (currentUser && currentUser.role==="admin" ? "admin-msg":"student-msg");
+    const time = new Date().toLocaleTimeString();
+    div.innerHTML = `${txt}<div class="timestamp">${time}</div>`;
+    document.getElementById("messages").appendChild(div);
+    box.value="";
+    document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
+    updateBadges();
+  }
+
+  /* ====== INIT ====== */
+  document.addEventListener("DOMContentLoaded", ()=>{
+    ensureLogos();
+    // Enter to login
+    document.getElementById("password").addEventListener("keydown",e=>{ if(e.key==="Enter") login(); });
+  });
+</script>
+</body>
+</html>
