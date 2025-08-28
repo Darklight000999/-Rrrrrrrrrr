@@ -1,275 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>darklight000999</title>
-<style>
-  *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;transition:.25s;}
-  :root{--w-sidebar:260px;--radius:14px;}
-  body{height:100vh;overflow:hidden;}
-  /* Theme */
-  body.light{background:#e0e0e0;color:#222;}
-  body.dark{background:#111;color:#fff;}
-  .theme-toggle{position:fixed;top:10px;right:10px;padding:8px 14px;border:none;border-radius:999px;
-    cursor:pointer;font-size:14px;z-index:1100;}
-
-  /* ===== LOGIN ===== */
-  #login-page{display:flex;align-items:center;justify-content:center;height:100vh;width:100%;}
-  .login-box{width:350px;max-width:92%;padding:28px;border-radius:18px;text-align:center}
-  body.light .login-box{background:#e0e0e0;box-shadow:8px 8px 16px #bebebe,-8px -8px 16px #ffffff;}
-  body.dark .login-box{background:#1a1a1a;box-shadow:8px 8px 16px #000,-8px -8px 16px #222;}
-
-  /* 🔥 RGB Ring for Logo */
-  .logo-container{position:relative;width:120px;height:120px;margin:0 auto 15px;}
-  .logo-ring{
-    position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;
-    background:conic-gradient(red,orange,yellow,green,cyan,blue,purple,red);
-    animation:spin 5s linear infinite;
-    mask: radial-gradient(circle 55px, transparent 70px, black 71px);
-    -webkit-mask: radial-gradient(circle 55px, transparent 70px, black 71px);
-  }
-  .logo-container img{position:relative;width:90px;height:90px;border-radius:50%;object-fit:cover;z-index:2;}
-
-  @keyframes spin{100%{transform:rotate(360deg);}}
-
-  .login-box h3{margin:8px 0 18px;color:gray}
-  .login-box input{width:100%;padding:12px 16px;margin:8px 0;border:none;border-radius:999px;outline:none}
-  body.light .login-box input{background:#e0e0e0;color:#222;box-shadow:inset 4px 4px 8px #bebebe,inset -4px -4px 8px #ffffff;}
-  body.dark  .login-box input{background:#222;color:#fff;box-shadow:inset 4px 4px 8px #000,inset -4px -4px 8px #333;}
-  .login-box button{width:100%;padding:12px;margin-top:12px;border:none;border-radius:999px;font-weight:700;cursor:pointer}
-  body.light .login-box button{background:#e0e0e0;color:#222;box-shadow:4px 4px 8px #bebebe,-4px -4px 8px #ffffff;}
-  body.dark  .login-box button{background:#222;color:#fff;box-shadow:4px 4px 8px #000,-4px -4px 8px #333;}
-
-  /* ===== APP ===== */
-  #website{display:none;height:100vh;width:100%}
-  .container{display:flex;height:100%}
-
-  /* Sidebar */
-  .sidebar{position:fixed;top:0;left:calc(-1 * var(--w-sidebar));bottom:0;width:var(--w-sidebar);
-    padding:18px;display:flex;flex-direction:column;z-index:1000;transition:left .28s ease;}
-  .sidebar.active{left:0}
-  body.light .sidebar{background:#f0f0f0;border-right:2px solid #ccc;}
-  body.dark  .sidebar{background:#1a1a1a;border-right:2px solid #222;}
-
-  .logo-box{position:relative;width:120px;height:120px;margin:8px auto 14px;}
-  .logo-box .logo-ring{position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;
-    background:conic-gradient(red,orange,yellow,green,cyan,blue,purple,red);
-    animation:spin 6s linear infinite;
-    mask: radial-gradient(circle 55px, transparent 70px, black 71px);
-    -webkit-mask: radial-gradient(circle 55px, transparent 70px, black 71px);}
-  .logo-box img{position:relative;width:90px;height:90px;border-radius:50%;object-fit:cover;z-index:2;}
-
-  /* ==== MENU ==== */
-  .menu{flex:1;overflow:auto}
-  .menu ul{list-style:none}
-  .menu li{
-    display:flex;align-items:center;gap:10px;
-    padding:12px 14px;border-radius:12px;margin:6px 0;
-    cursor:pointer;user-select:none;
-    font-size:15px;font-weight:600;
-    transform:translateX(-8px);
-    opacity:0.85;
-    transition:all .25s ease;
-  }
-  body.light .menu li{background:#ddd;}
-  body.dark  .menu li{background:#222;}
-
-  .menu li:hover{
-    transform:translateX(0);
-    opacity:1;
-    box-shadow:0 3px 8px rgba(0,0,0,.25);
-  }
-  .menu li.active{
-    background:linear-gradient(135deg,#4facfe,#00f2fe);
-    color:#fff;
-    transform:translateX(0);
-    opacity:1;
-  }
-  .menu li span.icon{font-size:18px;width:22px;text-align:center}
-
-  .sidebar-bottom{margin-top:auto;padding-top:12px}
-  .logout{width:100%;border:none;border-radius:999px;padding:10px 12px;cursor:pointer;font-weight:700}
-  body.light .logout{background:#e0e0e0;color:#222;box-shadow:2px 2px 4px #cfcfcf,-2px -2px 4px #fff;}
-  body.dark  .logout{background:#222;color:#fff;box-shadow:2px 2px 4px #000,-2px -2px 4px #333;}
-
-  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(1px);z-index:900;display:none;}
-  .overlay.show{display:block}
-
-  /* Main */
-  .main{flex:1;display:flex;flex-direction:column;min-width:0}
-  .topbar{display:flex;align-items:center;gap:10px;padding:8px 12px;}
-  body.light .topbar{background:#f0f0f0;border-bottom:2px solid #ccc;}
-  body.dark  .topbar{background:#1a1a1a;border-bottom:2px solid #222;}
-  .menu-btn{font-size:24px;background:none;border:none;cursor:pointer}
-  .brand{display:flex;align-items:center;gap:10px;flex:1;justify-content:center;
-    font-weight:800;letter-spacing:.5px;font-size:18px;text-transform:lowercase}
-  .brand .brand-logo{width:32px;height:32px;border-radius:50%;object-fit:cover}
-
-  .welcome{opacity:.85;font-size:13px}
-  .content{flex:1;overflow:auto;padding:16px}
-  .section{display:none}
-  .section.active{display:block}
-
-  /* ===== Upload Section ===== */
-  .upload-box{
-    border:2px dashed #4facfe;
-    padding:20px;
-    border-radius:12px;
-    text-align:center;
-    margin:20px 0;
-  }
-  .upload-box input{display:block;margin:12px auto;padding:10px;}
-  .upload-box button{padding:10px 18px;border:none;border-radius:8px;font-weight:700;cursor:pointer;
-    background:linear-gradient(135deg,#4facfe,#00f2fe);color:#fff;}
-  .uploaded-list{margin-top:16px;}
-  .uploaded-item{padding:10px;border-bottom:1px solid #555;}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>darklight000999 - Dashboard</title>
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet"/>
 </head>
-<body class="light">
-  <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">🌑 Dark</button>
+<body>
+  <!-- Theme Toggle -->
+  <button id="themeBtn" onclick="toggleTheme()">🌑 Dark</button>
 
-  <!-- LOGIN -->
-  <div id="login-page">
-    <div class="login-box">
-      <div class="logo-container">
-        <div class="logo-ring"></div>
-        <img src="Screenshot_20250821_142735.jpg" alt="Logo" onerror="useFallback(this)">
-      </div>
-      <h2>darklight000999</h2>
-      <h3>LOGIN</h3>
-      <input id="username" placeholder="Username">
-      <input id="password" type="password" placeholder="Password">
-      <button onclick="login()">Login</button>
-    </div>
+  <!-- Auth Buttons (Netlify Identity Widget) -->
+  <div id="auth-section">
+    <button onclick="netlifyIdentity.open()">🔑 Login / Signup</button>
+    <button onclick="netlifyIdentity.logout()">🚪 Logout</button>
+    <p id="user-info"></p>
   </div>
 
-  <!-- APP -->
-  <div id="website">
-    <div class="container">
-      <!-- Sidebar -->
-      <aside class="sidebar" id="sidebar">
-        <div class="logo-box">
-          <div class="logo-ring"></div>
-          <img src="Screenshot_20250821_142735.jpg" alt="Logo" onerror="useFallback(this)">
-        </div>
-        <nav class="menu">
-          <ul>
-            <li data-target="home" onclick="onNav(this)"><span class="icon">🏠</span> Home</li>
-            <li data-target="youtube" onclick="onNav(this)"><span class="icon">🎬</span> YouTube</li>
-            <li data-target="notes" onclick="onNav(this)"><span class="icon">📒</span> PDF & Notes</li>
-            <li data-target="cmd" onclick="onNav(this)"><span class="icon">💻</span> Hacking Commands</li>
-            <li data-target="hack" onclick="onNav(this)"><span class="icon">⚡</span> Hacking</li>
-            <li data-target="live" onclick="onNav(this)"><span class="icon">📡</span> Live Class</li>
-            <li data-target="upload" id="uploadMenu" onclick="onNav(this)" style="display:none"><span class="icon">⬆️</span> Uploads</li>
-            <li data-target="support" onclick="onNav(this)"><span class="icon">🎧</span> Contact & Support</li>
-          </ul>
-        </nav>
-        <div class="sidebar-bottom">
-          <button class="logout" onclick="logout()">🚪 Logout</button>
-        </div>
-      </aside>
+  <!-- Admin Dashboard -->
+  <div id="adminDash" style="display:none">
+    <h2>👑 Admin Dashboard</h2>
+    <input type="file" id="adminFile"/>
+    <select id="fileCategory">
+      <option value="Notes">📘 Notes</option>
+      <option value="Assignments">📝 Assignments</option>
+      <option value="Results">📊 Results</option>
+      <option value="Updates">📢 Updates</option>
+    </select>
+    <button onclick="uploadFile()">Upload</button>
+    <div id="adminFileList"></div>
 
-      <div id="overlay" class="overlay" onclick="toggleSidebar(false)"></div>
-
-      <!-- Main -->
-      <main class="main">
-        <div class="topbar">
-          <button class="menu-btn" onclick="toggleSidebar(true)">☰</button>
-          <div class="brand">
-            <img class="brand-logo" src="Screenshot_20250821_142735.jpg" alt="L" onerror="useFallback(this)">
-            <span>darklight000999</span>
-            <img class="brand-logo" src="Screenshot_20250821_142735.jpg" alt="R" onerror="useFallback(this)">
-          </div>
-          <span class="welcome" id="welcome">Welcome Guest</span>
-        </div>
-        <div class="content">
-          <section id="home" class="section active"><h2>🏠 Home</h2><p>Welcome to dashboard.</p></section>
-          <section id="notes" class="section"><h2>📒 PDF & Notes</h2><p>No notes yet.</p></section>
-          <section id="youtube" class="section"><h2>🎬 YouTube</h2><p>No videos yet.</p></section>
-          <section id="cmd" class="section"><h2>💻 Hacking Commands</h2><p>Command list coming soon.</p></section>
-          <section id="hack" class="section"><h2>⚡ Hacking</h2><p>Hacking resources here.</p></section>
-          <section id="live" class="section"><h2>📡 Live Class</h2><p>No live class scheduled.</p></section>
-          
-          <!-- Upload Section -->
-          <section id="upload" class="section">
-            <h2>⬆️ Uploads</h2>
-            <div class="upload-box" id="uploadBox">
-              <h3>Upload Files</h3>
-              <input type="file" id="fileInput" multiple>
-              <button onclick="uploadFiles()">Upload</button>
-              <div class="uploaded-list" id="uploadedList"></div>
-            </div>
-          </section>
-
-          <section id="support" class="section"><h2>🎧 Contact & Support</h2><p>Contact us at support@email.com</p></section>
-        </div>
-      </main>
-    </div>
+    <h3>📝 Create Blog</h3>
+    <input id="postTitle" placeholder="Enter Title"/>
+    <div id="editor" style="height:200px;background:#fff;color:#000"></div>
+    <button onclick="publishPost()">Publish Post</button>
   </div>
 
-<script>
-  const users = [
-    {username:"admin1",password:"Adm!n@123",role:"admin"},
-    {username:"student1",password:"Pass@001",role:"student"}
-  ];
-  let currentUser=null;
+  <!-- Student Dashboard -->
+  <div id="studentDash" style="display:none">
+    <h2>🎓 Student Dashboard</h2>
+    <div id="studentFileList"></div>
+    <div id="postList"></div>
+  </div>
 
-  function useFallback(img){img.src="https://via.placeholder.com/100?text=Logo";}
+  <!-- Quill -->
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <!-- Netlify Identity -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
-  function login(){
-    const u=document.getElementById("username").value.trim();
-    const p=document.getElementById("password").value.trim();
-    const user=users.find(x=>x.username===u && x.password===p);
-    if(!user){alert("❌ Invalid Login");return;}
-    currentUser=user;
-    document.getElementById("login-page").style.display="none";
-    document.getElementById("website").style.display="block";
-    document.getElementById("welcome").innerText="Welcome "+user.username;
-
-    // सिर्फ Admin को Upload Menu दिखे
-    if(user.role==="admin"){
-      document.getElementById("uploadMenu").style.display="block";
-    } else {
-      document.getElementById("uploadMenu").style.display="none";
+  <script>
+    let uploadedFiles=[];
+    let posts=[];
+    let quill = new Quill('#editor',{theme:'snow'});
+    
+    // Theme
+    function toggleTheme(){
+      document.body.classList.toggle("light");
+      document.getElementById("themeBtn").innerText=document.body.classList.contains("light")?"🌑 Dark":"☀️ Light";
     }
-  }
-  function logout(){
-    currentUser=null;
-    document.getElementById("website").style.display="none";
-    document.getElementById("login-page").style.display="flex";
-  }
-  function toggleTheme(){
-    document.body.classList.toggle("dark");
-    document.body.classList.toggle("light");
-    document.getElementById("themeBtn").textContent=document.body.classList.contains("dark")?"☀️ Light":"🌑 Dark";
-  }
-  function toggleSidebar(open){
-    const sb=document.getElementById("sidebar");const ov=document.getElementById("overlay");
-    if(open){sb.classList.add("active");ov.classList.add("show");}
-    else{sb.classList.remove("active");ov.classList.remove("show");}
-  }
-  function onNav(el){
-    document.querySelectorAll(".menu li").forEach(x=>x.classList.remove("active"));
-    el.classList.add("active");
-    document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
-    document.getElementById(el.dataset.target).classList.add("active");
-    toggleSidebar(false);
-  }
 
-  // Upload Logic
-  function uploadFiles(){
-    const input=document.getElementById("fileInput");
-    const list=document.getElementById("uploadedList");
-    if(input.files.length===0){alert("No file selected");return;}
-    for(let file of input.files){
-      const item=document.createElement("div");
-      item.className="uploaded-item";
-      item.textContent="📂 "+file.name;
-      list.appendChild(item);
+    // File Upload
+    function uploadFile(){
+      const file=document.getElementById("adminFile").files[0];
+      const cat=document.getElementById("fileCategory").value;
+      if(!file){alert("⚠️ Please select a file.");return;}
+      uploadedFiles.push({name:file.name,category:cat});
+      renderFiles();
     }
-    input.value="";
-  }
-</script>
+
+    function renderFiles(){
+      const studentList=document.getElementById("studentFileList");
+      studentList.innerHTML="";
+      uploadedFiles.forEach(f=>{
+        studentList.innerHTML+=`<div>📄 ${f.name} [${f.category}]</div>`;
+      });
+      document.getElementById("adminFileList").innerHTML=studentList.innerHTML;
+    }
+
+    // Blog
+    function publishPost(){
+      let title=document.getElementById("postTitle").value.trim();
+      let content=quill.root.innerHTML;
+      if(!title||!content){alert("⚠️ Title + Content required");return;}
+      posts.push({title,content});
+      renderPosts();
+    }
+    function renderPosts(){
+      const postList=document.getElementById("postList");
+      postList.innerHTML="";
+      posts.forEach(p=>{
+        postList.innerHTML+=`<div><h3>${p.title}</h3>${p.content}</div>`;
+      });
+    }
+
+    // Netlify Identity Events
+    netlifyIdentity.on("login", user => {
+      document.getElementById("user-info").innerText="Welcome "+user.email;
+      if(user.email.includes("admin")){ // simple check → आप Role Tagging भी कर सकते हैं
+        document.getElementById("adminDash").style.display="block";
+        document.getElementById("studentDash").style.display="none";
+      }else{
+        document.getElementById("studentDash").style.display="block";
+        document.getElementById("adminDash").style.display="none";
+      }
+    });
+
+    netlifyIdentity.on("logout", () => {
+      document.getElementById("user-info").innerText="";
+      document.getElementById("adminDash").style.display="none";
+      document.getElementById("studentDash").style.display="none";
+    });
+
+    netlifyIdentity.init();
+  </script>
 </body>
 </html>
