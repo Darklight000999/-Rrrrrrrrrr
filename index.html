@@ -5,8 +5,127 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>darklight000999</title>
   <style>
-    /* आपकी पिछली CSS वही रखी गई है (मैंने उसे छोटा नहीं किया) */
-    /* ------------------- CSS Same As Before ------------------- */
+    *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;transition:.25s;}
+    :root{--w-sidebar:260px;--radius:14px;}
+    body{height:100vh;overflow:hidden;}
+    /* Theme */
+    body.light{background:#e0e0e0;color:#222;}
+    body.dark{background:#111;color:#fff;}
+    /* Theme Toggle */
+    .theme-toggle{
+      position:fixed;top:10px;right:10px;padding:8px 14px;border:none;border-radius:999px;
+      cursor:pointer;font-size:14px;z-index:1100;
+    }
+    /* Login */
+    #login-page{display:flex;align-items:center;justify-content:center;height:100vh;width:100%;}
+    .login-box{width:350px;max-width:92%;padding:28px;border-radius:18px;text-align:center}
+    body.light .login-box{background:#e0e0e0;box-shadow:8px 8px 16px #bebebe,-8px -8px 16px #ffffff;}
+    body.dark .login-box{background:#1a1a1a;box-shadow:8px 8px 16px #000,-8px -8px 16px #222;}
+    .login-box img{width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:10px;
+      border:4px solid transparent;background:linear-gradient(45deg,red,blue,green,yellow,purple) border-box;
+      -webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);
+      -webkit-mask-composite:xor;mask-composite:exclude;animation:spin 4s linear infinite;}
+    @keyframes spin{100%{transform:rotate(360deg);}}
+    .login-box h3{margin:8px 0 18px;color:gray}
+    .login-box input{width:100%;padding:12px 16px;margin:8px 0;border:none;border-radius:999px;outline:none}
+    body.light .login-box input{background:#e0e0e0;color:#222;box-shadow:inset 4px 4px 8px #bebebe,inset -4px -4px 8px #ffffff;}
+    body.dark  .login-box input{background:#222;color:#fff;box-shadow:inset 4px 4px 8px #000,inset -4px -4px 8px #333;}
+    .login-box button{width:100%;padding:12px;margin-top:12px;border:none;border-radius:999px;font-weight:700;cursor:pointer}
+    body.light .login-box button{background:#e0e0e0;color:#222;box-shadow:4px 4px 8px #bebebe,-4px -4px 8px #ffffff;}
+    body.dark  .login-box button{background:#222;color:#fff;box-shadow:4px 4px 8px #000,-4px -4px 8px #333;}
+    .login-box a{font-size:13px;color:#ff5252;text-decoration:none}
+
+    /* App */
+    #website{display:none;height:100vh;width:100%}
+    .container{display:flex;height:100%}
+
+    /* Sidebar */
+    .sidebar{
+      position:fixed;top:0;left:calc(-1 * var(--w-sidebar));bottom:0;width:var(--w-sidebar);
+      padding:18px;display:flex;flex-direction:column;z-index:1000;transition:left .28s ease;
+    }
+    .sidebar.active{left:0}
+    body.light .sidebar{background:#f0f0f0;border-right:2px solid #ccc;}
+    body.dark  .sidebar{background:#1a1a1a;border-right:2px solid #222;}
+    .logo-box{width:120px;height:120px;margin:8px auto 14px}
+    .logo-box img{width:100%;height:100%;border-radius:50%;object-fit:cover;
+      border:3px solid transparent;background:linear-gradient(45deg,red,blue,green,yellow,purple) border-box;
+      -webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);
+      -webkit-mask-composite:xor;mask-composite:exclude;animation:spin 5s linear infinite;}
+
+    .menu{flex:1;overflow:auto}
+    .menu h3{margin:10px 4px;font-size:13px;opacity:.75}
+    .menu ul{list-style:none}
+    .menu li{display:flex;align-items:center;gap:10px;justify-content:space-between;
+      padding:12px 12px;border-radius:12px;margin:6px 0;cursor:pointer;user-select:none}
+    .menu li .left{display:flex;align-items:center;gap:10px}
+    .menu .badge{min-width:24px;height:24px;padding:0 8px;border-radius:999px;
+      display:inline-flex;align-items:center;justify-content:center;font-size:12px;opacity:.85}
+    body.light .menu li{background:#ddd;}
+    body.dark  .menu li{background:#222;}
+    body.light .menu .badge{background:#cfcfcf;color:#222;}
+    body.dark  .menu .badge{background:#333;color:#fff;}
+
+    /* Sidebar Bottom Logout */
+    .sidebar-bottom{margin-top:auto;padding-top:12px}
+    .logout{width:100%;border:none;border-radius:999px;padding:10px 12px;cursor:pointer;font-weight:700}
+    body.light .logout{background:#e0e0e0;color:#222;box-shadow:2px 2px 4px #cfcfcf,-2px -2px 4px #fff;}
+    body.dark  .logout{background:#222;color:#fff;box-shadow:2px 2px 4px #000,-2px -2px 4px #333;}
+
+    /* Overlay */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(1px);z-index:900;display:none;}
+    .overlay.show{display:block}
+
+    /* Main */
+    .main{flex:1;display:flex;flex-direction:column;min-width:0}
+    .topbar{display:flex;align-items:center;gap:10px;padding:8px 12px;}
+    body.light .topbar{background:#f0f0f0;border-bottom:2px solid #ccc;}
+    body.dark  .topbar{background:#1a1a1a;border-bottom:2px solid #222;}
+    .menu-btn{font-size:24px;background:none;border:none;cursor:pointer}
+    .brand{display:flex;align-items:center;gap:10px;flex:1;justify-content:center;
+      text-transform:lowercase;font-weight:800;letter-spacing:.5px;font-size:18px}
+    .brand img{width:32px;height:32px;border-radius:50%;object-fit:cover}
+    .welcome{opacity:.85;font-size:13px}
+
+    /* Content */
+    .content{flex:1;display:flex;overflow:hidden}
+    .section{display:none;padding:16px;overflow:auto;width:100%}
+    .active{display:block}
+
+    /* Cards + grids */
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+    .card{padding:14px;border-radius:var(--radius);box-shadow:0 2px 6px rgba(0,0,0,.18)}
+    body.light .card{background:#fff;}
+    body.dark  .card{background:#222;color:#fff;}
+    .muted{opacity:.7}
+
+    /* Chat */
+    .chat-wrap{max-width:960px;margin:0 auto;width:100%;display:flex;flex-direction:column;height:calc(100% - 10px)}
+    .chat-header{padding:10px;text-align:center;border-radius:12px;margin-bottom:6px}
+    body.light .chat-header{background:#eee;border:1px solid #ccc;}
+    body.dark  .chat-header{background:#1a1a1a;border:1px solid #333;}
+    .chat-messages{flex:1;overflow-y:auto;padding:10px;border-radius:12px;margin-bottom:8px}
+    body.light .chat-messages{background:#f9f9f9;border:1px solid #ddd;}
+    body.dark  .chat-messages{background:#0d0d0d;border:1px solid #222;}
+    .message{max-width:78%;padding:10px 12px;margin:6px 0;border-radius:12px;font-size:14px}
+    .student-msg{background:#666;color:#fff;align-self:flex-start}
+    .admin-msg{background:#0055ff;color:#fff;align-self:flex-end}
+    .timestamp{font-size:10px;opacity:.8;margin-top:3px}
+    .chat-input{display:flex;gap:8px}
+    .chat-input input{flex:1;padding:10px;border:none;border-radius:12px;outline:none}
+    .chat-input button{padding:10px 16px;border:none;border-radius:12px;cursor:pointer;font-weight:700}
+    body.light .chat-input input{background:#eee;color:#222;}
+    body.dark  .chat-input input{background:#1a1a1a;color:#fff;}
+    body.light .chat-input button{background:#ddd;color:#222;}
+    body.dark  .chat-input button{background:#0055ff;color:#fff;}
+
+    /* Desktop */
+    @media(min-width:992px){
+      .sidebar{left:0}
+      .overlay{display:none!important}
+      .main{margin-left:var(--w-sidebar)}
+      .menu-btn{display:none}
+    }
   </style>
 </head>
 <body class="light">
@@ -34,21 +153,21 @@
         <div class="logo-box"><img src="Screenshot_20250821_142735.jpg" alt="Logo"></div>
         <nav class="menu">
           <ul id="menu-items">
-            <li data-target="home" onclick="onNav(this)"><div class="left">🏠 <span>Home</span></div></li>
-            <li data-target="youtube" onclick="onNav(this)"><div class="left">🎬 <span>YouTube Videos</span></div></li>
-            <li data-target="notes" onclick="onNav(this)"><div class="left">📑 <span>PDF & Notes</span></div></li>
-            <li data-target="commands" onclick="onNav(this)"><div class="left">🧰 <span>Hacking Commands</span></div></li>
-            <li data-target="hacking" onclick="onNav(this)"><div class="left">🧪 <span>Hacking</span></div></li>
-            <li data-target="live" onclick="onNav(this)"><div class="left">🎥 <span>Live Class</span></div></li>
-            <li data-target="support" onclick="onNav(this)"><div class="left">🆘 <span>Contact & Support</span></div></li>
-            <li data-target="chat" onclick="onNav(this)"><div class="left">💬 <span>Chat</span></div></li>
+            <li data-target="home" onclick="onNav(this)"><div class="left">🏠 <span>Home</span></div><span class="badge" id="count-home">0</span></li>
+            <li data-target="youtube" onclick="onNav(this)"><div class="left">🎬 <span>YouTube Videos</span></div><span class="badge" id="count-youtube">0</span></li>
+            <li data-target="notes" onclick="onNav(this)"><div class="left">📑 <span>PDF & Notes</span></div><span class="badge" id="count-notes">0</span></li>
+            <li data-target="commands" onclick="onNav(this)"><div class="left">🧰 <span>Hacking Commands</span></div><span class="badge" id="count-commands">0</span></li>
+            <li data-target="hacking" onclick="onNav(this)"><div class="left">🧪 <span>Hacking</span></div><span class="badge" id="count-hacking">0</span></li>
+            <li data-target="live" onclick="onNav(this)"><div class="left">🎥 <span>Live Class</span></div><span class="badge" id="count-live">0</span></li>
+            <li data-target="support" onclick="onNav(this)"><div class="left">🆘 <span>Contact & Support</span></div><span class="badge" id="count-support">0</span></li>
+            <li data-target="chat" onclick="onNav(this)"><div class="left">💬 <span>Chat</span></div><span class="badge" id="count-chat">0</span></li>
           </ul>
           <h3>Admin Panel</h3>
           <ul id="admin-items" style="display:none">
-            <li data-target="upload" onclick="onNav(this)"><div class="left">📂 <span>Upload Manager</span></div></li>
-            <li data-target="students" onclick="onNav(this)"><div class="left">👥 <span>Manage Students</span></div></li>
-            <li data-target="announce" onclick="onNav(this)"><div class="left">📢 <span>Announcements</span></div></li>
-            <li data-target="analytics" onclick="onNav(this)"><div class="left">📊 <span>Analytics</span></div></li>
+            <li data-target="upload" onclick="onNav(this)"><div class="left">📂 <span>Upload Manager</span></div><span class="badge" id="count-upload">0</span></li>
+            <li data-target="students" onclick="onNav(this)"><div class="left">👥 <span>Manage Students</span></div><span class="badge" id="count-students">10</span></li>
+            <li data-target="announce" onclick="onNav(this)"><div class="left">📢 <span>Announcements</span></div><span class="badge" id="count-announce">0</span></li>
+            <li data-target="analytics" onclick="onNav(this)"><div class="left">📊 <span>Analytics</span></div><span class="badge" id="count-analytics">0</span></li>
           </ul>
         </nav>
         <div class="sidebar-bottom">
@@ -61,6 +180,7 @@
 
       <!-- Main -->
       <main class="main" id="main">
+        <!-- Topbar -->
         <div class="topbar">
           <button class="menu-btn" onclick="toggleSidebar(true)">☰</button>
           <div class="brand">
@@ -71,87 +191,33 @@
           <span class="welcome" id="welcome">Welcome Guest</span>
         </div>
 
+        <!-- Content Sections -->
         <div class="content">
-          <section id="home" class="section active"><h2>Welcome to darklight000999</h2></section>
-          <section id="youtube" class="section"><h2>🎬 YouTube Videos</h2></section>
-          <section id="notes" class="section"><h2>📑 PDF & Notes</h2></section>
-          <section id="commands" class="section"><h2>🧰 Hacking Commands</h2></section>
-          <section id="hacking" class="section"><h2>🧪 Hacking Section</h2></section>
-          <section id="live" class="section"><h2>🎥 Live Class</h2></section>
-          <section id="support" class="section"><h2>🆘 Contact & Support</h2></section>
-          <section id="upload" class="section"><h2>📂 Upload Manager (Admin Only)</h2></section>
-          <section id="students" class="section"><h2>👥 Manage Students</h2></section>
-          <section id="announce" class="section"><h2>📢 Announcements</h2></section>
-          <section id="analytics" class="section"><h2>📊 Analytics</h2></section>
-          <section id="chat" class="section"><h2>💬 Chat</h2></section>
-        </div>
-      </main>
-    </div>
-  </div>
-
-<script>
-  // ✅ Users List (2 Admin + 10 Students)
-  const users = [
-    {username:"admin1", password:"Adm!n@123", role:"admin"},
-    {username:"admin2", password:"SecUr3#456", role:"admin"},
-    {username:"student1", password:"Pass@001", role:"student"},
-    {username:"student2", password:"Pass@002", role:"student"},
-    {username:"student3", password:"Pass@003", role:"student"},
-    {username:"student4", password:"Pass@004", role:"student"},
-    {username:"student5", password:"Pass@005", role:"student"},
-    {username:"student6", password:"Pass@006", role:"student"},
-    {username:"student7", password:"Pass@007", role:"student"},
-    {username:"student8", password:"Pass@008", role:"student"},
-    {username:"student9", password:"Pass@009", role:"student"},
-    {username:"student10",password:"Pass@010", role:"student"}
-  ];
-
-  let currentUser = null;
-
-  function login(){
-    const u = document.getElementById("username").value.trim();
-    const p = document.getElementById("password").value.trim();
-    const user = users.find(x=>x.username===u && x.password===p);
-    if(user){
-      currentUser = user;
-      document.getElementById("login-page").style.display="none";
-      document.getElementById("website").style.display="block";
-      document.getElementById("welcome").innerText = "Welcome " + user.username;
-      if(user.role==="admin"){
-        document.getElementById("admin-items").style.display="block";
-      }else{
-        document.getElementById("admin-items").style.display="none";
-      }
-    }else{
-      alert("❌ Invalid Username or Password!");
-    }
-  }
-
-  function logout(){
-    currentUser=null;
-    document.getElementById("website").style.display="none";
-    document.getElementById("login-page").style.display="flex";
-    document.getElementById("username").value="";
-    document.getElementById("password").value="";
-  }
-
-  function toggleTheme(){
-    document.body.classList.toggle("dark");
-    document.body.classList.toggle("light");
-  }
-
-  function toggleSidebar(open){
-    const sb=document.getElementById("sidebar");
-    const ov=document.getElementById("overlay");
-    if(open){sb.classList.add("active");ov.classList.add("show");}
-    else{sb.classList.remove("active");ov.classList.remove("show");}
-  }
-
-  function onNav(el){
-    document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
-    document.getElementById(el.dataset.target).classList.add("active");
-    toggleSidebar(false);
-  }
-</script>
-</body>
-</html>
+          <section id="home" class="section active"><h2>Welcome to darklight000999</h2><p class="muted">Use the menu to open sections.</p></section>
+          <section id="youtube" class="section"><h2>🎬 YouTube Videos</h2><div id="youtube-list" class="grid"></div><p id="youtube-empty" class="muted">No uploads yet.</p></section>
+          <section id="notes" class="section"><h2>📑 PDF & Notes</h2><div id="notes-list" class="grid"></div><p id="notes-empty" class="muted">No uploads yet.</p></section>
+          <section id="commands" class="section"><h2>🧰 Hacking Commands</h2><div id="commands-list" class="grid"></div><p id="commands-empty" class="muted">No uploads yet.</p></section>
+          <section id="hacking" class="section"><h2>🧪 Hacking Section</h2><p class="muted">Content curated by admins will appear here.</p></section>
+          <section id="live" class="section"><h2>🎥 Live Class</h2><div id="live-list" class="grid"></div><p id="live-empty" class="muted">No uploads yet.</p></section>
+          <section id="support" class="section"><h2>🆘 Contact & Support</h2><div id="support-list" class="grid"></div><p id="support-empty" class="muted">No uploads yet.</p></section>
+          <section id="upload" class="section"><h2>📂 Upload Manager (Admin Only)</h2>
+            <div id="upload-form">
+              <select id="upload-category">
+                <option value="youtube">YouTube</option>
+                <option value="notes">Notes</option>
+                <option value="commands">Commands</option>
+                <option value="live">Live</option>
+                <option value="support">Support</option>
+              </select>
+              <input id="upload-title" placeholder="Title">
+              <input id="upload-link" placeholder="Link / URL">
+              <button onclick="uploadContent()">Upload</button>
+            </div>
+          </section>
+          <section id="students" class="section"><h2>👥 Manage Students</h2><ul id="student-list"></ul></section>
+          <section id="announce" class="section"><h2>📢 Announcements</h2><p class="muted">No announcements yet.</p></section>
+          <section id="analytics" class="section"><h2>📊 Analytics</h2><p id="stats" class="muted"></p></section>
+          <section id="chat" class="section"><div class="chat-wrap">
+            <div class="chat-header">Chat</div>
+            <div id="messages" class="chat-messages"></div>
+            <div class="chat-input"><input id="msgBox" placeholder="Type a
